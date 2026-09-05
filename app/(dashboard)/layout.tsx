@@ -27,11 +27,18 @@ export default async function DashboardLayout({
     .eq("id", user.id)
     .single();
 
+  const adminEmails = (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  const isAdmin = adminEmails.includes(user.email?.toLowerCase() ?? "");
+
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/appeals/new", label: "New Appeal", icon: FilePlus },
     { href: "/settings/profile", label: "Settings", icon: Settings },
     { href: "/settings/billing", label: "Billing", icon: CreditCard },
+    ...(isAdmin ? [{ href: "/admin", label: "Admin Panel", icon: Shield }] : []),
   ];
 
   return (

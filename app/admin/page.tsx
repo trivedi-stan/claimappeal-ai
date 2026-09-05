@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Shield, Users, FileText, BarChart3, Activity } from "lucide-react";
+import { Shield, Users, FileText, BarChart3, Activity, ArrowLeft } from "lucide-react";
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
@@ -47,7 +48,16 @@ export default async function AdminDashboardPage() {
         <div className="container mx-auto flex h-16 items-center gap-3 px-6">
           <Shield className="h-6 w-6 text-primary" />
           <span className="text-lg font-bold">Admin Panel</span>
-          <span className="ml-auto text-sm text-muted-foreground">{user.email}</span>
+          <div className="ml-auto flex items-center gap-4">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Dashboard
+            </Link>
+            <span className="border-l pl-4 text-sm text-muted-foreground">{user.email}</span>
+          </div>
         </div>
       </div>
 
