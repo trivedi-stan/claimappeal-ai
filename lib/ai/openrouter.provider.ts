@@ -4,14 +4,16 @@ import { buildPrompt } from "./prompt-builder";
 import { validateAndParseOutput } from "./output-validator";
 
 const DEFAULT_MODEL =
-  process.env.AI_MODEL && process.env.AI_MODEL !== "gemini-2.5-flash"
+  process.env.AI_MODEL &&
+  process.env.AI_MODEL !== "gemini-2.5-flash" &&
+  process.env.AI_MODEL !== "openrouter/free"
     ? process.env.AI_MODEL
-    : "openrouter/free";
+    : "inclusionai/ling-3.0-flash-sante:free";
 
 /**
  * OpenRouter implementation of the AIProvider interface.
  * Connects to OpenRouter's OpenAI-compatible API endpoint.
- * Supports completely free models (e.g. google/gemini-2.0-flash-exp:free, meta-llama/llama-3.3-70b-instruct:free).
+ * Optimized for high-speed, reliable, free healthcare appeal generation.
  */
 export class OpenRouterProvider implements AIProvider {
   readonly name = "openrouter";
@@ -56,6 +58,19 @@ You MUST respond with a single, strictly valid JSON object matching this exact s
 }
 Do NOT include markdown formatting like \`\`\`json or explanation before/after. Return raw valid JSON only.`;
 
+    // Candidate models ordered by healthcare capability, speed, and availability
+    // OpenRouter limits the models fallback array to a maximum of 3 items
+    const candidateModels = Array.from(
+      new Set(
+        [
+          this.model,
+          "inclusionai/ling-3.0-flash-sante:free",
+          "inclusionai/ling-3.0-flash-fin:free",
+          "nvidia/nemotron-3.5-lightning:free",
+        ].filter(Boolean)
+      )
+    ).slice(0, 3);
+
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
@@ -67,7 +82,7 @@ Do NOT include markdown formatting like \`\`\`json or explanation before/after. 
           "X-Title": "ClaimAppeal AI",
         },
         body: JSON.stringify({
-          model: this.model,
+          models: candidateModels,
           messages: [
             {
               role: "system",
@@ -78,7 +93,6 @@ Do NOT include markdown formatting like \`\`\`json or explanation before/after. 
               content: userPrompt,
             },
           ],
-          response_format: { type: "json_object" },
           temperature: 0.2,
         }),
       }
@@ -100,20 +114,43 @@ Do NOT include markdown formatting like \`\`\`json or explanation before/after. 
     }
 
     const data = await response.json();
-    const content = data.choices?.[0]?.message?.content;
+    const choice = data.choices?.[0];
+    const content =
+      choice?.message?.content ||
+      choice?.message?.reasoning ||
+      choice?.text;
 
-    if (!content) {
-      throw new Error("OpenRouter returned an empty response.");
+    if (!content || !content.trim()) {
+      throw new Error(
+        `OpenRouter model (${data.model || "free-tier"}) returned an empty response. Please retry.`
+      );
     }
 
-    // Clean any backtick artifacts if present
-    const cleanedJson = content
-      .replace(/^```json\s*/i, "")
-      .replace(/^```\s*/i, "")
-      .replace(/\s*```$/i, "")
-      .trim();
+    // Extract JSON block even if surrounded by thoughts, reasoning, or markdown fences
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      console.error("[OpenRouter] Non-JSON content received:", content);
+      throw new Error(
+        "OpenRouter response did not contain a valid JSON object. Please retry."
+      );
+    }
 
-    const rawOutput = JSON.parse(cleanedJson);
+    const rawJsonText = jsonMatch[0];
+    let rawOutput: unknown;
+
+    try {
+      rawOutput = JSON.parse(rawJsonText);
+    } catch {
+      // Fallback repair for trailing commas or raw unescaped newlines in string properties
+      try {
+        const repaired = rawJsonText.replace(/,\s*([\}\]])/g, "$1");
+        rawOutput = JSON.parse(repaired);
+      } catch {
+        console.error("[OpenRouter] Failed to parse JSON:", rawJsonText);
+        throw new Error("OpenRouter generated invalid JSON. Please retry.");
+      }
+    }
+
     return validateAndParseOutput(rawOutput);
   }
 }

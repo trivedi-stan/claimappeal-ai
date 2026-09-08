@@ -37,7 +37,7 @@ ${SAFETY_INSTRUCTIONS}
 
 ${LETTER_FORMAT_INSTRUCTIONS}
 
-Your output must be structured and complete. Always use the generate_appeal_letter tool.`;
+Your output must be structured and complete.`;
 
   const referenceSection =
     input.referenceDocuments.length > 0
