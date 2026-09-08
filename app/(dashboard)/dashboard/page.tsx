@@ -51,10 +51,10 @@ export default async function DashboardPage() {
             Manage your medical denial challenges, AI appeal drafts, and submission records.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
           <Link
             href="/appeals/new"
-            className="btn-primary"
+            className="btn-primary w-full sm:w-auto justify-center"
           >
             <FilePlus className="h-3.5 w-3.5" />
             <span>New Appeal</span>
@@ -63,9 +63,9 @@ export default async function DashboardPage() {
       </div>
 
       {/* Metric Cards Row */}
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         {/* Metric 1: Monthly Usage */}
-        <div className="cinematic-card">
+        <div className="cinematic-card p-4 sm:p-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium tracking-wider uppercase text-zinc-400">Monthly Quota</span>
             <span className="badge-neutral capitalize">{usage.plan} tier</span>
@@ -91,7 +91,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Metric 2: Total Active Cases */}
-        <div className="cinematic-card">
+        <div className="cinematic-card p-4 sm:p-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium tracking-wider uppercase text-zinc-400">Active Records</span>
             <FileText className="h-4 w-4 text-zinc-500" />
@@ -106,7 +106,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Metric 3: AI Legal & Clinical Guardrails */}
-        <div className="cinematic-card">
+        <div className="cinematic-card p-4 sm:p-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-medium tracking-wider uppercase text-zinc-400">Verification Engine</span>
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
@@ -146,39 +146,30 @@ export default async function DashboardPage() {
             </Link>
           </div>
         ) : (
-          /* Polished Table */
-          <div className="overflow-hidden rounded-xl border border-white/[0.07] bg-[#101013] shadow-sm">
-            <table className="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr className="border-b border-white/[0.06] bg-white/[0.02] text-[11px] font-medium text-zinc-400 uppercase tracking-wider">
-                  <th className="py-3 px-4">Case Title</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4 hidden sm:table-cell">Last Updated</th>
-                  <th className="py-3 px-4 text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/[0.04]">
-                {appeals.map((appeal) => {
-                  const isCompleted = appeal.status === "generated" || appeal.status === "submitted";
-                  const isDraft = appeal.status === "draft";
+          <>
+            {/* Mobile View: Native Stacked Cards (<sm) */}
+            <div className="space-y-2.5 sm:hidden">
+              {appeals.map((appeal) => {
+                const isCompleted = appeal.status === "generated" || appeal.status === "submitted";
+                const isDraft = appeal.status === "draft";
 
-                  return (
-                    <tr
-                      key={appeal.id}
-                      className="group hover:bg-white/[0.025] transition-colors"
-                    >
-                      <td className="py-3.5 px-4 font-medium text-zinc-200">
-                        <Link
-                          href={`/appeals/${appeal.id}`}
-                          className="flex items-center gap-2.5 hover:text-primary transition-colors"
-                        >
-                          <FileText className="h-4 w-4 text-zinc-500 group-hover:text-zinc-300 transition-colors shrink-0" />
-                          <span className="truncate max-w-xs sm:max-w-md">
-                            {appeal.title || "Untitled Appeal Case"}
-                          </span>
-                        </Link>
-                      </td>
-                      <td className="py-3.5 px-4">
+                return (
+                  <Link
+                    key={appeal.id}
+                    href={`/appeals/${appeal.id}`}
+                    className="block cinematic-card p-4 hover:border-white/[0.15] transition-colors"
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <FileText className="h-4 w-4 text-zinc-400 shrink-0" />
+                        <span className="font-medium text-xs text-zinc-100 truncate">
+                          {appeal.title || "Untitled Appeal Case"}
+                        </span>
+                      </div>
+                      <ArrowRight className="h-3.5 w-3.5 text-zinc-500 shrink-0 mt-0.5" />
+                    </div>
+                    <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-1">
+                      <div>
                         {isCompleted ? (
                           <span className="badge-success">
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
@@ -195,25 +186,87 @@ export default async function DashboardPage() {
                             {getStatusLabel(appeal.status)}
                           </span>
                         )}
-                      </td>
-                      <td className="py-3.5 px-4 text-zinc-500 hidden sm:table-cell text-[11px]">
+                      </div>
+                      <span className="text-[10px] font-mono text-zinc-500">
                         {formatDate(appeal.updated_at)}
-                      </td>
-                      <td className="py-3.5 px-4 text-right">
-                        <Link
-                          href={`/appeals/${appeal.id}`}
-                          className="inline-flex items-center gap-1 text-[11px] font-medium text-zinc-400 hover:text-white transition-colors"
-                        >
-                          <span>Review</span>
-                          <ArrowRight className="h-3 w-3" />
-                        </Link>
-                      </td>
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Tablet & Desktop View: Table (sm+) */}
+            <div className="hidden sm:block overflow-hidden rounded-xl border border-white/[0.07] bg-[#101013] shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse text-xs">
+                  <thead>
+                    <tr className="border-b border-white/[0.06] bg-white/[0.02] text-[11px] font-medium text-zinc-400 uppercase tracking-wider">
+                      <th className="py-3 px-4">Case Title</th>
+                      <th className="py-3 px-4">Status</th>
+                      <th className="py-3 px-4">Last Updated</th>
+                      <th className="py-3 px-4 text-right">Action</th>
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                  </thead>
+                  <tbody className="divide-y divide-white/[0.04]">
+                    {appeals.map((appeal) => {
+                      const isCompleted = appeal.status === "generated" || appeal.status === "submitted";
+                      const isDraft = appeal.status === "draft";
+
+                      return (
+                        <tr
+                          key={appeal.id}
+                          className="group hover:bg-white/[0.025] transition-colors"
+                        >
+                          <td className="py-3.5 px-4 font-medium text-zinc-200">
+                            <Link
+                              href={`/appeals/${appeal.id}`}
+                              className="flex items-center gap-2.5 hover:text-primary transition-colors"
+                            >
+                              <FileText className="h-4 w-4 text-zinc-500 group-hover:text-zinc-300 transition-colors shrink-0" />
+                              <span className="truncate max-w-xs md:max-w-md">
+                                {appeal.title || "Untitled Appeal Case"}
+                              </span>
+                            </Link>
+                          </td>
+                          <td className="py-3.5 px-4">
+                            {isCompleted ? (
+                              <span className="badge-success">
+                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                                {getStatusLabel(appeal.status)}
+                              </span>
+                            ) : isDraft ? (
+                              <span className="badge-neutral">
+                                <span className="h-1.5 w-1.5 rounded-full bg-zinc-500" />
+                                Draft In Progress
+                              </span>
+                            ) : (
+                              <span className="badge-cobalt">
+                                <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
+                                {getStatusLabel(appeal.status)}
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3.5 px-4 text-zinc-500 text-[11px]">
+                            {formatDate(appeal.updated_at)}
+                          </td>
+                          <td className="py-3.5 px-4 text-right">
+                            <Link
+                              href={`/appeals/${appeal.id}`}
+                              className="inline-flex items-center gap-1 text-[11px] font-medium text-zinc-400 hover:text-white transition-colors"
+                            >
+                              <span>Review</span>
+                              <ArrowRight className="h-3 w-3" />
+                            </Link>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>

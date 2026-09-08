@@ -54,8 +54,8 @@ export default async function AppealDetailPage({
             <span className="text-zinc-600">/</span>
             <span className="text-zinc-200">Dossier #{id.substring(0, 8)}</span>
           </div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-zinc-100">
               {appeal.title || "Untitled Appeal Record"}
             </h1>
             <span className={`rounded-full px-2.5 py-0.5 text-xs font-mono font-medium ${getStatusColor(appeal.status)}`}>
@@ -67,10 +67,10 @@ export default async function AppealDetailPage({
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
           <Link
             href={`/appeals/${id}/versions`}
-            className="btn-secondary text-xs px-3.5 py-2 inline-flex items-center gap-1.5"
+            className="btn-secondary text-xs px-3.5 py-2 inline-flex items-center justify-center gap-1.5"
           >
             <History className="h-3.5 w-3.5 text-zinc-400" />
             <span>Versions ({appeal.appeal_versions?.length ?? 0})</span>
@@ -79,7 +79,7 @@ export default async function AppealDetailPage({
           {latestVersion ? (
             <Link
               href={`/appeals/${id}/review`}
-              className="btn-primary text-xs px-4 py-2 inline-flex items-center gap-1.5 font-medium shadow-[0_0_20px_rgba(59,130,246,0.25)]"
+              className="btn-primary text-xs px-4 py-2 inline-flex items-center justify-center gap-1.5 font-medium shadow-[0_0_20px_rgba(59,130,246,0.25)]"
             >
               <FileText className="h-3.5 w-3.5" />
               <span>Open Letterhead Draft</span>
@@ -87,7 +87,7 @@ export default async function AppealDetailPage({
           ) : (
             <Link
               href={`/appeals/new?id=${id}`}
-              className="btn-primary text-xs px-4 py-2 inline-flex items-center gap-1.5 font-medium"
+              className="btn-primary text-xs px-4 py-2 inline-flex items-center justify-center gap-1.5 font-medium"
             >
               <span>Continue Intake</span>
             </Link>
@@ -96,7 +96,7 @@ export default async function AppealDetailPage({
       </div>
 
       {/* Metric Highlights Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
         <div className="cinematic-card p-4">
           <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 block">
             Disputed Amount

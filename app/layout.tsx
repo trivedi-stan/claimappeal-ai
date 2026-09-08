@@ -1,6 +1,13 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#09090b",
+};
 
 export const metadata: Metadata = {
   title: "ClaimAppeal AI — Turn Insurance Denials Into Professional Appeals",

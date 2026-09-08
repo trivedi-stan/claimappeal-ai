@@ -23,13 +23,13 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-blue-500/30 selection:text-blue-200">
       {/* Navigation Header */}
-      <nav className="sticky top-0 z-50 border-b border-white/[0.08] bg-zinc-950/80 backdrop-blur-md">
-        <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400">
+      <nav className="sticky top-0 z-50 border-b border-white/[0.08] bg-zinc-950/85 backdrop-blur-md">
+        <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 shrink-0">
               <Shield className="h-4.5 w-4.5" />
             </div>
-            <span className="text-base font-semibold tracking-tight text-zinc-100">
+            <span className="text-sm sm:text-base font-semibold tracking-tight text-zinc-100">
               ClaimAppeal<span className="text-blue-400 ml-1 font-mono text-xs font-bold">AI</span>
             </span>
           </Link>
@@ -46,18 +46,18 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/login"
-              className="text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors px-3 py-1.5"
+              className="text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors px-2 py-1.5 sm:px-3"
             >
               Sign In
             </Link>
             <Link
               href="/signup"
-              className="btn-primary text-xs px-4 py-2 inline-flex items-center gap-1.5 font-medium shadow-[0_0_20px_rgba(59,130,246,0.25)]"
+              className="btn-primary text-xs px-3 py-1.5 sm:px-4 sm:py-2 inline-flex items-center gap-1 font-medium shadow-[0_0_20px_rgba(59,130,246,0.25)]"
             >
-              Start Free Draft
+              <span>Start Free</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -65,19 +65,19 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-20 pb-24 md:pt-32 md:pb-36">
+      <section className="relative overflow-hidden pt-12 pb-16 sm:pt-20 sm:pb-24 md:pt-32 md:pb-36">
         {/* Radial ambient lighting */}
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_50%_at_50%_-10%,rgba(59,130,246,0.12),rgba(255,255,255,0))]" />
 
-        <div className="container mx-auto max-w-5xl px-6 text-center">
+        <div className="container mx-auto max-w-5xl px-4 sm:px-6 text-center">
           {/* Status Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/[0.08] px-3.5 py-1 text-xs font-mono text-blue-400 mb-8">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
-            <span>ERISA § 503 & ACA § 2719 Legal Rebuttal Engine</span>
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/[0.08] px-3 py-1 text-[11px] sm:text-xs font-mono text-blue-400 mb-6 sm:mb-8 max-w-full truncate">
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse shrink-0" />
+            <span className="truncate">ERISA § 503 & ACA § 2719 Legal Rebuttal Engine</span>
           </div>
 
           {/* Main Title */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-zinc-100 leading-[1.08] mb-6">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold tracking-tight text-zinc-100 leading-[1.12] sm:leading-[1.08] mb-5 sm:mb-6">
             Turn Insurance Denials Into{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 via-blue-200 to-zinc-400">
               Irrefutable Legal Appeals
@@ -85,7 +85,7 @@ export default function HomePage() {
           </h1>
 
           {/* Subheading */}
-          <p className="mx-auto max-w-2xl text-base sm:text-lg text-zinc-400 leading-relaxed mb-10">
+          <p className="mx-auto max-w-2xl text-sm sm:text-lg text-zinc-400 leading-relaxed mb-8 sm:mb-10">
             Stop letting automated carrier algorithms deny medically necessary care.
             Synthesize formal, letterhead-ready rebuttals citing clinical guidelines,
             substantive statutory precedents, and treating physician evidence in under 2 minutes.
@@ -95,7 +95,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/signup"
-              className="btn-primary w-full sm:w-auto px-7 py-3 text-sm font-semibold inline-flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(59,130,246,0.3)]"
+              className="btn-primary w-full sm:w-auto px-7 py-3 text-sm font-semibold inline-flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(59,130,246,0.3)] min-h-[44px]"
             >
               <span>Draft Your First Appeal</span>
               <ArrowRight className="h-4 w-4" />
@@ -103,13 +103,13 @@ export default function HomePage() {
 
             <Link
               href="/pricing"
-              className="btn-secondary w-full sm:w-auto px-6 py-3 text-sm font-medium inline-flex items-center justify-center gap-2"
+              className="btn-secondary w-full sm:w-auto px-6 py-3 text-sm font-medium inline-flex items-center justify-center gap-2 min-h-[44px]"
             >
               <span>View Membership Tiers</span>
             </Link>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-zinc-500 font-mono">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-zinc-500 font-mono">
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
               3 Free Appeals / Month
@@ -127,24 +127,24 @@ export default function HomePage() {
           </div>
 
           {/* Product Studio Mockup (Linear / Raycast Style) */}
-          <div className="mt-16 sm:mt-20 relative mx-auto max-w-4xl">
+          <div className="mt-12 sm:mt-20 relative mx-auto max-w-4xl">
             <div className="rounded-xl border border-white/[0.1] bg-zinc-900/60 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-xl">
-              <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-4 sm:p-6 text-left space-y-4">
+              <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-3.5 sm:p-6 text-left space-y-4">
                 {/* Studio Header Bar */}
-                <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex gap-1.5">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.06] pb-3 sm:pb-4">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="flex gap-1.5 shrink-0">
                       <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
                       <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
                       <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
                     </div>
-                    <span className="text-xs font-mono text-zinc-400">
-                      Appeal Case #CLM-2025-08912 · Aetna Commercial PPO
+                    <span className="text-[11px] sm:text-xs font-mono text-zinc-400 truncate">
+                      Appeal Case #CLM-2025-08912 · Aetna PPO
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="badge-cobalt text-[10px]">ERISA § 503 Formatted</span>
-                    <span className="badge-success text-[10px]">Ready to Export</span>
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="badge-cobalt text-[9px] sm:text-[10px]">ERISA § 503</span>
+                    <span className="badge-success text-[9px] sm:text-[10px]">Ready to Export</span>
                   </div>
                 </div>
 

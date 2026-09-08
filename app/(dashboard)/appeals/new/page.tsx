@@ -243,10 +243,11 @@ export default function NewAppealPage() {
 
   if (loadingExisting) {
     return (
-      <div className="flex flex-col items-center justify-center py-28 space-y-4">
-        <Loader2 className="h-7 w-7 animate-spin text-blue-500" />
-        <p className="text-xs font-mono text-zinc-400">Loading your appeal data...</p>
-      </div>
+      <PuppyLoader
+        title="Loading Appeal Protocol"
+        subtitle="Retrieving saved intake parameters..."
+        size="fullscreen"
+      />
     );
   }
 
@@ -335,24 +336,49 @@ export default function NewAppealPage() {
         </div>
 
         {/* Mobile / Tablet Progress Bar */}
-        <div className="lg:hidden space-y-2">
+        <div className="lg:hidden space-y-2.5">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-medium text-zinc-300">
-              Step {step + 1} of {STEPS.length}: {STEPS[step].label}
+            <span className="font-semibold text-zinc-200 flex items-center gap-1.5">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-[10px] font-mono text-white font-bold">
+                {step + 1}
+              </span>
+              <span>{STEPS[step].label}</span>
             </span>
-            <span className="font-mono text-zinc-500 text-[11px]">{STEPS[step].caption}</span>
+            <span className="font-mono text-zinc-500 text-[11px]">
+              {step + 1} of {STEPS.length}
+            </span>
           </div>
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
             <div
-              className="h-full bg-blue-500 transition-all duration-300"
+              className="h-full bg-blue-500 transition-all duration-300 rounded-full"
               style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
             />
+          </div>
+          {/* Touch navigation dots for mobile */}
+          <div className="flex items-center justify-between pt-0.5">
+            {STEPS.map((s, idx) => (
+              <button
+                key={s.id}
+                onClick={() => {
+                  if (idx <= step) setStep(idx);
+                }}
+                disabled={idx > step}
+                className={`h-2 rounded-full transition-all ${
+                  idx === step
+                    ? "w-6 bg-blue-500"
+                    : idx < step
+                    ? "w-2.5 bg-emerald-400"
+                    : "w-2 bg-zinc-800 opacity-60 cursor-not-allowed"
+                }`}
+                aria-label={`Jump to step ${idx + 1}`}
+              />
+            ))}
           </div>
         </div>
       </div>
 
       {/* Main Form Surface */}
-      <div className="cinematic-card p-6 md:p-8 space-y-6">
+      <div className="cinematic-card p-4 sm:p-6 md:p-8 space-y-6">
         {/* Step 1: Basic Info */}
         {step === 0 && (
           <div className="space-y-6 animate-fade-in">
@@ -814,25 +840,23 @@ export default function NewAppealPage() {
 
         {/* Bottom Step Actions */}
         {step < 6 && (
-          <div className="flex items-center justify-between border-t border-white/[0.06] pt-5 mt-6">
+          <div className="flex items-center justify-between border-t border-white/[0.06] pt-5 mt-6 gap-3">
             <button
               onClick={goBack}
               disabled={step === 0}
-              className="btn-secondary text-xs px-4 py-2 flex items-center gap-1.5 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="btn-secondary text-xs px-4 py-2.5 flex items-center justify-center gap-1.5 min-h-[42px] disabled:opacity-30 disabled:cursor-not-allowed"
             >
-              <ChevronLeft className="h-3.5 w-3.5" />
-              Back
+              <ChevronLeft className="h-4 w-4" />
+              <span>Back</span>
             </button>
 
-            <div className="flex items-center gap-3">
-              <button
-                onClick={goNext}
-                className="btn-primary text-xs px-5 py-2 flex items-center gap-1.5 font-medium"
-              >
-                {step === 5 ? "Proceed to Generation" : "Save & Continue"}
-                <ChevronRight className="h-3.5 w-3.5" />
-              </button>
-            </div>
+            <button
+              onClick={goNext}
+              className="btn-primary text-xs px-5 py-2.5 flex items-center justify-center gap-1.5 font-medium min-h-[42px]"
+            >
+              <span>{step === 5 ? "Proceed to Generation" : "Save & Continue"}</span>
+              <ChevronRight className="h-4 w-4" />
+            </button>
           </div>
         )}
       </div>
