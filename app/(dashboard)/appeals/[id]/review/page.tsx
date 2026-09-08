@@ -23,6 +23,7 @@ import {
   ExternalLink,
   History,
 } from "lucide-react";
+import PuppyLoader from "@/components/PuppyLoader";
 import type { StructuredAppealOutput } from "@/types";
 
 export default function ReviewPage() {
@@ -122,10 +123,11 @@ export default function ReviewPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-28 space-y-4">
-        <Loader2 className="h-7 w-7 animate-spin text-blue-500" />
-        <p className="text-xs font-mono text-zinc-400">Loading appeal dossier & letterhead draft...</p>
-      </div>
+      <PuppyLoader
+        title="Loading Appeal Dossier"
+        subtitle="Retrieving letterhead draft and clinical citations..."
+        size="fullscreen"
+      />
     );
   }
 
@@ -392,6 +394,19 @@ export default function ReviewPage() {
           )}
         </div>
       </div>
+
+      {/* Regenerating Overlay Modal */}
+      {regenerating && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="cinematic-card p-6 max-w-sm w-full border border-emerald-500/20 bg-zinc-950/95 shadow-2xl rounded-2xl">
+            <PuppyLoader
+              title="Regenerating Appeal Rebuttal"
+              subtitle="Re-evaluating citations & legal precedents..."
+              size="md"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

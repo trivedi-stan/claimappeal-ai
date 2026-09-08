@@ -22,6 +22,7 @@ import {
   Clock,
   ArrowUpRight,
 } from "lucide-react";
+import PuppyLoader from "@/components/PuppyLoader";
 
 const STEPS = [
   { id: "basic", label: "Basic Info", icon: User, caption: "Appeal identifier" },
@@ -835,6 +836,19 @@ export default function NewAppealPage() {
           </div>
         )}
       </div>
+
+      {/* Generation Overlay Modal */}
+      {generating && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="cinematic-card p-6 max-w-sm w-full border border-emerald-500/20 bg-zinc-950/95 shadow-2xl rounded-2xl">
+            <PuppyLoader
+              title="Synthesizing Appeal Letter"
+              subtitle="Analyzing clinical criteria & legal precedents..."
+              size="md"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
