@@ -2,6 +2,9 @@ import Link from "next/link";
 import { Shield, Check, ArrowRight, Zap, Sparkles, Building2 } from "lucide-react";
 import { PLANS } from "@/config/plans";
 
+// Static page — pre-built at deploy time, served from CDN edge
+export const dynamic = "force-static";
+
 export default function PricingPage() {
   const planList = Object.values(PLANS);
 

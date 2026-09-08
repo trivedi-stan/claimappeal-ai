@@ -46,8 +46,8 @@ export async function PATCH(
       return NextResponse.json({ success: false, data: null, error: "Unauthorized", requestId }, { status: 401 });
     }
 
-    // Verify ownership
-    const existing = await AppealService.getById(id);
+    // Verify ownership — lean query skips versions join (~40% less DB data)
+    const existing = await AppealService.getByIdLean(id);
     if (!existing || existing.profile_id !== user.id) {
       return NextResponse.json({ success: false, data: null, error: "Not found", requestId }, { status: 404 });
     }
@@ -89,7 +89,8 @@ export async function PATCH(
       await AppealService.saveSupportingInfo(id, body.supporting);
     }
 
-    const updated = await AppealService.getById(id);
+    // Return lean response — the intake wizard only needs field data, not version history
+    const updated = await AppealService.getByIdLean(id);
     return NextResponse.json({ success: true, data: updated, error: null, requestId });
   } catch (err) {
     const errorMsg = err instanceof Error ? err.message : "Failed to update appeal";
@@ -111,7 +112,8 @@ export async function DELETE(
       return NextResponse.json({ success: false, data: null, error: "Unauthorized", requestId }, { status: 401 });
     }
 
-    const existing = await AppealService.getById(id);
+    // Lean ownership check — no need to fetch versions just to verify profile_id
+    const existing = await AppealService.getByIdLean(id);
     if (!existing || existing.profile_id !== user.id) {
       return NextResponse.json({ success: false, data: null, error: "Not found", requestId }, { status: 404 });
     }

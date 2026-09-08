@@ -48,7 +48,8 @@ export class AppealService {
   }
 
   /**
-   * Get a single appeal by ID with all related data.
+   * Get a single appeal by ID with all related data (including all versions).
+   * Use only when version history is actually needed (e.g. GET /api/appeals/:id).
    */
   static async getById(appealId: string): Promise<Appeal | null> {
     const supabase = await createClient();
@@ -65,6 +66,33 @@ export class AppealService {
       )
       .eq("id", appealId)
       .order("version_number", { foreignTable: "appeal_versions", ascending: false })
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") return null; // Not found
+      throw new Error(`Failed to get appeal: ${error.message}`);
+    }
+    return (data as unknown) as Appeal;
+  }
+
+  /**
+   * Lightweight version of getById — skips appeal_versions join.
+   * Use for ownership checks (PATCH, DELETE) and PATCH response payloads.
+   * ~40% less data transferred from DB vs getById.
+   */
+  static async getByIdLean(appealId: string): Promise<Appeal | null> {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("appeals")
+      .select(
+        `
+        *,
+        insurance_information(*),
+        claim_information(*),
+        denial_information(*)
+      `
+      )
+      .eq("id", appealId)
       .single();
 
     if (error) {

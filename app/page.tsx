@@ -16,6 +16,9 @@ import {
   Layers,
 } from "lucide-react";
 
+// Static page — no auth, no DB calls → pre-built at deploy time, served from CDN
+export const dynamic = "force-static";
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-blue-500/30 selection:text-blue-200">
