@@ -33,6 +33,10 @@ export async function getAIProvider(): Promise<AIProvider> {
       const { GeminiProvider } = await import("./gemini.provider");
       return new GeminiProvider();
     }
+    case "openrouter": {
+      const { OpenRouterProvider } = await import("./openrouter.provider");
+      return new OpenRouterProvider();
+    }
     case "anthropic":
     case "claude": {
       const { AnthropicProvider } = await import("./anthropic.provider");
