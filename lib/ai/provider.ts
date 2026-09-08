@@ -3,7 +3,7 @@ import type { NormalizedAppealInput, StructuredAppealOutput } from "@/types";
 /**
  * Abstract AI provider interface.
  * All application code calls AIService.generateAppeal(), never a provider directly.
- * New providers (OpenAI, Gemini, etc.) implement this interface without touching calling code.
+ * New providers (Gemini, Anthropic, OpenAI) implement this interface without touching calling code.
  */
 export interface AIProvider {
   /**
@@ -22,17 +22,22 @@ export interface AIProvider {
 
 /**
  * Factory — returns the configured provider based on AI_PROVIDER env var.
- * Defaults to Anthropic if not set.
+ * Defaults to Gemini if not set.
  */
 export async function getAIProvider(): Promise<AIProvider> {
-  const provider = process.env.AI_PROVIDER ?? "anthropic";
+  const provider = process.env.AI_PROVIDER ?? "gemini";
 
-  switch (provider) {
-    case "anthropic": {
+  switch (provider.toLowerCase()) {
+    case "gemini":
+    case "google": {
+      const { GeminiProvider } = await import("./gemini.provider");
+      return new GeminiProvider();
+    }
+    case "anthropic":
+    case "claude": {
       const { AnthropicProvider } = await import("./anthropic.provider");
       return new AnthropicProvider();
     }
-    // Future: case "openai": { ... }
     default:
       throw new Error(`Unknown AI provider: ${provider}`);
   }

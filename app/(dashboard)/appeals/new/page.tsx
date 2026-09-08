@@ -748,7 +748,7 @@ export default function NewAppealPage() {
                 )}
               </button>
               <p className="text-[11px] text-zinc-500 font-mono mt-3">
-                Powered by Anthropic Claude 3.5 Sonnet · Average synthesis time ~8s
+                Powered by Google Gemini · Average synthesis time ~3s
               </p>
             </div>
           </div>

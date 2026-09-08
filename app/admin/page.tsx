@@ -39,7 +39,7 @@ export default async function AdminDashboardPage() {
   const stats = [
     { label: "Active Platform Accounts", value: userCount ?? 0, icon: Users, badge: "Total Users" },
     { label: "Total Ingested Appeals", value: appealCount ?? 0, icon: FileText, badge: "Cases Logged" },
-    { label: "Claude AI Generations", value: generationCount ?? 0, icon: Activity, badge: "Synthesized" },
+    { label: "Gemini AI Generations", value: generationCount ?? 0, icon: Activity, badge: "Synthesized" },
   ];
 
   return (
@@ -143,7 +143,7 @@ export default async function AdminDashboardPage() {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold text-zinc-200">AI Synthesis Activity</h2>
-            <span className="text-xs font-mono text-zinc-500">Anthropic Claude API</span>
+            <span className="text-xs font-mono text-zinc-500">Google Gemini API</span>
           </div>
           <div className="cinematic-card overflow-hidden">
             <div className="overflow-x-auto">
