@@ -89,7 +89,10 @@ export default function ReviewPage() {
           editedBody,
         }),
       });
-      if (!res.ok) throw new Error("PDF generation failed");
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({ error: "PDF generation failed" }));
+        throw new Error(errData.error || "PDF generation failed");
+      }
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -98,8 +101,8 @@ export default function ReviewPage() {
       a.click();
       URL.revokeObjectURL(url);
       toast.success("Official PDF downloaded successfully.");
-    } catch {
-      toast.error("Failed to download PDF.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to download PDF.");
     } finally {
       setDownloading(false);
     }

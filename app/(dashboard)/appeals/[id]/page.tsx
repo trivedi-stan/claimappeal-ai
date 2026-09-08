@@ -86,7 +86,7 @@ export default async function AppealDetailPage({
             </Link>
           ) : (
             <Link
-              href={`/appeals/new`}
+              href={`/appeals/new?id=${id}`}
               className="btn-primary text-xs px-4 py-2 inline-flex items-center gap-1.5 font-medium"
             >
               <span>Continue Intake</span>

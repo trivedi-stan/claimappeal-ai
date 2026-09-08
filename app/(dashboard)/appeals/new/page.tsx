@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
@@ -35,12 +35,14 @@ const STEPS = [
 
 export default function NewAppealPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
   const [step, setStep] = useState(0);
   const [saving, setSaving] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [appealId, setAppealId] = useState<string | null>(null);
   const [lastSavedTime, setLastSavedTime] = useState<string | null>(null);
+  const [loadingExisting, setLoadingExisting] = useState(false);
 
   // Form state (all steps preserved 100%)
   const [formData, setFormData] = useState({
@@ -76,24 +78,70 @@ export default function NewAppealPage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Create appeal on first load
+  // On mount: either load existing appeal (Continue Intake) or create a new one
   useEffect(() => {
-    async function createAppeal() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+    const existingId = searchParams.get("id");
 
-      const res = await fetch("/api/appeals", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: "New Appeal" }),
-      });
-      const result = await res.json();
-      if (result.success) {
-        setAppealId(result.data.id);
-        setLastSavedTime(new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+    if (existingId) {
+      // ─── Resume existing appeal ───────────────────────────────────────
+      setLoadingExisting(true);
+      fetch(`/api/appeals/${existingId}`)
+        .then((r) => r.json())
+        .then((result) => {
+          if (!result.success || !result.data) return;
+          const appeal = result.data;
+          const ins = appeal.insurance_information ?? {};
+          const claim = appeal.claim_information ?? {};
+          const denial = appeal.denial_information ?? {};
+          const supporting = appeal.supporting_info ?? {};
+
+          setAppealId(existingId);
+          setFormData({
+            title: appeal.title || "",
+            insurance_company: ins.company || "",
+            plan_type: ins.plan_type || "",
+            member_id: ins.member_id || "",
+            group_number: ins.group_number || "",
+            claim_number: claim.claim_number || "",
+            date_of_service: claim.date_of_service || "",
+            provider_name: claim.provider_name || "",
+            provider_npi: claim.provider_npi || "",
+            cpt_codes: Array.isArray(claim.cpt_codes) ? claim.cpt_codes.join(", ") : (claim.cpt_codes || ""),
+            diagnosis_codes: Array.isArray(claim.diagnosis_codes) ? claim.diagnosis_codes.join(", ") : (claim.diagnosis_codes || ""),
+            amount_billed: claim.amount_billed != null ? String(claim.amount_billed) : "",
+            amount_denied: claim.amount_denied != null ? String(claim.amount_denied) : "",
+            denial_reason: denial.denial_reason || "",
+            denial_code: denial.denial_code || "",
+            denial_description: denial.denial_description || "",
+            denial_date: denial.denial_date || "",
+            medical_necessity_explanation: supporting.medical_necessity_explanation || "",
+            additional_notes: supporting.additional_notes || "",
+            prior_appeal_attempts: supporting.prior_appeal_attempts ?? false,
+            prior_appeal_details: supporting.prior_appeal_details || "",
+          });
+          setLastSavedTime(new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+        })
+        .catch(() => toast.error("Failed to load appeal data."))
+        .finally(() => setLoadingExisting(false));
+    } else {
+      // ─── Create a brand-new appeal ─────────────────────────────────────
+      async function createAppeal() {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const res = await fetch("/api/appeals", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: "New Appeal" }),
+        });
+        const result = await res.json();
+        if (result.success) {
+          setAppealId(result.data.id);
+          setLastSavedTime(new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+        }
       }
+      createAppeal();
     }
-    createAppeal();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Autosave on step change
@@ -191,6 +239,15 @@ export default function NewAppealPage() {
   const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-400";
   const helperClass = "mt-1.5 text-xs text-zinc-500";
   const requiredStar = <span className="text-red-400 ml-0.5">*</span>;
+
+  if (loadingExisting) {
+    return (
+      <div className="flex flex-col items-center justify-center py-28 space-y-4">
+        <Loader2 className="h-7 w-7 animate-spin text-blue-500" />
+        <p className="text-xs font-mono text-zinc-400">Loading your appeal data...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-4xl space-y-8 animate-fade-in pb-16">

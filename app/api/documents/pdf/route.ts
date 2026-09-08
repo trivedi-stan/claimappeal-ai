@@ -5,6 +5,9 @@ import { AppealPdfDocument } from "@/components/pdf/AppealPdfDocument";
 import { generateRequestId } from "@/lib/utils";
 import React from "react";
 
+// Force Node.js runtime – @react-pdf/renderer requires canvas and Node.js streams
+export const runtime = "nodejs";
+
 /**
  * POST /api/documents/pdf — Render and return a PDF buffer.
  * Returns raw application/pdf for download.
