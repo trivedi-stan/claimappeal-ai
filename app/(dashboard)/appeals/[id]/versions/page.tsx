@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate } from "@/lib/utils";
-import { ArrowLeft, FileText, Clock } from "lucide-react";
+import { ArrowLeft, FileText, Clock, ChevronRight, History } from "lucide-react";
 
 export default async function VersionHistoryPage({
   params,
@@ -30,43 +30,80 @@ export default async function VersionHistoryPage({
     .order("version_number", { ascending: false });
 
   return (
-    <div className="animate-fade-in">
-      <Link href={`/appeals/${id}`}
-        className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="h-3.5 w-3.5" /> Back to Appeal
-      </Link>
-
-      <h1 className="mb-1 text-2xl font-bold">Version History</h1>
-      <p className="mb-6 text-muted-foreground">{appeal.title}</p>
+    <div className="mx-auto max-w-4xl space-y-6 animate-fade-in pb-16">
+      <div className="border-b border-white/[0.06] pb-5">
+        <div className="flex items-center gap-2 text-xs font-medium text-zinc-400 mb-1">
+          <Link href="/dashboard" className="hover:text-zinc-200 transition-colors">
+            Appeals
+          </Link>
+          <span className="text-zinc-600">/</span>
+          <Link href={`/appeals/${id}`} className="hover:text-zinc-200 transition-colors">
+            {appeal.title || "Appeal"}
+          </Link>
+          <span className="text-zinc-600">/</span>
+          <span className="text-zinc-200">Version History</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">
+            Synthesis Revision Log
+          </h1>
+          <span className="badge-neutral">
+            {versions?.length ?? 0} {versions?.length === 1 ? "iteration" : "iterations"}
+          </span>
+        </div>
+        <p className="text-xs text-zinc-400 mt-1">
+          Every generated letter iteration is cryptographically timestamped and preserved for legal auditability.
+        </p>
+      </div>
 
       {!versions || versions.length === 0 ? (
-        <div className="rounded-xl border border-dashed bg-muted/20 py-12 text-center">
-          <Clock className="mx-auto mb-3 h-10 w-10 text-muted-foreground/40" />
-          <p className="text-muted-foreground">No versions generated yet.</p>
+        <div className="cinematic-card p-12 text-center space-y-3">
+          <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-800/80 text-zinc-500">
+            <Clock className="h-5 w-5" />
+          </div>
+          <h2 className="text-sm font-medium text-zinc-200">No Revisions Synthesized</h2>
+          <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+            This appeal has not had an AI rebuttal generated yet.
+          </p>
+          <div className="pt-2">
+            <Link href={`/appeals/new`} className="btn-primary text-xs px-4 py-2 inline-flex items-center gap-1.5">
+              Launch Intake Protocol
+            </Link>
+          </div>
         </div>
       ) : (
-        <div className="space-y-2">
-          {versions.map((v) => (
+        <div className="space-y-3">
+          {versions.map((v, index) => (
             <div
               key={v.id}
-              className="flex items-center justify-between rounded-xl border bg-card p-4 shadow-sm"
+              className="cinematic-card p-4 flex items-center justify-between transition-all duration-200 hover:border-white/[0.15]"
             >
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-sm font-bold text-primary">
+              <div className="flex items-center gap-3.5">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/10 text-xs font-mono font-bold text-blue-400 border border-blue-500/20">
                   v{v.version_number}
                 </div>
                 <div>
-                  <p className="font-medium">Version {v.version_number}</p>
-                  <p className="text-xs text-muted-foreground">
-                    Generated {formatDate(v.created_at)}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-zinc-200">
+                      Iteration {v.version_number}.0
+                    </span>
+                    {index === 0 && (
+                      <span className="badge-cobalt text-[10px] py-0 px-1.5">Latest</span>
+                    )}
+                  </div>
+                  <span className="text-xs font-mono text-zinc-500 mt-0.5 block">
+                    Generated on {formatDate(v.created_at)}
+                  </span>
                 </div>
               </div>
+
               <Link
                 href={`/appeals/${id}/review`}
-                className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-medium hover:bg-accent"
+                className="btn-secondary text-xs px-3 py-1.5 inline-flex items-center gap-1.5"
               >
-                <FileText className="h-3.5 w-3.5" /> View
+                <FileText className="h-3 w-3 text-zinc-400" />
+                <span>Open in Studio</span>
+                <ChevronRight className="h-3 w-3 text-zinc-500 ml-0.5" />
               </Link>
             </div>
           ))}

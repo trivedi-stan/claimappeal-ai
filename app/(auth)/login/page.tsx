@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema, type LoginInput } from "@/schemas/user.schema";
 import { createClient } from "@/lib/supabase/client";
-import { Shield, Loader2 } from "lucide-react";
+import { Shield, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 export default function LoginPage() {
@@ -43,48 +43,62 @@ export default function LoginPage() {
     }
   }
 
+  const inputClass =
+    "w-full rounded-lg border border-white/[0.08] bg-zinc-900/60 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 transition-colors focus:border-blue-500/80 focus:bg-zinc-900 focus:outline-none focus:ring-1 focus:ring-blue-500/40";
+  const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-400";
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
-      <div className="w-full max-w-md">
-        <div className="mb-8 text-center">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <Shield className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold">
-              ClaimAppeal<span className="text-primary"> AI</span>
+    <div className="flex min-h-screen items-center justify-center bg-[#09090b] px-4 relative overflow-hidden text-zinc-100">
+      {/* Subtle ambient lighting */}
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_40%_at_50%_20%,rgba(59,130,246,0.1),rgba(255,255,255,0))]" />
+
+      <div className="w-full max-w-md space-y-6 animate-fade-in py-12">
+        {/* Brand Header */}
+        <div className="text-center space-y-2">
+          <Link href="/" className="inline-flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400">
+              <Shield className="h-5 w-5" />
+            </div>
+            <span className="text-lg font-semibold tracking-tight text-zinc-100">
+              ClaimAppeal<span className="text-blue-400 ml-1 font-mono text-xs font-bold">AI</span>
             </span>
           </Link>
-          <p className="mt-2 text-muted-foreground">
-            Log in to your account
+          <h1 className="text-xl font-semibold tracking-tight text-zinc-100">
+            Sign In to Your Workspace
+          </h1>
+          <p className="text-xs text-zinc-400">
+            Access your active appeal files and synthesized dossiers
           </p>
         </div>
 
-        <div className="rounded-2xl border bg-card p-8 shadow-sm">
+        {/* Card */}
+        <div className="cinematic-card p-7 sm:p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label htmlFor="email" className="mb-1.5 block text-sm font-medium">
-                Email
+              <label htmlFor="email" className={labelClass}>
+                Work / Personal Email
               </label>
               <input
                 id="email"
                 type="email"
                 autoComplete="email"
                 {...register("email")}
-                className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
+                className={inputClass}
                 placeholder="you@example.com"
               />
               {errors.email && (
-                <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
+                <p className="mt-1 text-xs text-red-400 font-mono">{errors.email.message}</p>
               )}
             </div>
 
             <div>
               <div className="mb-1.5 flex items-center justify-between">
-                <label htmlFor="password" className="text-sm font-medium">
+                <label htmlFor="password" className={labelClass}>
                   Password
                 </label>
                 <Link
                   href="/forgot-password"
-                  className="text-xs text-primary hover:underline"
+                  className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
                 >
                   Forgot password?
                 </Link>
@@ -94,34 +108,47 @@ export default function LoginPage() {
                 type="password"
                 autoComplete="current-password"
                 {...register("password")}
-                className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/20"
+                className={inputClass}
                 placeholder="••••••••"
               />
               {errors.password && (
-                <p className="mt-1 text-xs text-destructive">{errors.password.message}</p>
+                <p className="mt-1 text-xs text-red-400 font-mono">{errors.password.message}</p>
               )}
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="gradient-primary flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold text-white shadow-md transition-all hover:shadow-lg hover:brightness-110 disabled:opacity-50"
+              className="btn-primary w-full py-2.5 text-xs font-semibold tracking-wide flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(59,130,246,0.25)] disabled:opacity-50 mt-2"
             >
               {loading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Authenticating...</span>
+                </>
               ) : (
-                "Log In"
+                <>
+                  <span>Sign In</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </>
               )}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="font-medium text-primary hover:underline">
-              Sign up free
-            </Link>
-          </p>
+          <div className="mt-6 pt-6 border-t border-white/[0.06] text-center">
+            <p className="text-xs text-zinc-400">
+              Don&apos;t have an account?{" "}
+              <Link href="/signup" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
+                Create account
+              </Link>
+            </p>
+          </div>
         </div>
+
+        {/* Security footnote */}
+        <p className="text-center font-mono text-[11px] text-zinc-600">
+          Protected by Supabase Auth with Row-Level Security
+        </p>
       </div>
     </div>
   );
