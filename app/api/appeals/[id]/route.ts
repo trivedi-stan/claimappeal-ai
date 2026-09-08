@@ -62,25 +62,39 @@ export async function PATCH(
       });
     }
 
-    // Save wizard step data
-    if (body.insurance && body.insurance.company) {
+    // Save wizard step data only when relevant data exists
+    if (body.insurance && body.insurance.company?.trim()) {
       await AppealService.saveInsuranceInfo(id, body.insurance);
     }
-    if (body.claim) {
+    if (
+      body.claim &&
+      (body.claim.claim_number ||
+        body.claim.provider_name ||
+        body.claim.date_of_service ||
+        body.claim.amount_billed ||
+        body.claim.cpt_codes?.length > 0 ||
+        body.claim.diagnosis_codes?.length > 0)
+    ) {
       await AppealService.saveClaimInfo(id, body.claim);
     }
-    if (body.denial && body.denial.denial_reason) {
+    if (body.denial && body.denial.denial_reason?.trim()) {
       await AppealService.saveDenialInfo(id, body.denial);
     }
-    if (body.supporting) {
+    if (
+      body.supporting &&
+      (body.supporting.medical_necessity_explanation ||
+        body.supporting.additional_notes ||
+        body.supporting.prior_appeal_details)
+    ) {
       await AppealService.saveSupportingInfo(id, body.supporting);
     }
 
     const updated = await AppealService.getById(id);
     return NextResponse.json({ success: true, data: updated, error: null, requestId });
   } catch (err) {
+    const errorMsg = err instanceof Error ? err.message : "Failed to update appeal";
     console.error(`[API] PATCH /api/appeals/${id} error:`, err);
-    return NextResponse.json({ success: false, data: null, error: "Failed to update appeal", requestId }, { status: 500 });
+    return NextResponse.json({ success: false, data: null, error: errorMsg, requestId }, { status: 500 });
   }
 }
 

@@ -89,7 +89,10 @@ export async function POST(
       {
         success: false,
         data: null,
-        error: "We couldn't generate your appeal right now. Your information has been saved. Please try again.",
+        error:
+          message && message !== "Unknown error"
+            ? message
+            : "We couldn't generate your appeal right now. Your information has been saved. Please try again.",
         requestId,
       },
       { status: 500 }

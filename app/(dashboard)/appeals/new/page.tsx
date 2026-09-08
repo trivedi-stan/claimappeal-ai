@@ -748,7 +748,7 @@ export default function NewAppealPage() {
                 )}
               </button>
               <p className="text-[11px] text-zinc-500 font-mono mt-3">
-                Powered by Google Gemini · Average synthesis time ~3s
+                Clinical AI Synthesis Engine · Average processing time ~3s
               </p>
             </div>
           </div>
