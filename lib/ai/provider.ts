@@ -25,24 +25,36 @@ export interface AIProvider {
  * Defaults to Gemini if not set.
  */
 export async function getAIProvider(): Promise<AIProvider> {
-  const provider = process.env.AI_PROVIDER ?? "gemini";
+  const rawProvider = process.env.AI_PROVIDER ?? "openrouter";
+  const provider = rawProvider.toLowerCase().trim();
 
-  switch (provider.toLowerCase()) {
+  // If set to openrouter, open_router, or accidental OPENROUTER_API_KEY
+  if (
+    provider.includes("openrouter") ||
+    provider.includes("open_router")
+  ) {
+    const { OpenRouterProvider } = await import("./openrouter.provider");
+    return new OpenRouterProvider();
+  }
+
+  switch (provider) {
     case "gemini":
     case "google": {
       const { GeminiProvider } = await import("./gemini.provider");
       return new GeminiProvider();
-    }
-    case "openrouter": {
-      const { OpenRouterProvider } = await import("./openrouter.provider");
-      return new OpenRouterProvider();
     }
     case "anthropic":
     case "claude": {
       const { AnthropicProvider } = await import("./anthropic.provider");
       return new AnthropicProvider();
     }
-    default:
-      throw new Error(`Unknown AI provider: ${provider}`);
+    default: {
+      // If OPENROUTER_API_KEY exists in env, gracefully use openrouter
+      if (process.env.OPENROUTER_API_KEY) {
+        const { OpenRouterProvider } = await import("./openrouter.provider");
+        return new OpenRouterProvider();
+      }
+      throw new Error(`Unknown AI provider: ${rawProvider}`);
+    }
   }
 }
