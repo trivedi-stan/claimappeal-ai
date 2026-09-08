@@ -35,3 +35,31 @@ export async function POST(request: Request) {
     );
   }
 }
+
+/**
+ * GET /api/billing/checkout?plan=pro — Direct redirect to Stripe Checkout Session
+ */
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const plan = (searchParams.get("plan") ?? "pro") as PlanId;
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", `/api/billing/checkout?plan=${plan}`);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  try {
+    const url = await BillingService.createCheckoutSession(
+      user.id,
+      user.email!,
+      plan
+    );
+    return NextResponse.redirect(url);
+  } catch (err) {
+    console.error("[API] GET /api/billing/checkout error:", err);
+    return NextResponse.redirect(new URL("/settings/billing?error=checkout_failed", request.url));
+  }
+}
