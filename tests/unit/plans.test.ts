@@ -9,7 +9,7 @@ describe("plans configuration", () => {
 
   it("has correct quota limits for each tier", () => {
     expect(PLANS.free.generationsPerMonth).toBe(1);
-    expect(PLANS.pro.generationsPerMonth).toBe(25);
+    expect(PLANS.pro.generationsPerMonth).toBe(10);
     expect(PLANS.business.generationsPerMonth).toBe(100);
   });
 

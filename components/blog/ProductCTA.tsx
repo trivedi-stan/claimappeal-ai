@@ -44,7 +44,7 @@ export function ProductCTA({
           <div className="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-4 text-[11px] text-muted-foreground">
             <span className="flex items-center gap-1">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-              1 Free Appeal Per Account
+              1 Free Personalized Appeal
             </span>
             <span className="flex items-center gap-1">
               <Lock className="h-3.5 w-3.5 text-primary" />

@@ -124,10 +124,10 @@ export default function TermsPage() {
               </p>
               <ul className="list-disc pl-5 space-y-1.5">
                 <li>
-                  <strong>Free Tier Allowance:</strong> Each new user account receives one (1) free appeal letter generation per account for lifetime. This quota is granted upon account creation and does not reset monthly.
+                  <strong>Free Tier Allowance:</strong> Each new user account receives one (1) free personalized appeal per account for lifetime. This quota is granted upon account creation and does not reset monthly.
                 </li>
                 <li>
-                  <strong>Pro &amp; Enterprise Subscriptions:</strong> Users may upgrade to paid subscriptions for unlimited appeal drafts, multi-phase intake protocols, priority clinical guidance retrieval, and custom PDF export formatting.
+                  <strong>Pro &amp; Business Subscriptions:</strong> Users may upgrade to paid subscriptions for higher monthly personalized appeal quotas, multi-phase intake protocols, priority clinical guidance retrieval, and custom PDF export formatting.
                 </li>
                 <li>
                   <strong>Refunds:</strong> Because generated appeals and AI processing incur direct compute and statutory database indexing costs, payments are generally non-refundable once an appeal letter has been processed, except where required by applicable consumer law.

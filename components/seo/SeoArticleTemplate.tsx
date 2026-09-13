@@ -373,7 +373,7 @@ export function SeoArticleTemplate({ article }: SeoArticleTemplateProps) {
           <section className="rounded-2xl border border-primary/40 bg-gradient-to-br from-primary/15 via-card to-background p-8 md:p-10 space-y-6 text-center shadow-lg relative overflow-hidden">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/20 border border-primary/30 text-primary">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>{article.cta.badgeText || "1 Lifetime Free Appeal Included"}</span>
+              <span>{article.cta.badgeText || "1 Free Personalized Appeal Included"}</span>
             </div>
 
             <div className="space-y-2 max-w-xl mx-auto">

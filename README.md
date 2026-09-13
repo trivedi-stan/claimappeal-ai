@@ -35,7 +35,7 @@ Built for both **B2C patients** navigating denied claims and **B2B medical billi
   - Vector PDF compilation via `@react-pdf/renderer`
   - Print-ready format suitable for physical mailing or electronic submission
 - **Tiered Subscriptions & Metering via Dodo Payments:**
-  - Free (1 appeal per account), Pro ($19/month, 25 generations), Business ($99/month, 100 generations)
+  - Free (1 personalized appeal per account), Pro ($19/month, 10 personalized appeals/month), Business ($99/month, 100 personalized appeals/month)
   - Dodo Payments Checkout, Customer Portal, and idempotent webhook synchronization
   - Real-time monthly usage metering and quota enforcement
 - **Enterprise-Grade Security Hardening:**

@@ -12,7 +12,7 @@ export function SiteFooter() {
             <span>Statutory AI Rebuttal Engine • ERISA § 503 &amp; ACA § 2719 Defense Framework</span>
           </div>
           <div className="text-muted-foreground flex items-center gap-3">
-            <span>1 Lifetime Free Appeal Per Account</span>
+            <span>1 Free Personalized Appeal Per Account</span>
             <span>•</span>
             <span className="text-emerald-500 font-medium flex items-center gap-1">
               <Lock className="h-3 w-3 inline" /> Zero-Health-Data Training
@@ -45,7 +45,7 @@ export function SiteFooter() {
                 <CheckCircle2 className="h-3 w-3 text-primary" /> ERISA § 503 Certified Code
               </span>
               <span className="inline-flex items-center gap-1 px-2 py-1 rounded border border-border bg-background/60 text-foreground/80 font-mono">
-                <FileText className="h-3 w-3 text-amber-500" /> 1 Free Appeal Included
+                <FileText className="h-3 w-3 text-amber-500" /> 1 Free Personalized Appeal
               </span>
             </div>
           </div>

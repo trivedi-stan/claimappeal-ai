@@ -16,7 +16,7 @@ describe("Subscription Expiration & Quota Rules", () => {
     expect(getGenerationLimit(effectivePlan)).toBe(1);
   });
 
-  it("returns pro limit (25 appeals) when subscription is actively within billing cycle", () => {
+  it("returns pro limit (10 appeals) when subscription is actively within billing cycle", () => {
     const activeSub = {
       plan: "pro",
       status: "active",
@@ -28,7 +28,7 @@ describe("Subscription Expiration & Quota Rules", () => {
 
     expect(isExpired).toBe(false);
     expect(effectivePlan).toBe("pro");
-    expect(getGenerationLimit(effectivePlan)).toBe(25);
+    expect(getGenerationLimit(effectivePlan)).toBe(10);
   });
 
   it("returns business limit (100 appeals) when subscription is business tier", () => {

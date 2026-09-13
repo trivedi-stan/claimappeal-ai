@@ -111,7 +111,7 @@ export default function BillingSettingsPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-foreground">Billing & Subscriptions</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Manage your subscription tier, billing cycle, and generation limits.
+          Manage your subscription tier, billing cycle, and personalized appeal limits.
         </p>
       </div>
 
@@ -140,10 +140,10 @@ export default function BillingSettingsPage() {
                 {pageLoading
                   ? "Checking active subscription status..."
                   : currentPlan === "business"
-                  ? "Business tier with 100 generations per month, priority synthesis, and usage analytics."
+                  ? "Business tier with 100 personalized appeals per month, priority synthesis, and usage analytics."
                   : currentPlan === "pro"
-                  ? "Pro tier with 25 generations per month and priority AI synthesis."
-                  : "Standard quota of 1 free appeal for your account with AI review and PDF export."}
+                  ? "Pro tier with 10 personalized appeals per month and priority AI drafting."
+                  : "Standard quota of 1 free personalized appeal for your account with AI review and PDF export."}
               </p>
             </div>
           </div>

@@ -65,7 +65,7 @@ export async function POST(
     // Map internal errors to safe user-facing messages
     const userMessages: Record<string, { msg: string; status: number }> = {
       QUOTA_EXCEEDED: {
-        msg: "You've reached your generation limit for this period. Please upgrade your plan.",
+        msg: "You've reached your personalized appeal limit for this period. Please upgrade your plan.",
         status: 429,
       },
       PROMPT_INJECTION_DETECTED: {

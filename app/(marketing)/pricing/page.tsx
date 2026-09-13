@@ -25,7 +25,7 @@ export default function PricingPage() {
             Appeal Denials with Maximum Impact
           </h1>
           <p className="mx-auto max-w-xl text-base text-muted-foreground mb-16">
-            Start free with 1 AI-synthesized appeal template for your account. Upgrade whenever you need higher volume or priority processing.
+            Start free with 1 personalized appeal for your account. Upgrade whenever you need higher volume or priority processing.
           </p>
 
           {/* Pricing Cards Grid */}
@@ -101,6 +101,119 @@ export default function PricingPage() {
                 </div>
               );
             })}
+          </div>
+
+          {/* Feature Comparison Table */}
+          <div className="mt-24 mx-auto max-w-4xl text-left">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                Plan Comparison
+              </h2>
+              <p className="text-sm text-muted-foreground mt-2">
+                Detailed breakdown of features included with each membership tier.
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-2xl border border-border/80 bg-card/60 shadow-lg backdrop-blur-md">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border bg-muted/30">
+                      <th className="py-4 px-6 font-semibold text-foreground text-left w-2/5">Feature</th>
+                      <th className="py-4 px-4 font-semibold text-foreground text-center w-1/5">Free</th>
+                      <th className="py-4 px-4 font-semibold text-primary text-center w-1/5">Pro</th>
+                      <th className="py-4 px-4 font-semibold text-foreground text-center w-1/5">Business</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border/60">
+                    <tr className="hover:bg-muted/20 transition-colors">
+                      <td className="py-3.5 px-6 font-medium text-foreground">Price</td>
+                      <td className="py-3.5 px-4 text-center font-semibold text-foreground">$0</td>
+                      <td className="py-3.5 px-4 text-center font-semibold text-primary">$19/mo</td>
+                      <td className="py-3.5 px-4 text-center font-semibold text-foreground">$99/mo</td>
+                    </tr>
+                    <tr className="hover:bg-muted/20 transition-colors">
+                      <td className="py-3.5 px-6 font-medium text-foreground">Personalized Appeals</td>
+                      <td className="py-3.5 px-4 text-center text-muted-foreground">1 lifetime</td>
+                      <td className="py-3.5 px-4 text-center font-medium text-foreground">10/month</td>
+                      <td className="py-3.5 px-4 text-center font-medium text-foreground">100/month</td>
+                    </tr>
+                    <tr className="hover:bg-muted/20 transition-colors">
+                      <td className="py-3.5 px-6 text-muted-foreground">PDF download</td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-muted/20 transition-colors">
+                      <td className="py-3.5 px-6 text-muted-foreground">Version history</td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-muted/20 transition-colors">
+                      <td className="py-3.5 px-6 text-muted-foreground">AI draft review</td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-muted/20 transition-colors">
+                      <td className="py-3.5 px-6 text-muted-foreground">Insurance presets</td>
+                      <td className="py-3.5 px-4 text-center text-muted-foreground/50">—</td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-muted/20 transition-colors">
+                      <td className="py-3.5 px-6 text-muted-foreground">Priority support</td>
+                      <td className="py-3.5 px-4 text-center text-muted-foreground/50">—</td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-muted/20 transition-colors">
+                      <td className="py-3.5 px-6 text-muted-foreground">Usage analytics</td>
+                      <td className="py-3.5 px-4 text-center text-muted-foreground/50">—</td>
+                      <td className="py-3.5 px-4 text-center text-muted-foreground/50">—</td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-muted/20 transition-colors">
+                      <td className="py-3.5 px-6 text-muted-foreground">Email export</td>
+                      <td className="py-3.5 px-4 text-center text-muted-foreground/50">—</td>
+                      <td className="py-3.5 px-4 text-center text-muted-foreground/50">—</td>
+                      <td className="py-3.5 px-4 text-center">
+                        <Check className="h-4 w-4 text-emerald-500 mx-auto" />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </section>

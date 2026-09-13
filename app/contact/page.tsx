@@ -77,7 +77,7 @@ export default function ContactPage() {
                 </div>
                 <h3 className="font-semibold text-foreground text-sm">General &amp; Technical Support</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  For troubleshooting appeal generation, account access, or question on your 1 free appeal quota.
+                  For troubleshooting your personalized appeal, account access, or questions on your 1 free appeal quota.
                 </p>
               </div>
               <div className="pt-4 mt-4 border-t border-border">

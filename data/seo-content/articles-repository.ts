@@ -853,13 +853,13 @@ export const SEO_ARTICLES: SeoArticle[] = [
       { statute: "ERISA § 503 & ACA § 2719", rule: "Full and fair review standards.", practicalImpact: "Pre-formatted into your generated letter." },
     ],
     faq: [
-      { question: "Is the first appeal letter truly free?", answer: "Yes. Every account receives 1 free appeal generation for life with full letterhead PDF export and zero payment required." },
+      { question: "Is the first appeal letter truly free?", answer: "Yes. Every account receives 1 free personalized appeal for life with full letterhead PDF export and zero payment required." },
     ],
     cta: {
       headline: "Generate Your Free Appeal Letter Now",
       subtext: "Join thousands of patients and providers overturning unfair health insurance rejections.",
       buttonText: "Start My Free Appeal",
-      badgeText: "1 Lifetime Free Appeal Included",
+      badgeText: "1 Free Personalized Appeal Included",
       prefillReason: "Generate Appeal",
       prefillInsurance: "health",
     },

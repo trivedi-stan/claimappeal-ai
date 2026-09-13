@@ -111,7 +111,7 @@ export default async function Image() {
               fontWeight: "600",
             }}
           >
-            ✓ 1 Lifetime Free Appeal Per Account
+            ✓ 1 Free Personalized Appeal Per Account
           </div>
           <div style={{ color: "#52525b" }}>•</div>
           <div
