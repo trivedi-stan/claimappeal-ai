@@ -56,17 +56,17 @@ export default function PuppyLoader({
       {(title || subtitle) && (
         <div className="mt-4 space-y-1.5 z-10">
           {title && (
-            <h3 className="text-xs font-semibold tracking-widest text-zinc-300 uppercase">
+            <h3 className="text-xs font-semibold tracking-widest text-foreground uppercase">
               {title}
             </h3>
           )}
           {subtitle && (
-            <p className="text-xs text-zinc-400 flex items-center justify-center gap-1.5">
+            <p className="text-xs text-muted-foreground flex items-center justify-center gap-1.5">
               <span>{subtitle}</span>
               <span className="inline-flex gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce [animation-delay:-0.3s]" />
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce [animation-delay:-0.15s]" />
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-bounce" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce" />
               </span>
             </p>
           )}

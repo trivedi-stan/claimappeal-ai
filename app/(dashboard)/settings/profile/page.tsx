@@ -5,6 +5,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { Loader2, Save, User, ShieldCheck, Mail, Key } from "lucide-react";
+import { ThemeSettingsCard } from "@/components/ThemeSettingsCard";
 
 export default function ProfileSettingsPage() {
   const supabase = createClient();
@@ -56,50 +57,50 @@ export default function ProfileSettingsPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-24 space-y-3">
-        <Loader2 className="h-7 w-7 animate-spin text-blue-500" />
-        <p className="text-xs font-mono text-zinc-400">Loading user profile...</p>
+        <Loader2 className="h-7 w-7 animate-spin text-primary" />
+        <p className="text-xs font-mono text-muted-foreground">Loading user profile...</p>
       </div>
     );
   }
 
   const inputClass =
-    "w-full rounded-lg border border-white/[0.08] bg-zinc-900/60 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 transition-colors focus:border-blue-500/80 focus:bg-zinc-900 focus:outline-none focus:ring-1 focus:ring-blue-500/40";
-  const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-400";
+    "w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:bg-background focus:outline-none focus:ring-1 focus:ring-primary/40";
+  const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground";
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 animate-fade-in pb-16">
       {/* Top Header */}
-      <div className="border-b border-white/[0.06] pb-5">
-        <div className="flex items-center gap-2 text-xs font-medium text-zinc-400 mb-1">
-          <Link href="/dashboard" className="hover:text-zinc-200 transition-colors">
+      <div className="border-b border-border pb-5">
+        <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-1">
+          <Link href="/dashboard" className="hover:text-foreground transition-colors">
             Dashboard
           </Link>
-          <span className="text-zinc-600">/</span>
-          <span className="text-zinc-200">Account Preferences</span>
+          <span className="text-muted-foreground/60">/</span>
+          <span className="text-foreground">Account Preferences</span>
         </div>
         <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-100">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
             Profile Settings
           </h1>
           <span className="badge-neutral">User Security</span>
         </div>
-        <p className="text-xs text-zinc-400 mt-1">
-          Manage your personal identity credentials and authenticated email endpoint.
+        <p className="text-xs text-muted-foreground mt-1">
+          Manage your personal identity credentials, authenticated email endpoint, and visual theme.
         </p>
       </div>
 
       {/* Main Profile Form */}
       <div className="cinematic-card p-6 md:p-8 space-y-6">
         {/* User Avatar & Identity Header */}
-        <div className="flex items-center gap-4 border-b border-white/[0.06] pb-6">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-zinc-800 border border-white/[0.1] text-lg font-mono font-semibold text-zinc-200 shadow-inner">
+        <div className="flex items-center gap-4 border-b border-border pb-6">
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-muted border border-border text-lg font-mono font-semibold text-foreground shadow-inner">
             {getInitials(fullName, email)}
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-zinc-200">
+            <h2 className="text-sm font-semibold text-foreground">
               {fullName || "Registered User"}
             </h2>
-            <p className="text-xs font-mono text-zinc-400 mt-0.5">{email}</p>
+            <p className="text-xs font-mono text-muted-foreground mt-0.5">{email}</p>
             <span className="badge-cobalt text-[10px] mt-2 inline-block">
               Supabase Auth Verified
             </span>
@@ -110,15 +111,15 @@ export default function ProfileSettingsPage() {
           <div>
             <label className={labelClass}>Authenticated Email Address</label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-3 h-4 w-4 text-zinc-500" />
+              <Mail className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
               <input
                 type="email"
                 value={email}
                 disabled
-                className="w-full rounded-lg border border-white/[0.04] bg-zinc-950/80 pl-10 pr-4 py-2.5 text-sm font-mono text-zinc-400 cursor-not-allowed"
+                className="w-full rounded-lg border border-border/60 bg-muted/60 pl-10 pr-4 py-2.5 text-sm font-mono text-muted-foreground cursor-not-allowed"
               />
             </div>
-            <p className="mt-1.5 text-[11px] text-zinc-500 font-mono">
+            <p className="mt-1.5 text-[11px] text-muted-foreground font-mono">
               Email changes are restricted to primary auth security protocols.
             </p>
           </div>
@@ -126,7 +127,7 @@ export default function ProfileSettingsPage() {
           <div>
             <label className={labelClass}>Full Name / Signature Identity</label>
             <div className="relative">
-              <User className="absolute left-3.5 top-3 h-4 w-4 text-zinc-500" />
+              <User className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
                 value={fullName}
@@ -135,13 +136,13 @@ export default function ProfileSettingsPage() {
                 placeholder="e.g., Sarah Jenkins"
               />
             </div>
-            <p className="mt-1.5 text-[11px] text-zinc-500">
+            <p className="mt-1.5 text-[11px] text-muted-foreground">
               Appears on appeal letter signature blocks by default.
             </p>
           </div>
         </div>
 
-        <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
+        <div className="pt-4 border-t border-border flex items-center justify-between">
           <button
             onClick={handleSave}
             disabled={saving}
@@ -149,7 +150,7 @@ export default function ProfileSettingsPage() {
           >
             {saving ? (
               <>
-                <Loader2 className="h-3.5 w-3.5 animate-spin text-white" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin text-primary-foreground" />
                 <span>Saving Changes...</span>
               </>
             ) : (
@@ -159,27 +160,30 @@ export default function ProfileSettingsPage() {
               </>
             )}
           </button>
-          <span className="text-[11px] text-zinc-500 font-mono">
+          <span className="text-[11px] text-muted-foreground font-mono">
             Last active session encrypted
           </span>
         </div>
       </div>
 
+      {/* Theme / Appearance Preference Card */}
+      <ThemeSettingsCard />
+
       {/* Security & Access Info */}
       <div className="cinematic-card p-6 space-y-4">
         <div className="flex items-center gap-2">
-          <Key className="h-4 w-4 text-blue-400" />
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-zinc-200">
+          <Key className="h-4 w-4 text-primary" />
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground">
             Authentication & Password
           </h2>
         </div>
-        <p className="text-xs text-zinc-400 leading-relaxed">
+        <p className="text-xs text-muted-foreground leading-relaxed">
           Your account is secured via enterprise Supabase Authentication with salted bcrypt hashing and row-level security (RLS) partition policies on all health records.
         </p>
         <div>
           <Link
             href="/forgot-password"
-            className="text-xs text-blue-400 hover:text-blue-300 font-medium inline-flex items-center gap-1 transition-colors"
+            className="text-xs text-primary hover:underline font-medium inline-flex items-center gap-1 transition-colors"
           >
             Request password reset link →
           </Link>

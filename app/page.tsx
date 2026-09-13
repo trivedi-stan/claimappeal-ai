@@ -15,41 +15,47 @@ import {
   FileCheck2,
   Layers,
 } from "lucide-react";
-
-// Static page — no auth, no DB calls → pre-built at deploy time, served from CDN
-export const dynamic = "force-static";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#09090b] text-zinc-100 selection:bg-blue-500/30 selection:text-blue-200">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary/25 selection:text-primary-foreground">
       {/* Navigation Header */}
-      <nav className="sticky top-0 z-50 border-b border-white/[0.08] bg-zinc-950/85 backdrop-blur-md">
+      <nav className="sticky top-0 z-50 border-b border-border/80 bg-background/85 backdrop-blur-md">
         <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 shrink-0">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 text-primary shrink-0">
               <Shield className="h-4.5 w-4.5" />
             </div>
-            <span className="text-sm sm:text-base font-semibold tracking-tight text-zinc-100">
-              ClaimAppeal<span className="text-blue-400 ml-1 font-mono text-xs font-bold">AI</span>
+            <span className="text-sm sm:text-base font-semibold tracking-tight text-foreground">
+              ClaimAppeal<span className="text-primary ml-1 font-mono text-xs font-bold">AI</span>
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8 text-xs font-medium text-zinc-400">
-            <a href="#features" className="hover:text-zinc-200 transition-colors">
+          <div className="hidden md:flex items-center gap-7 text-xs font-medium text-muted-foreground">
+            <a href="#features" className="hover:text-foreground transition-colors">
               Verification Engine
             </a>
-            <a href="#protocol" className="hover:text-zinc-200 transition-colors">
+            <a href="#protocol" className="hover:text-foreground transition-colors">
               Intake Protocol
             </a>
-            <Link href="/pricing" className="hover:text-zinc-200 transition-colors">
+            <Link href="/pricing" className="hover:text-foreground transition-colors">
               Pricing
+            </Link>
+            <Link href="/about" className="hover:text-foreground transition-colors">
+              About
+            </Link>
+            <Link href="/contact" className="hover:text-foreground transition-colors">
+              Contact
             </Link>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
+            <ThemeToggle />
             <Link
               href="/login"
-              className="text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors px-2 py-1.5 sm:px-3"
+              className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors px-2 py-1.5 sm:px-3"
             >
               Sign In
             </Link>
@@ -67,25 +73,25 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-12 pb-16 sm:pt-20 sm:pb-24 md:pt-32 md:pb-36">
         {/* Radial ambient lighting */}
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_50%_at_50%_-10%,rgba(59,130,246,0.12),rgba(255,255,255,0))]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_50%_at_50%_-10%,rgba(59,130,246,0.12),transparent)]" />
 
         <div className="container mx-auto max-w-5xl px-4 sm:px-6 text-center">
           {/* Status Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/[0.08] px-3 py-1 text-[11px] sm:text-xs font-mono text-blue-400 mb-6 sm:mb-8 max-w-full truncate">
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse shrink-0" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/[0.08] px-3 py-1 text-[11px] sm:text-xs font-mono text-primary mb-6 sm:mb-8 max-w-full truncate">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse shrink-0" />
             <span className="truncate">ERISA § 503 & ACA § 2719 Legal Rebuttal Engine</span>
           </div>
 
           {/* Main Title */}
-          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold tracking-tight text-zinc-100 leading-[1.12] sm:leading-[1.08] mb-5 sm:mb-6">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold tracking-tight text-foreground leading-[1.12] sm:leading-[1.08] mb-5 sm:mb-6">
             Turn Insurance Denials Into{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 via-blue-200 to-zinc-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground via-blue-600 to-foreground dark:from-zinc-100 dark:via-blue-200 dark:to-zinc-400">
               Irrefutable Legal Appeals
             </span>
           </h1>
 
           {/* Subheading */}
-          <p className="mx-auto max-w-2xl text-sm sm:text-lg text-zinc-400 leading-relaxed mb-8 sm:mb-10">
+          <p className="mx-auto max-w-2xl text-sm sm:text-lg text-muted-foreground leading-relaxed mb-8 sm:mb-10">
             Stop letting automated carrier algorithms deny medically necessary care.
             Synthesize formal, letterhead-ready rebuttals citing clinical guidelines,
             substantive statutory precedents, and treating physician evidence in under 2 minutes.
@@ -109,36 +115,36 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-zinc-500 font-mono">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-muted-foreground font-mono">
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-              3 Free Appeals / Month
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+              1 Free Appeal Per Account
             </span>
-            <span className="hidden sm:inline text-zinc-700">·</span>
+            <span className="hidden sm:inline text-border">·</span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
               No Credit Card Required
             </span>
-            <span className="hidden sm:inline text-zinc-700">·</span>
+            <span className="hidden sm:inline text-border">·</span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
               HIPAA-Conscious RLS Architecture
             </span>
           </div>
 
-          {/* Product Studio Mockup (Linear / Raycast Style) */}
+          {/* Product Studio Mockup */}
           <div className="mt-12 sm:mt-20 relative mx-auto max-w-4xl">
-            <div className="rounded-xl border border-white/[0.1] bg-zinc-900/60 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-xl">
-              <div className="rounded-lg border border-white/[0.06] bg-zinc-950 p-3.5 sm:p-6 text-left space-y-4">
+            <div className="rounded-xl border border-border bg-card/70 p-2 shadow-2xl backdrop-blur-xl dark:border-white/[0.1] dark:bg-zinc-900/60">
+              <div className="rounded-lg border border-border bg-background p-3.5 sm:p-6 text-left space-y-4 dark:border-white/[0.06] dark:bg-zinc-950">
                 {/* Studio Header Bar */}
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.06] pb-3 sm:pb-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3 sm:pb-4 dark:border-white/[0.06]">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div className="flex gap-1.5 shrink-0">
-                      <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-                      <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-                      <div className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+                      <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40" />
+                      <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40" />
+                      <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40" />
                     </div>
-                    <span className="text-[11px] sm:text-xs font-mono text-zinc-400 truncate">
+                    <span className="text-[11px] sm:text-xs font-mono text-muted-foreground truncate">
                       Appeal Case #CLM-2025-08912 · Aetna PPO
                     </span>
                   </div>
@@ -150,40 +156,40 @@ export default function HomePage() {
 
                 {/* Studio Split Content */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-4 pt-2">
-                  <div className="md:col-span-4 rounded-lg bg-zinc-900/40 border border-white/[0.04] p-3.5 space-y-3">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 font-semibold block">
+                  <div className="md:col-span-4 rounded-lg bg-muted/40 border border-border p-3.5 space-y-3 dark:bg-zinc-900/40 dark:border-white/[0.04]">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground font-semibold block">
                       Rebuttal Intelligence
                     </span>
                     <div className="space-y-2 text-xs">
-                      <div className="rounded bg-zinc-950/60 p-2 border border-white/[0.04]">
-                        <span className="text-[10px] text-zinc-500 block">CARC Denial Code</span>
-                        <span className="font-mono text-red-400 font-medium">CO-50 (Not Medically Necessary)</span>
+                      <div className="rounded bg-card p-2 border border-border dark:bg-zinc-950/60 dark:border-white/[0.04]">
+                        <span className="text-[10px] text-muted-foreground block">CARC Denial Code</span>
+                        <span className="font-mono text-red-500 dark:text-red-400 font-medium">CO-50 (Not Medically Necessary)</span>
                       </div>
-                      <div className="rounded bg-zinc-950/60 p-2 border border-white/[0.04]">
-                        <span className="text-[10px] text-zinc-500 block">Treating Physician</span>
-                        <span className="text-zinc-300">Dr. Robert Vance, MD (Orthopedics)</span>
+                      <div className="rounded bg-card p-2 border border-border dark:bg-zinc-950/60 dark:border-white/[0.04]">
+                        <span className="text-[10px] text-muted-foreground block">Treating Physician</span>
+                        <span className="text-foreground">Dr. Robert Vance, MD (Orthopedics)</span>
                       </div>
-                      <div className="rounded bg-zinc-950/60 p-2 border border-white/[0.04]">
-                        <span className="text-[10px] text-zinc-500 block">Disputed Charge</span>
-                        <span className="font-mono text-zinc-100 font-bold">$4,850.00</span>
+                      <div className="rounded bg-card p-2 border border-border dark:bg-zinc-950/60 dark:border-white/[0.04]">
+                        <span className="text-[10px] text-muted-foreground block">Disputed Charge</span>
+                        <span className="font-mono text-foreground font-bold">$4,850.00</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="md:col-span-8 rounded-lg bg-zinc-900/40 border border-white/[0.04] p-4 space-y-2.5 font-mono text-[11px] leading-relaxed text-zinc-300">
-                    <div className="text-zinc-500 uppercase text-[10px] border-b border-white/[0.04] pb-2 flex justify-between">
+                  <div className="md:col-span-8 rounded-lg bg-muted/40 border border-border p-4 space-y-2.5 font-mono text-[11px] leading-relaxed text-foreground/90 dark:bg-zinc-900/40 dark:border-white/[0.04] dark:text-zinc-300">
+                    <div className="text-muted-foreground uppercase text-[10px] border-b border-border dark:border-white/[0.04] pb-2 flex justify-between">
                       <span>Formal Demand for Reconsideration</span>
                       <span>Page 1 of 3</span>
                     </div>
-                    <p className="text-zinc-400">
+                    <p className="text-muted-foreground">
                       ATTN: Appeals & Grievance Committee, Aetna Health Inc.
                       <br />
                       RE: Expedited First-Level Appeal for Prior Authorization Denial
                     </p>
-                    <p className="text-zinc-300">
+                    <p className="text-foreground">
                       Pursuant to 29 U.S.C. § 1133 (ERISA § 503) and 29 C.F.R. § 2560.503-1, this letter serves as a formal rebuttal to your adverse benefit determination dated January 14, 2025...
                     </p>
-                    <p className="text-zinc-400 italic">
+                    <p className="text-muted-foreground italic">
                       &ldquo;The treating provider documented comprehensive failure of conservative management over 12 weeks, satisfying all criteria under Milliman Care Guidelines (MCG) Section A-0291...&rdquo;
                     </p>
                   </div>
@@ -195,16 +201,16 @@ export default function HomePage() {
       </section>
 
       {/* Process Section */}
-      <section id="protocol" className="border-t border-white/[0.08] py-24 bg-zinc-950/40">
+      <section id="protocol" className="border-t border-border py-24 bg-muted/30">
         <div className="container mx-auto max-w-6xl px-6">
           <div className="text-center max-w-xl mx-auto mb-16 space-y-3">
-            <span className="text-xs font-mono uppercase tracking-wider text-blue-400">
+            <span className="text-xs font-mono uppercase tracking-wider text-primary">
               Systematic Methodology
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-100">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
               How ClaimAppeal AI Overturns Denials
             </h2>
-            <p className="text-xs text-zinc-400 leading-relaxed">
+            <p className="text-xs text-muted-foreground leading-relaxed">
               Engineered by medical billing advocates and legal engineers to systematically dismantle standard carrier denial codes.
             </p>
           </div>
@@ -228,11 +234,11 @@ export default function HomePage() {
               },
             ].map((item) => (
               <div key={item.step} className="cinematic-card p-6 sm:p-8 space-y-4">
-                <span className="text-xs font-mono font-bold text-blue-400 block">
+                <span className="text-xs font-mono font-bold text-primary block">
                   {item.step} / PROTOCOL
                 </span>
-                <h3 className="text-base font-semibold text-zinc-100">{item.title}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{item.desc}</p>
+                <h3 className="text-base font-semibold text-foreground">{item.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -240,16 +246,16 @@ export default function HomePage() {
       </section>
 
       {/* Feature Capabilities Grid */}
-      <section id="features" className="border-t border-white/[0.08] py-24">
+      <section id="features" className="border-t border-border py-24">
         <div className="container mx-auto max-w-6xl px-6">
           <div className="text-center max-w-xl mx-auto mb-16 space-y-3">
-            <span className="text-xs font-mono uppercase tracking-wider text-blue-400">
+            <span className="text-xs font-mono uppercase tracking-wider text-primary">
               Architecture & Compliance
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-100">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
               Engineered for Clinical & Legal Scrutiny
             </h2>
-            <p className="text-xs text-zinc-400 leading-relaxed">
+            <p className="text-xs text-muted-foreground leading-relaxed">
               Carrier medical directors scrutinize appeals with skeptical eyes. Every ClaimAppeal draft is built with institutional rigor.
             </p>
           </div>
@@ -288,9 +294,9 @@ export default function HomePage() {
               },
             ].map((f) => (
               <div key={f.title} className="cinematic-card p-6 space-y-3">
-                <f.icon className="h-5 w-5 text-blue-400" />
-                <h3 className="text-sm font-semibold text-zinc-200">{f.title}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{f.desc}</p>
+                <f.icon className="h-5 w-5 text-primary" />
+                <h3 className="text-sm font-semibold text-foreground">{f.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -298,13 +304,13 @@ export default function HomePage() {
       </section>
 
       {/* Closing CTA */}
-      <section className="border-t border-white/[0.08] py-24 bg-zinc-950/60 relative overflow-hidden">
+      <section className="border-t border-border py-24 bg-muted/40 relative overflow-hidden">
         <div className="container mx-auto max-w-4xl px-6 text-center space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-100">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
             Fight Unjust Denials with Legal Precision
           </h2>
-          <p className="mx-auto max-w-xl text-sm text-zinc-400 leading-relaxed">
-            Begin with 3 free appeals each month. Upgrade to Pro for unlimited generation, priority drafting, and clinical documentation analysis.
+          <p className="mx-auto max-w-xl text-sm text-muted-foreground leading-relaxed">
+            Begin with 1 free appeal template for your account. Upgrade to Pro for unlimited generation, priority drafting, and clinical documentation analysis.
           </p>
           <div className="pt-2">
             <Link
@@ -319,24 +325,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/[0.08] bg-zinc-950 py-12 text-xs text-zinc-500">
-        <div className="container mx-auto max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2.5">
-            <Shield className="h-4 w-4 text-blue-400" />
-            <span className="font-semibold text-zinc-300">
-              ClaimAppeal<span className="text-blue-400 font-mono">AI</span>
-            </span>
-          </div>
-
-          <p className="max-w-xl text-center md:text-left text-[11px] leading-relaxed text-zinc-500">
-            ClaimAppeal AI is a technical drafting assistant and does not provide legal representation or medical diagnosis. All generated rebuttals must be reviewed by the member or treating provider before submission.
-          </p>
-
-          <p className="font-mono text-[11px]">
-            © {new Date().getFullYear()} ClaimAppeal AI. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

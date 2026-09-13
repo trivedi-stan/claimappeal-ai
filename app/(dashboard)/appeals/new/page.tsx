@@ -236,9 +236,9 @@ export default function NewAppealPage() {
   };
 
   const inputClass =
-    "w-full rounded-lg border border-white/[0.08] bg-zinc-900/60 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 transition-colors focus:border-blue-500/80 focus:bg-zinc-900 focus:outline-none focus:ring-1 focus:ring-blue-500/40";
-  const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-400";
-  const helperClass = "mt-1.5 text-xs text-zinc-500";
+    "w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:bg-background focus:outline-none focus:ring-1 focus:ring-primary/40";
+  const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground";
+  const helperClass = "mt-1.5 text-xs text-muted-foreground";
   const requiredStar = <span className="text-red-400 ml-0.5">*</span>;
 
   if (loadingExisting) {
@@ -254,27 +254,27 @@ export default function NewAppealPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8 animate-fade-in pb-16">
       {/* Header bar */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-white/[0.06] pb-5">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-5">
         <div>
-          <div className="flex items-center gap-2 text-xs font-medium text-zinc-400">
-            <Link href="/dashboard" className="hover:text-zinc-200 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+            <Link href="/dashboard" className="hover:text-foreground transition-colors">
               Appeals
             </Link>
-            <span className="text-zinc-600">/</span>
-            <span className="text-zinc-200">Intake Protocol</span>
+            <span className="text-muted-foreground/60">/</span>
+            <span className="text-foreground">Intake Protocol</span>
           </div>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-zinc-100">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
             {formData.title ? formData.title : "New Denial Appeal"}
           </h1>
         </div>
 
         <div className="flex items-center gap-3">
           {saving ? (
-            <span className="flex items-center gap-1.5 text-xs font-mono text-zinc-400">
-              <Loader2 className="h-3 w-3 animate-spin text-blue-400" /> Syncing...
+            <span className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground">
+              <Loader2 className="h-3 w-3 animate-spin text-primary" /> Syncing...
             </span>
           ) : lastSavedTime ? (
-            <span className="flex items-center gap-1.5 text-xs font-mono text-zinc-500">
+            <span className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
               Draft saved {lastSavedTime}
             </span>
@@ -300,34 +300,34 @@ export default function NewAppealPage() {
                 disabled={idx > step}
                 className={`group flex flex-col items-start rounded-lg border p-2.5 text-left transition-all duration-200 ${
                   isCurrent
-                    ? "border-blue-500/40 bg-blue-500/[0.07] text-zinc-100 shadow-[0_0_15px_rgba(59,130,246,0.1)]"
+                    ? "border-primary/40 bg-primary/[0.07] text-foreground shadow-xs ring-1 ring-primary/30"
                     : isCompleted
-                    ? "border-white/[0.08] bg-zinc-900/40 text-zinc-300 hover:border-white/[0.15] hover:bg-zinc-900"
-                    : "border-transparent bg-transparent text-zinc-600 opacity-60 cursor-not-allowed"
+                    ? "border-border bg-card/60 text-foreground hover:border-primary/40 hover:bg-accent/40"
+                    : "border-transparent bg-transparent text-muted-foreground opacity-60 cursor-not-allowed"
                 }`}
               >
                 <div className="flex items-center justify-between w-full mb-1">
                   <span
                     className={`flex h-5 w-5 items-center justify-center rounded text-[10px] font-mono font-bold ${
                       isCompleted
-                        ? "bg-emerald-500/20 text-emerald-400"
+                        ? "bg-emerald-500/20 text-emerald-500"
                         : isCurrent
-                        ? "bg-blue-500 text-white"
-                        : "bg-zinc-800 text-zinc-500"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground"
                     }`}
                   >
                     {isCompleted ? <Check className="h-3 w-3 stroke-[3]" /> : idx + 1}
                   </span>
                   <Icon
                     className={`h-3.5 w-3.5 ${
-                      isCurrent ? "text-blue-400" : isCompleted ? "text-zinc-400" : "text-zinc-600"
+                      isCurrent ? "text-primary" : isCompleted ? "text-muted-foreground" : "text-muted-foreground/60"
                     }`}
                   />
                 </div>
                 <span className="text-xs font-medium leading-tight truncate w-full">
                   {s.label}
                 </span>
-                <span className="text-[10px] text-zinc-500 truncate w-full font-mono mt-0.5">
+                <span className="text-[10px] text-muted-foreground truncate w-full font-mono mt-0.5">
                   {s.caption}
                 </span>
               </button>
@@ -338,19 +338,19 @@ export default function NewAppealPage() {
         {/* Mobile / Tablet Progress Bar */}
         <div className="lg:hidden space-y-2.5">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-zinc-200 flex items-center gap-1.5">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-[10px] font-mono text-white font-bold">
+            <span className="font-semibold text-foreground flex items-center gap-1.5">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-mono text-primary-foreground font-bold">
                 {step + 1}
               </span>
               <span>{STEPS[step].label}</span>
             </span>
-            <span className="font-mono text-zinc-500 text-[11px]">
+            <span className="font-mono text-muted-foreground text-[11px]">
               {step + 1} of {STEPS.length}
             </span>
           </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
             <div
-              className="h-full bg-blue-500 transition-all duration-300 rounded-full"
+              className="h-full bg-primary transition-all duration-300 rounded-full"
               style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
             />
           </div>
@@ -365,10 +365,10 @@ export default function NewAppealPage() {
                 disabled={idx > step}
                 className={`h-2 rounded-full transition-all ${
                   idx === step
-                    ? "w-6 bg-blue-500"
+                    ? "w-6 bg-primary"
                     : idx < step
-                    ? "w-2.5 bg-emerald-400"
-                    : "w-2 bg-zinc-800 opacity-60 cursor-not-allowed"
+                    ? "w-2.5 bg-emerald-500"
+                    : "w-2 bg-muted opacity-60 cursor-not-allowed"
                 }`}
                 aria-label={`Jump to step ${idx + 1}`}
               />

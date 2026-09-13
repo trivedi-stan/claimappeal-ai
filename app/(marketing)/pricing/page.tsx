@@ -1,39 +1,15 @@
 import Link from "next/link";
-import { Shield, Check, ArrowRight, Zap, Sparkles, Building2 } from "lucide-react";
+import { Check, ArrowRight, Sparkles, Shield, Zap, Building2 } from "lucide-react";
+import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 import { PLANS } from "@/config/plans";
-
-// Static page — pre-built at deploy time, served from CDN edge
-export const dynamic = "force-static";
 
 export default function PricingPage() {
   const planList = Object.values(PLANS);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="rounded-lg bg-primary/10 p-1.5 text-primary border border-primary/20">
-              <Shield className="h-5 w-5" />
-            </div>
-            <span className="text-lg font-bold tracking-tight">
-              ClaimAppeal<span className="text-primary"> AI</span>
-            </span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link href="/login" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              Log in
-            </Link>
-            <Link
-              href="/signup"
-              className="gradient-primary inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-semibold text-white shadow-sm hover:brightness-110 transition-all"
-            >
-              Get Started <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
+      <SiteHeader />
 
       {/* Hero */}
       <section className="py-20 md:py-28 relative overflow-hidden">
@@ -49,7 +25,7 @@ export default function PricingPage() {
             Appeal Denials with Maximum Impact
           </h1>
           <p className="mx-auto max-w-xl text-base text-muted-foreground mb-16">
-            Start free with 3 AI-synthesized appeals per month. Upgrade whenever you need higher volume or priority processing.
+            Start free with 1 AI-synthesized appeal template for your account. Upgrade whenever you need higher volume or priority processing.
           </p>
 
           {/* Pricing Cards Grid */}
@@ -128,6 +104,8 @@ export default function PricingPage() {
           </div>
         </div>
       </section>
+
+      <SiteFooter />
     </div>
   );
 }

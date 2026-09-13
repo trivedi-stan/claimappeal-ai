@@ -27,7 +27,7 @@ export const PLANS: Record<PlanId, Plan> = {
     priceMonthly: 0,
     dodoProductId: null,
     features: [
-      "1 free appeal generation",
+      "1 free appeal template per account",
       "PDF download",
       "Version history",
       "AI-generated draft review",

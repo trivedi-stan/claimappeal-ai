@@ -9,6 +9,7 @@ import { SignupSchema, type SignupInput } from "@/schemas/user.schema";
 import { createClient } from "@/lib/supabase/client";
 import { Shield, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -49,30 +50,35 @@ export default function SignupPage() {
   }
 
   const inputClass =
-    "w-full rounded-lg border border-white/[0.08] bg-zinc-900/60 px-3.5 py-2.5 text-sm text-zinc-100 placeholder:text-zinc-500 transition-colors focus:border-blue-500/80 focus:bg-zinc-900 focus:outline-none focus:ring-1 focus:ring-blue-500/40";
-  const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-400";
-  const requiredStar = <span className="text-red-400 ml-0.5">*</span>;
+    "w-full rounded-lg border border-border bg-card px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground transition-colors focus:border-primary focus:bg-background focus:outline-none focus:ring-1 focus:ring-primary/40";
+  const labelClass = "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-muted-foreground";
+  const requiredStar = <span className="text-red-500 ml-0.5">*</span>;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#09090b] px-4 relative overflow-hidden text-zinc-100">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 relative overflow-hidden text-foreground">
+      {/* Top right theme toggle */}
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
+        <ThemeToggle />
+      </div>
+
       {/* Ambient lighting */}
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_40%_at_50%_20%,rgba(59,130,246,0.1),rgba(255,255,255,0))]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_40%_at_50%_20%,rgba(59,130,246,0.1),transparent)]" />
 
       <div className="w-full max-w-md space-y-6 animate-fade-in py-12">
         {/* Brand Header */}
         <div className="text-center space-y-2">
           <Link href="/" className="inline-flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 text-primary">
               <Shield className="h-5 w-5" />
             </div>
-            <span className="text-lg font-semibold tracking-tight text-zinc-100">
-              ClaimAppeal<span className="text-blue-400 ml-1 font-mono text-xs font-bold">AI</span>
+            <span className="text-lg font-semibold tracking-tight text-foreground">
+              ClaimAppeal<span className="text-primary ml-1 font-mono text-xs font-bold">AI</span>
             </span>
           </Link>
-          <h1 className="text-xl font-semibold tracking-tight text-zinc-100">
+          <h1 className="text-xl font-semibold tracking-tight text-foreground">
             Create Your Free Account
           </h1>
-          <p className="text-xs text-zinc-400">
+          <p className="text-xs text-muted-foreground">
             Start drafting statutory insurance rebuttals immediately
           </p>
         </div>
@@ -93,7 +99,7 @@ export default function SignupPage() {
                 placeholder="Jane Doe"
               />
               {errors.full_name && (
-                <p className="mt-1 text-xs text-red-400 font-mono">{errors.full_name.message}</p>
+                <p className="mt-1 text-xs text-red-500 font-mono">{errors.full_name.message}</p>
               )}
             </div>
 
@@ -110,7 +116,7 @@ export default function SignupPage() {
                 placeholder="you@example.com"
               />
               {errors.email && (
-                <p className="mt-1 text-xs text-red-400 font-mono">{errors.email.message}</p>
+                <p className="mt-1 text-xs text-red-500 font-mono">{errors.email.message}</p>
               )}
             </div>
 
@@ -127,7 +133,7 @@ export default function SignupPage() {
                 placeholder="Min 8 chars, 1 uppercase, 1 number"
               />
               {errors.password && (
-                <p className="mt-1 text-xs text-red-400 font-mono">{errors.password.message}</p>
+                <p className="mt-1 text-xs text-red-500 font-mono">{errors.password.message}</p>
               )}
             </div>
 
@@ -144,7 +150,7 @@ export default function SignupPage() {
                 placeholder="Re-enter password"
               />
               {errors.confirmPassword && (
-                <p className="mt-1 text-xs text-red-400 font-mono">{errors.confirmPassword.message}</p>
+                <p className="mt-1 text-xs text-red-500 font-mono">{errors.confirmPassword.message}</p>
               )}
             </div>
 
@@ -155,7 +161,7 @@ export default function SignupPage() {
             >
               {loading ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin text-primary-foreground" />
                   <span>Creating Account...</span>
                 </>
               ) : (
@@ -167,10 +173,10 @@ export default function SignupPage() {
             </button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-white/[0.06] text-center">
-            <p className="text-xs text-zinc-400">
+          <div className="mt-6 pt-6 border-t border-border text-center">
+            <p className="text-xs text-muted-foreground">
               Already have an account?{" "}
-              <Link href="/login" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
+              <Link href="/login" className="text-primary hover:underline font-medium transition-colors">
                 Sign in
               </Link>
             </p>
@@ -178,8 +184,15 @@ export default function SignupPage() {
         </div>
 
         {/* Footnote */}
-        <p className="text-center font-mono text-[11px] text-zinc-600">
-          By signing up, you agree to our terms of service and privacy policy
+        <p className="text-center text-[11px] text-muted-foreground">
+          By signing up, you agree to our{" "}
+          <Link href="/terms" className="text-primary hover:underline font-medium">
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link href="/privacy" className="text-primary hover:underline font-medium">
+            Privacy Policy
+          </Link>
         </p>
       </div>
     </div>
