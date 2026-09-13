@@ -76,6 +76,30 @@ export default function BlogLandingPage() {
             </div>
           </section>
 
+          {/* 7 Specialized Search Intent Hubs */}
+          <section aria-label="Specialized Hubs" className="grid gap-3 grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 text-xs">
+            {[
+              { title: "Appeal Guides", href: "/guides", icon: "📘" },
+              { title: "Appeal Letters", href: "/appeal-letter", icon: "✉️" },
+              { title: "Denial Reasons", href: "/denial-reasons", icon: "⚠️" },
+              { title: "Templates", href: "/templates", icon: "📋" },
+              { title: "Insurance Types", href: "/insurance-types", icon: "🏥" },
+              { title: "What To Do", href: "/claim-denial", icon: "❓" },
+              { title: "EOB & Help", href: "/claim-help", icon: "🔍" },
+            ].map((hub) => (
+              <Link
+                key={hub.href}
+                href={hub.href}
+                className="group rounded-xl border border-border bg-card/70 p-3 text-center hover:border-primary/40 hover:bg-card transition-all flex flex-col items-center justify-center gap-1.5 shadow-sm"
+              >
+                <span className="text-base">{hub.icon}</span>
+                <span className="font-semibold text-foreground group-hover:text-primary transition-colors text-[11px] leading-tight">
+                  {hub.title}
+                </span>
+              </Link>
+            ))}
+          </section>
+
           {/* Featured Article */}
           <section aria-label="Featured guide">
             <FeaturedArticle article={featuredArticle} />

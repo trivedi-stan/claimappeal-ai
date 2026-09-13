@@ -87,28 +87,38 @@ export function SiteFooter() {
             <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">Resources &amp; Guides</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/blog" className="hover:text-foreground transition-colors font-medium text-primary">
-                  All Insurance Guides
+                <Link href="/resources" className="hover:text-foreground transition-colors font-medium text-primary">
+                  Claim Help Directory
                 </Link>
               </li>
               <li>
-                <Link href="/blog/category/insurance-denials" className="hover:text-foreground transition-colors">
-                  Claim Denial Overturns
+                <Link href="/guides" className="hover:text-foreground transition-colors">
+                  Claim Appeal Guides
                 </Link>
               </li>
               <li>
-                <Link href="/blog/category/claim-appeals" className="hover:text-foreground transition-colors">
-                  ERISA &amp; ACA Appeals
+                <Link href="/appeal-letter" className="hover:text-foreground transition-colors">
+                  Appeal Letter Blueprints
                 </Link>
               </li>
               <li>
-                <Link href="/blog/category/prior-authorization" className="hover:text-foreground transition-colors">
-                  Prior Authorization Protocol
+                <Link href="/denial-reasons" className="hover:text-foreground transition-colors">
+                  Denial Reasons &amp; CARC
                 </Link>
               </li>
               <li>
-                <Link href="/blog/category/medical-billing" className="hover:text-foreground transition-colors">
-                  Medical Billing &amp; EOBs
+                <Link href="/templates" className="hover:text-foreground transition-colors">
+                  Letter Templates (Word/PDF)
+                </Link>
+              </li>
+              <li>
+                <Link href="/insurance-types" className="hover:text-foreground transition-colors">
+                  Insurance Type Solutions
+                </Link>
+              </li>
+              <li>
+                <Link href="/claim-help" className="hover:text-foreground transition-colors">
+                  EOB &amp; Document Guides
                 </Link>
               </li>
             </ul>
