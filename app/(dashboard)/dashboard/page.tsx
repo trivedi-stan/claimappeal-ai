@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { UsageService } from "@/services/usage.service";
+import { BillingService } from "@/services/billing.service";
 import type { UsageStatus } from "@/types";
 import { getStatusLabel, getStatusColor, formatDate } from "@/lib/utils";
 import {
@@ -20,6 +21,13 @@ export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+
+  // Proactively sync subscription from payment processor if returning from checkout
+  try {
+    await BillingService.syncUserSubscription(user.id, user.email);
+  } catch {
+    // Silently continue
+  }
 
   // Load appeals
   const { data: appeals } = await supabase

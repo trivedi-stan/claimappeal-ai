@@ -46,11 +46,12 @@ export default function BillingSettingsPage() {
   useEffect(() => {
     async function loadBillingData() {
       try {
-        const res = await fetch("/api/appeals", { method: "GET" });
-        // The dashboard page loads usage, let's also fetch profile usage from user session
+        const res = await fetch("/api/billing/sync", { method: "POST" });
         if (res.ok) {
-          // Check if user has subscription info
-          // We can fetch portal endpoint safely to detect active customer
+          const result = await res.json();
+          if (result.success && result.data?.subscription?.plan) {
+            setCurrentPlan(result.data.subscription.plan);
+          }
         }
       } catch (err) {
         console.error("Failed to load billing state:", err);
