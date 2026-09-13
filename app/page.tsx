@@ -15,60 +15,18 @@ import {
   FileCheck2,
   Layers,
 } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { ArticleCard } from "@/components/blog/ArticleCard";
+import { getPopularArticles } from "@/lib/blog";
 
 export default function HomePage() {
+  const popularArticles = getPopularArticles().slice(0, 3);
+
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary/25 selection:text-primary-foreground">
       {/* Navigation Header */}
-      <nav className="sticky top-0 z-50 border-b border-border/80 bg-background/85 backdrop-blur-md">
-        <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 text-primary shrink-0">
-              <Shield className="h-4.5 w-4.5" />
-            </div>
-            <span className="text-sm sm:text-base font-semibold tracking-tight text-foreground">
-              ClaimAppeal<span className="text-primary ml-1 font-mono text-xs font-bold">AI</span>
-            </span>
-          </Link>
-
-          <div className="hidden md:flex items-center gap-7 text-xs font-medium text-muted-foreground">
-            <a href="#features" className="hover:text-foreground transition-colors">
-              Verification Engine
-            </a>
-            <a href="#protocol" className="hover:text-foreground transition-colors">
-              Intake Protocol
-            </a>
-            <Link href="/pricing" className="hover:text-foreground transition-colors">
-              Pricing
-            </Link>
-            <Link href="/about" className="hover:text-foreground transition-colors">
-              About
-            </Link>
-            <Link href="/contact" className="hover:text-foreground transition-colors">
-              Contact
-            </Link>
-          </div>
-
-          <div className="flex items-center gap-2 sm:gap-3">
-            <ThemeToggle />
-            <Link
-              href="/login"
-              className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors px-2 py-1.5 sm:px-3"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/signup"
-              className="btn-primary text-xs px-3 py-1.5 sm:px-4 sm:py-2 inline-flex items-center gap-1 font-medium shadow-[0_0_20px_rgba(59,130,246,0.25)]"
-            >
-              <span>Start Free</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <SiteHeader />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-12 pb-16 sm:pt-20 sm:pb-24 md:pt-32 md:pb-36">
@@ -298,6 +256,38 @@ export default function HomePage() {
                 <h3 className="text-sm font-semibold text-foreground">{f.title}</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Blog & Legal Appeal Guides */}
+      <section className="border-t border-border py-20 bg-muted/20">
+        <div className="container mx-auto max-w-6xl px-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+            <div className="space-y-2">
+              <span className="text-xs font-mono uppercase tracking-wider text-primary">
+                Educational Resources &amp; Guides
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                Insurance Denial Playbooks &amp; Legal Guides
+              </h2>
+              <p className="text-xs text-muted-foreground max-w-xl leading-relaxed">
+                Step-by-step guides, statutory citations (ERISA, ACA), and clinical evidence templates to help you overcome denied claims.
+              </p>
+            </div>
+            <Link
+              href="/blog"
+              className="text-xs font-semibold text-primary hover:text-primary/80 inline-flex items-center gap-1.5 shrink-0 self-start sm:self-auto py-2 px-3 rounded-lg border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-colors"
+            >
+              <span>View All Blog Articles</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {popularArticles.map((article) => (
+              <ArticleCard key={article.slug} article={article} />
             ))}
           </div>
         </div>

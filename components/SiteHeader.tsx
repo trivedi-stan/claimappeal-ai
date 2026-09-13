@@ -32,8 +32,8 @@ export function SiteHeader() {
           <Link href="/pricing" className="hover:text-foreground transition-colors">
             Pricing
           </Link>
-          <Link href="/blog" className="hover:text-foreground transition-colors">
-            Resources
+          <Link href="/blog" className="hover:text-foreground transition-colors font-medium text-foreground">
+            Blog
           </Link>
           <Link href="/about" className="hover:text-foreground transition-colors">
             About
@@ -98,9 +98,9 @@ export function SiteHeader() {
             <Link
               href="/blog"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-muted-foreground hover:text-foreground transition-colors"
+              className="text-foreground font-semibold hover:text-primary transition-colors"
             >
-              Resources &amp; Blog
+              Blog &amp; Resources
             </Link>
             <Link
               href="/about"
