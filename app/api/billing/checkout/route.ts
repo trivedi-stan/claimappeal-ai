@@ -30,10 +30,11 @@ export async function POST(request: Request) {
     );
 
     return NextResponse.json({ success: true, data: { url }, requestId });
-  } catch (err) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed to create checkout session";
     console.error("[API] POST /api/billing/checkout error:", err);
     return NextResponse.json(
-      { success: false, error: "Failed to create checkout session", requestId },
+      { success: false, error: message, requestId },
       { status: 500 }
     );
   }

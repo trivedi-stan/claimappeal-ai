@@ -15,13 +15,9 @@ export class BillingService {
     plan: PlanId,
     userName?: string
   ): Promise<string> {
-    if (!process.env.DODO_PAYMENTS_API_KEY) {
-      throw new Error("Dodo Payments is not configured. Please set DODO_PAYMENTS_API_KEY.");
-    }
-
     const planConfig = getPlan(plan);
     if (planConfig.priceMonthly <= 0 || !planConfig.dodoProductId) {
-      throw new Error(`Cannot checkout for free plan`);
+      throw new Error(`Cannot checkout for free plan or unconfigured product`);
     }
 
     const appUrl =
