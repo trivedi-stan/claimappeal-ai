@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { BillingService } from "@/services/billing.service";
 import { generateRequestId } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 /**
  * POST /api/billing/portal — Create a Stripe Customer Portal session
  */

@@ -4,6 +4,8 @@ import { BillingService } from "@/services/billing.service";
 import { generateRequestId } from "@/lib/utils";
 import type { PlanId } from "@/config/plans";
 
+export const dynamic = "force-dynamic";
+
 /**
  * POST /api/billing/checkout — Create a Dodo Payments Checkout Session
  */

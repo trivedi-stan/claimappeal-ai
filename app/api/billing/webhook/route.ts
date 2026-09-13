@@ -3,6 +3,8 @@ import { verifyDodoWebhook, handleDodoWebhookEvent } from "@/lib/dodo/webhooks";
 import { verifyWebhookSignature as verifyStripeWebhook, handleWebhookEvent as handleStripeWebhook } from "@/lib/stripe/webhooks";
 import { generateRequestId } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 /**
  * POST /api/billing/webhook — Payment processor webhook receiver (Dodo Payments + Stripe fallback)
  * Uses raw body for signature verification.

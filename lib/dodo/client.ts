@@ -1,6 +1,8 @@
 import { DodoPayments } from "dodopayments";
 
-const apiKey = process.env.DODO_PAYMENTS_API_KEY;
+const apiKey =
+  process.env.DODO_PAYMENTS_API_KEY ||
+  "dodo_placeholder_build_key";
 
 export const dodo = new DodoPayments({
   bearerToken: apiKey,
@@ -8,5 +10,5 @@ export const dodo = new DodoPayments({
     process.env.DODO_PAYMENTS_ENVIRONMENT === "live_mode"
       ? "live_mode"
       : "test_mode",
-  webhookKey: process.env.DODO_PAYMENTS_WEBHOOK_KEY,
+  webhookKey: process.env.DODO_PAYMENTS_WEBHOOK_KEY || undefined,
 });
