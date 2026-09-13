@@ -1,6 +1,7 @@
 import { dodo } from "./client";
 import { createAdminClient } from "@/lib/supabase/server";
 import { PLANS, type PlanId } from "@/config/plans";
+import { EmailService } from "@/services/email.service";
 import type { Webhooks } from "dodopayments/resources/webhooks/webhooks";
 
 /**
@@ -66,10 +67,20 @@ export async function handleDodoWebhookEvent(event: Webhooks.UnwrapWebhookEvent)
             await upsertSubscription(supabase, profile.id, sub, plan);
           }
         }
-        return;
+      } else {
+        await upsertSubscription(supabase, profileId, sub, plan);
       }
 
-      await upsertSubscription(supabase, profileId, sub, plan);
+      // Send activation receipt email
+      if (sub.customer?.email) {
+        await EmailService.sendSubscriptionActivatedEmail({
+          to: sub.customer.email,
+          userName: sub.customer.name || undefined,
+          plan,
+          subscriptionId: sub.subscription_id,
+          nextBillingDate: sub.next_billing_date || undefined,
+        });
+      }
       break;
     }
 
@@ -99,6 +110,8 @@ export async function handleDodoWebhookEvent(event: Webhooks.UnwrapWebhookEvent)
     case "subscription.cancelled":
     case "subscription.expired": {
       const sub = event.data;
+      const plan = resolvePlanId(sub.metadata, sub.product_id);
+
       const { error } = await supabase
         .from("subscriptions")
         .update({
@@ -109,6 +122,15 @@ export async function handleDodoWebhookEvent(event: Webhooks.UnwrapWebhookEvent)
 
       if (error) {
         console.error("[Dodo Webhook] Failed to cancel subscription:", error);
+      }
+
+      if (sub.customer?.email) {
+        await EmailService.sendSubscriptionCancelledEmail({
+          to: sub.customer.email,
+          userName: sub.customer.name || undefined,
+          plan,
+          endDate: sub.next_billing_date || undefined,
+        });
       }
       break;
     }

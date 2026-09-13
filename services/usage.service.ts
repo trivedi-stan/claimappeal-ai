@@ -24,12 +24,22 @@ export class UsageService {
     // Get user's current plan
     const { data: subscription } = await supabase
       .from("subscriptions")
-      .select("plan, current_period_start, current_period_end")
+      .select("id, plan, current_period_start, current_period_end, status")
       .eq("profile_id", profileId)
       .eq("status", "active")
       .single();
 
-    const plan = subscription?.plan ?? "free";
+    let plan = subscription?.plan ?? "free";
+
+    // Check if subscription period has expired
+    if (subscription?.current_period_end) {
+      const isExpired =
+        new Date(subscription.current_period_end).getTime() < Date.now();
+      if (isExpired) {
+        plan = "free";
+      }
+    }
+
     const limit = getGenerationLimit(plan);
 
     // Get current period usage

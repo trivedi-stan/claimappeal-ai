@@ -124,16 +124,26 @@ export default function BillingSettingsPage() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-semibold capitalize text-foreground">{currentPlan} Plan</h2>
-                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                  Active
-                </span>
+                {pageLoading ? (
+                  <div className="h-6 w-28 rounded-md bg-muted animate-pulse" />
+                ) : (
+                  <>
+                    <h2 className="text-lg font-semibold capitalize text-foreground">{currentPlan} Plan</h2>
+                    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      Active
+                    </span>
+                  </>
+                )}
               </div>
               <p className="text-sm text-muted-foreground mt-0.5">
-                {currentPlan === "free"
-                  ? "Standard quota of 1 free appeal for your account with AI review and PDF export."
-                  : "Premium tier with expanded generation quota and priority AI synthesis."}
+                {pageLoading
+                  ? "Checking active subscription status..."
+                  : currentPlan === "business"
+                  ? "Business tier with 100 generations per month, priority synthesis, and usage analytics."
+                  : currentPlan === "pro"
+                  ? "Pro tier with 25 generations per month and priority AI synthesis."
+                  : "Standard quota of 1 free appeal for your account with AI review and PDF export."}
               </p>
             </div>
           </div>
@@ -158,7 +168,7 @@ export default function BillingSettingsPage() {
 
         <div className="grid gap-6 md:grid-cols-3">
           {planList.map((plan) => {
-            const isCurrent = currentPlan === plan.id;
+            const isCurrent = !pageLoading && currentPlan === plan.id;
             const isPro = plan.id === "pro";
             const isBusiness = plan.id === "business";
             const isHighlighted = requestedPlan === plan.id || (isPro && currentPlan === "free");

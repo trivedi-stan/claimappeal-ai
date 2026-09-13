@@ -40,6 +40,7 @@ export class BillingService {
       },
       return_url: `${appUrl}/dashboard?checkout=success`,
       cancel_url: `${appUrl}/settings/billing?checkout=canceled`,
+      minimal_address: true,
     });
 
     if (!session.checkout_url) {
@@ -96,65 +97,103 @@ export class BillingService {
   }
 
   /**
-   * Sync user subscription directly from Dodo Payments if not present or outdated in DB.
-   * Ensures instant upgrade on return from checkout even before webhook arrives.
+   * Sync user subscription directly from Dodo Payments.
+   * - Always prioritizes the HIGHEST tier if user has multiple subscriptions (Business > Pro > Free).
+   * - Automatically expires subscriptions if current_period_end has passed.
    */
   static async syncUserSubscription(profileId: string, email?: string) {
     const supabase = createAdminClient();
 
-    // Check DB first
     const { data: current } = await supabase
       .from("subscriptions")
       .select("*")
       .eq("profile_id", profileId)
-      .eq("status", "active")
       .single();
 
-    if (current && current.plan !== "free") {
-      return current;
+    // Check if existing subscription has expired past its date
+    if (current?.current_period_end) {
+      const isPast = new Date(current.current_period_end).getTime() < Date.now();
+      if (isPast && current.status === "active") {
+        await supabase
+          .from("subscriptions")
+          .update({ status: "expired", updated_at: new Date().toISOString() })
+          .eq("id", current.id);
+        current.status = "expired";
+      }
     }
 
-    // Query Dodo Payments for active subscription
+    // Query Dodo Payments for active subscriptions belonging to this user
     try {
       const subs = await dodo.subscriptions.list();
-      const match = subs.items?.find((s) => {
-        const matchesProfile = s.metadata?.profile_id === profileId;
-        const matchesEmail = email && s.customer?.email?.toLowerCase() === email.toLowerCase();
-        return (matchesProfile || matchesEmail) && s.status === "active";
-      });
+      const userSubs =
+        subs.items?.filter((s) => {
+          const matchesProfile = s.metadata?.profile_id === profileId;
+          const matchesEmail =
+            email && s.customer?.email?.toLowerCase() === email.toLowerCase();
+          return (matchesProfile || matchesEmail) && s.status === "active";
+        }) || [];
 
-      if (match) {
-        let plan: PlanId = "pro";
-        if (
-          match.metadata?.plan === "business" ||
-          match.product_id === (process.env.DODO_BUSINESS_PRODUCT_ID ?? "pdt_0NnV5WnTTzfRjvjwtoWpN")
-        ) {
-          plan = "business";
+      if (userSubs.length > 0) {
+        // Rank plans: Business (3) > Pro (2) > Free (1)
+        const getRank = (sub: typeof userSubs[0]): { plan: PlanId; rank: number } => {
+          if (
+            sub.metadata?.plan === "business" ||
+            sub.product_id ===
+              (process.env.DODO_BUSINESS_PRODUCT_ID ?? "pdt_0NnV5WnTTzfRjvjwtoWpN")
+          ) {
+            return { plan: "business", rank: 3 };
+          }
+          if (
+            sub.metadata?.plan === "pro" ||
+            sub.product_id ===
+              (process.env.DODO_PRO_PRODUCT_ID ?? "pdt_0NnV5W0MuhTRF7ZpO87J8")
+          ) {
+            return { plan: "pro", rank: 2 };
+          }
+          return { plan: "free", rank: 1 };
+        };
+
+        // Sort descending by highest rank
+        userSubs.sort((a, b) => getRank(b).rank - getRank(a).rank);
+        const highestSub = userSubs[0];
+        const { plan: highestPlan, rank: highestRank } = getRank(highestSub);
+
+        const currentRank =
+          current?.status === "active"
+            ? current.plan === "business"
+              ? 3
+              : current.plan === "pro"
+              ? 2
+              : 1
+            : 0;
+
+        // If highest subscription in Dodo is greater, or current was expired/different, update to highest!
+        if (highestRank >= currentRank || current?.status !== "active") {
+          await supabase.from("subscriptions").upsert(
+            {
+              profile_id: profileId,
+              stripe_customer_id: highestSub.customer?.customer_id ?? null,
+              stripe_subscription_id: highestSub.subscription_id,
+              plan: highestPlan,
+              status: "active",
+              current_period_start:
+                highestSub.previous_billing_date || new Date().toISOString(),
+              current_period_end:
+                highestSub.next_billing_date ||
+                new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "profile_id" }
+          );
+
+          const { data: updated } = await supabase
+            .from("subscriptions")
+            .select("*")
+            .eq("profile_id", profileId)
+            .single();
+
+          return updated;
         }
-
-        await supabase.from("subscriptions").upsert(
-          {
-            profile_id: profileId,
-            stripe_customer_id: match.customer?.customer_id ?? null,
-            stripe_subscription_id: match.subscription_id,
-            plan,
-            status: "active",
-            current_period_start: match.previous_billing_date || new Date().toISOString(),
-            current_period_end:
-              match.next_billing_date ||
-              new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: "profile_id" }
-        );
-
-        const { data: updated } = await supabase
-          .from("subscriptions")
-          .select("*")
-          .eq("profile_id", profileId)
-          .single();
-
-        return updated;
       }
     } catch (err) {
       console.error("[BillingService] syncUserSubscription error:", err);
