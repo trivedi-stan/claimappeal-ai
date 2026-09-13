@@ -11,7 +11,13 @@ export type AnalyticsEvent =
   | { name: "category_click"; category: string }
   | { name: "related_article_click"; fromSlug: string; toSlug: string }
   | { name: "cta_click"; location: string; ctaText: string; destination: string }
-  | { name: "newsletter_signup"; source: string; emailHashed?: string };
+  | { name: "denial_code_selected"; code: string; category: string }
+  | { name: "denial_code_cta_click"; code: string }
+  | { name: "search_intent_query"; query: string }
+  | { name: "sample_letter_copied"; article_slug: string; category: string }
+  | { name: "seo_cta_clicked"; slug: string; category: string; intent?: string }
+  | { name: "newsletter_signup"; source: string; emailHashed?: string }
+  | { name: string; [key: string]: unknown };
 
 export function trackEvent(event: AnalyticsEvent): void {
   if (typeof window === "undefined") return;

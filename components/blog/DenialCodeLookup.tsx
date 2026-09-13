@@ -29,7 +29,7 @@ export function DenialCodeLookup() {
             Decode Your Denial Code &amp; Legal Strategy
           </h3>
           <p className="text-xs text-muted-foreground mt-1 max-w-xl">
-            Check your Explanation of Benefits (EOB) for the Claim Adjustment Reason Code (CARC) to see the carrier's automated strategy and your legal rebuttal standard.
+            Check your Explanation of Benefits (EOB) for the Claim Adjustment Reason Code (CARC) to see the carrier&apos;s automated strategy and your legal rebuttal standard.
           </p>
         </div>
 
@@ -84,7 +84,7 @@ export function DenialCodeLookup() {
                 <span className="text-xs font-semibold text-foreground uppercase tracking-wider block">
                   {selectedCode.category}
                 </span>
-                <p className="text-xs text-muted-foreground italic">"{selectedCode.description}"</p>
+                <p className="text-xs text-muted-foreground italic">&ldquo;{selectedCode.description}&rdquo;</p>
               </div>
             </div>
             <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-border bg-muted/60 text-muted-foreground shrink-0">
@@ -96,7 +96,7 @@ export function DenialCodeLookup() {
             <div className="rounded-lg border border-border/60 bg-card/40 p-4 space-y-1.5">
               <span className="text-[11px] font-semibold text-foreground flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-                Carrier's Automated Playbook
+                Carrier&apos;s Automated Playbook
               </span>
               <p className="text-muted-foreground leading-relaxed">{selectedCode.carrierStrategy}</p>
             </div>
