@@ -118,5 +118,36 @@ export function validateAndParseOutput(
     w.replace(/\[REF[-\s]?\d+\]/gi, "").trim()
   );
 
+  // 7. Source-data fidelity: strip unsourced "documentation available upon request" promises.
+  // When the model adds offers to supply supporting materials that were never mentioned in the
+  // source data, it creates a credibility risk — the insurer can call the bluff and damage the
+  // appeal if that documentation doesn't exist. We auto-scrub these patterns as a safety net.
+  const unsourcedOfferPatterns: [RegExp, string][] = [
+    [
+      /[;,]?\s*supporting disability documentation is available upon request\.?/gi,
+      "",
+    ],
+    [
+      /[;,]?\s*disability documentation is available upon request\.?/gi,
+      "",
+    ],
+    [
+      /[;,]?\s*additional (disability|functional capacity|functional|supporting) (documentation|records?) (is|are|will be) available upon request\.?/gi,
+      "",
+    ],
+    [
+      /[;,]?\s*(this|such|relevant) documentation (will be|can be|is) (provided|furnished|supplied) upon request\.?/gi,
+      "",
+    ],
+  ];
+  for (const [pattern, replacement] of unsourcedOfferPatterns) {
+    output.letter.body = output.letter.body.replace(pattern, replacement);
+  }
+  // Clean up any double-spaces or hanging punctuation left by the replacements
+  output.letter.body = output.letter.body
+    .replace(/ {2,}/g, " ")
+    .replace(/\. \./g, ".")
+    .trim();
+
   return output as StructuredAppealOutput;
 }
