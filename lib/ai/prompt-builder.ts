@@ -42,6 +42,7 @@ FORMAT & SYSTEMATIC REBUTTAL ARCHITECTURE:
 - Header Information: Recipient appeals department, Patient Name, Member ID, Group Number, Claim Reference Number, Date of Service, and Provider Name.
 - Opening: Formal, polite notice of appeal referencing the adverse determination and date of notice.
 - Service Dissection: Clearly distinguish the primary disputed service from any accompanying line items.
+- Clinical Narrative: When describing the patient's history, include the patient's age as a relevant clinical data point (e.g., "a [age]-year-old patient presenting with..."). Do NOT fabricate an age if it is not provided — omit it gracefully.
 - Systematic Clinical Rebuttal Matrix:
   Organize the medical necessity argument explicitly by the denial criteria identified in the case analysis:
 ${matrixText}
@@ -49,8 +50,20 @@ ${matrixText}
   1. State the criterion required by coverage standards.
   2. Present the documented clinical evidence supplied by the patient/provider.
   3. Explain why this documented history provides clinical support for the requested procedure.
-- Information & Reviewer Request: Request copies of the specific clinical coverage bulletin, guideline benchmarks (e.g., MCG or InterQual), and reviewer qualifications to the extent required by law or plan terms.
-- Closing & Signature: Formal closing for the member or authorized healthcare provider.
+  IMPORTANT — Section 4 (Functional Impact): Do NOT restate impairments already listed in Section 1 verbatim. Instead, add NEW value: tie functional limitations explicitly to occupational duties, disability documentation, or loss of income. For example: "These limitations have materially impaired the patient's ability to perform sustained occupational duties, and supporting documentation of functional disability is available upon request."
+- Information & Reviewer Request: Format this section as helpful, professional bullet points (NOT aggressive demands). Use conditional language throughout. Example format:
+    To assist with reconsideration, I respectfully request the following, to the extent required by applicable plan terms or law:
+    • A copy of the specific clinical coverage criteria or guidelines applied in making this determination (e.g., MCG, InterQual, or plan-specific criteria).
+    • The clinical specialty and qualifications of the reviewing clinician, to the extent required by plan terms or applicable law.
+    • Confirmation of the specific adjudication status of each CPT code listed on the claim.
+- Response Deadline: Close with a professional response deadline: "I respectfully request a written response within the timeframe required by applicable claims-procedure regulations." Do NOT assert specific day counts unless the plan documents were provided.
+- Signature Block: End the letter with a formal signature block in this exact format:
+    Sincerely,
+
+    _______________________________
+    [Patient Name]
+    Member ID: [Member ID]
+    Date: ${currentDate}
 - Clean Deliverable: Do NOT include any AI draft disclaimers, watermark notes, or internal tags inside the letter body. The letter must be clean, professional, and ready for insurer submission.
 `.trim();
 }
@@ -153,7 +166,7 @@ ${matrixAnalysis.criteria
 
 ${referenceSection}
 
-Generate a complete, professional appeal letter using the generate_appeal_letter tool.`;
+Generate a complete, professional appeal letter and return it as structured JSON conforming to the required schema.`;
 
   return { systemPrompt, userPrompt };
 }
