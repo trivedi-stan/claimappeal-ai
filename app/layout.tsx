@@ -3,6 +3,8 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://claimappeal-ai.vercel.app";
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -11,15 +13,104 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "ClaimAppeal AI — Turn Insurance Denials Into Professional Appeals",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "ClaimAppeal AI — Turn Insurance Denials Into Professional Appeals",
+    template: "%s | ClaimAppeal AI",
+  },
   description:
-    "Generate professional insurance appeal letters in minutes. ClaimAppeal AI helps patients and billing professionals draft compelling appeals from confusing denial letters.",
+    "Generate formal, legal-precedent and clinical-evidence backed insurance appeal letters in under 2 minutes. Overturn health insurance denials with ERISA § 503 and ACA § 2719 citations.",
   keywords: [
     "insurance appeal",
     "claim denial",
-    "appeal letter",
-    "medical billing",
-    "insurance denial help",
+    "appeal letter template",
+    "medical necessity appeal",
+    "prior authorization denial",
+    "ERISA appeal deadlines",
+    "CARC denial codes",
+    "health insurance dispute",
+    "medical billing advocate",
+    "how to appeal denied claim",
+  ],
+  authors: [{ name: "ClaimAppeal AI Clinical & Legal Research Team" }],
+  creator: "ClaimAppeal AI",
+  publisher: "ClaimAppeal AI",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: baseUrl,
+    siteName: "ClaimAppeal AI",
+    title: "ClaimAppeal AI — Turn Insurance Denials Into Overturned Appeals",
+    description:
+      "Stop letting automated carrier algorithms deny medically necessary care. Synthesize formal, letterhead-ready rebuttals citing clinical guidelines and federal statutory precedents in under 2 minutes.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ClaimAppeal AI — Turn Insurance Denials Into Overturned Appeals",
+    description:
+      "Synthesize formal, letterhead-ready rebuttals citing clinical guidelines and federal statutory precedents in under 2 minutes.",
+    creator: "@ClaimAppealAI",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${baseUrl}/#organization`,
+      name: "ClaimAppeal AI",
+      url: baseUrl,
+      description:
+        "AI-powered legal and clinical rebuttal platform overturning health insurance claim denials under ERISA § 503 and ACA § 2719.",
+      sameAs: [
+        "https://twitter.com/ClaimAppealAI",
+        "https://github.com/trivedi-stan/claimappeal-ai",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${baseUrl}/#website`,
+      url: baseUrl,
+      name: "ClaimAppeal AI",
+      publisher: {
+        "@id": `${baseUrl}/#organization`,
+      },
+      inLanguage: "en-US",
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${baseUrl}/#application`,
+      name: "ClaimAppeal AI",
+      applicationCategory: "HealthApplication",
+      operatingSystem: "All",
+      offers: {
+        "@type": "Offer",
+        price: "0.00",
+        priceCurrency: "USD",
+        description: "1 Free Lifetime Appeal Rebuttal Draft",
+      },
+      featureList: [
+        "Automated CARC/RARC Denial Code Extraction",
+        "ERISA § 503 Statutory Citation Grounding",
+        "ACA § 2719 Timeliness Compliance Check",
+        "Letterhead PDF Export with Medical Exhibits",
+      ],
+    },
   ],
 };
 
@@ -30,6 +121,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </head>
       <body className="min-h-screen bg-background font-sans antialiased text-foreground selection:bg-primary/25 selection:text-primary-foreground">
         <ThemeProvider
           attribute="class"

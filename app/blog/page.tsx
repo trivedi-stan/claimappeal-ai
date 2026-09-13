@@ -11,6 +11,7 @@ import { PopularGuides } from "@/components/blog/PopularGuides";
 import { ProductCTA } from "@/components/blog/ProductCTA";
 import { NewsletterSignup } from "@/components/blog/NewsletterSignup";
 import { BreadcrumbJsonLd } from "@/components/blog/JsonLd";
+import { DenialCodeLookup } from "@/components/blog/DenialCodeLookup";
 
 export const metadata: Metadata = {
   title: "Insurance Claims, Denials & Appeals — Explained | ClaimAppeal AI",
@@ -83,6 +84,11 @@ export default function BlogLandingPage() {
           {/* Popular Insurance Guides Section */}
           <section aria-label="Popular guides">
             <PopularGuides />
+          </section>
+
+          {/* Instant EOB / Denial Code Lookup */}
+          <section aria-label="Denial code lookup">
+            <DenialCodeLookup />
           </section>
 
           {/* Search and Category Browsing Section */}
