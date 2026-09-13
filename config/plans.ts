@@ -14,8 +14,6 @@ export interface Plan {
   priceMonthly: number;
   /** Dodo Payments Product ID */
   dodoProductId: string | null;
-  /** Stripe Price ID — legacy fallback */
-  stripePriceId?: string | null;
   features: string[];
   highlighted?: boolean;
 }
@@ -28,7 +26,6 @@ export const PLANS: Record<PlanId, Plan> = {
     generationsPerMonth: 1,
     priceMonthly: 0,
     dodoProductId: null,
-    stripePriceId: null,
     features: [
       "1 free appeal generation",
       "PDF download",
@@ -43,7 +40,6 @@ export const PLANS: Record<PlanId, Plan> = {
     generationsPerMonth: 25,
     priceMonthly: 1900, // $19/month
     dodoProductId: process.env.DODO_PRO_PRODUCT_ID ?? "pdt_0NnV5W0MuhTRF7ZpO87J8",
-    stripePriceId: process.env.STRIPE_PRO_PRICE_ID ?? null,
     highlighted: true,
     features: [
       "25 appeal generations per month",
@@ -60,7 +56,6 @@ export const PLANS: Record<PlanId, Plan> = {
     generationsPerMonth: 100,
     priceMonthly: 9900, // $99/month
     dodoProductId: process.env.DODO_BUSINESS_PRODUCT_ID ?? "pdt_0NnV5WnTTzfRjvjwtoWpN",
-    stripePriceId: process.env.STRIPE_BUSINESS_PRICE_ID ?? null,
     features: [
       "100 appeal generations per month",
       "PDF download",

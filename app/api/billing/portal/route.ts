@@ -6,7 +6,7 @@ import { generateRequestId } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 /**
- * POST /api/billing/portal — Create a Stripe Customer Portal session
+ * POST /api/billing/portal — Create a Dodo Payments Customer Portal session
  */
 export async function POST() {
   const requestId = generateRequestId();

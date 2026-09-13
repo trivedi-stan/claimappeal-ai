@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyDodoWebhook, handleDodoWebhookEvent } from "@/lib/dodo/webhooks";
-import { verifyWebhookSignature as verifyStripeWebhook, handleWebhookEvent as handleStripeWebhook } from "@/lib/stripe/webhooks";
 import { generateRequestId } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 /**
- * POST /api/billing/webhook — Payment processor webhook receiver (Dodo Payments + Stripe fallback)
+ * POST /api/billing/webhook — Dodo Payments webhook receiver
  * Uses raw body for signature verification.
  */
 export async function POST(request: NextRequest) {
@@ -14,23 +13,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const rawBody = await request.text();
-    const stripeSignature = request.headers.get("stripe-signature");
-    const dodoSignature = request.headers.get("webhook-signature");
-
-    // 1. If Stripe signature is explicitly present, route to Stripe handler
-    if (stripeSignature && !dodoSignature) {
-      const event = await verifyStripeWebhook(rawBody, stripeSignature);
-      if (!event) {
-        return NextResponse.json(
-          { success: false, error: "Invalid Stripe signature", requestId },
-          { status: 400 }
-        );
-      }
-      await handleStripeWebhook(event);
-      return NextResponse.json({ success: true, provider: "stripe", received: true, requestId });
-    }
-
-    // 2. Otherwise process as Dodo Payments webhook
+    // Process Dodo Payments webhook event
     const headersObj: Record<string, string> = {};
     request.headers.forEach((val, key) => {
       headersObj[key.toLowerCase()] = val;

@@ -34,9 +34,9 @@ Built for both **B2C patients** navigating denied claims and **B2B medical billi
 - **Letterhead-Quality PDF Export:**
   - Vector PDF compilation via `@react-pdf/renderer`
   - Print-ready format suitable for physical mailing or electronic submission
-- **Tiered Stripe Subscriptions & Metering:**
-  - Free (3 generations/month), Pro ($29/month, 25 generations), Business ($99/month, 100 generations)
-  - Stripe Checkout, Customer Portal, and idempotent webhook synchronization
+- **Tiered Subscriptions & Metering via Dodo Payments:**
+  - Free (1 appeal per account), Pro ($19/month, 25 generations), Business ($99/month, 100 generations)
+  - Dodo Payments Checkout, Customer Portal, and idempotent webhook synchronization
   - Real-time monthly usage metering and quota enforcement
 - **Enterprise-Grade Security Hardening:**
   - In-memory sliding-window rate limiting on all API routes and AI endpoints
@@ -62,8 +62,8 @@ graph TD
     AIService --> AnthropicProvider[Anthropic Claude Sonnet]
     AIService --> OutputValidator[Zod Output Validator]
     AIService --> SupabaseDB
-    API --> BillingService[Stripe Billing Service]
-    BillingService --> Stripe[(Stripe Subscriptions & Webhooks)]
+    API --> BillingService[Dodo Billing Service]
+    BillingService --> Dodo[(Dodo Payments Subscriptions & Webhooks)]
     API --> DocService[DocumentService + React-PDF]
     DocService --> SupabaseStorage[(Supabase Storage PDF)]
 ```
@@ -78,8 +78,8 @@ graph TD
 | **Language** | TypeScript 5.8 (Strict Mode) |
 | **Styling** | Vanilla Tailwind CSS 3.4 + Radix UI Primitives + Lucide Icons |
 | **Database & Auth** | Supabase (PostgreSQL with RLS + SSR Auth) |
-| **LLM Provider** | Anthropic Claude SDK (`@anthropic-ai/sdk`) |
-| **Payments** | Stripe (`stripe` + `@stripe/stripe-js`) |
+| **LLM Provider** | Anthropic Claude SDK (`@anthropic-ai/sdk`) / Gemini / OpenRouter |
+| **Payments** | Dodo Payments (`dodopayments`) |
 | **PDF Generation** | `@react-pdf/renderer` |
 | **Testing** | Jest + React Testing Library + Playwright E2E |
 | **CI/CD** | GitHub Actions |
@@ -94,7 +94,7 @@ graph TD
 - [npm](https://www.npmjs.com/) v10.x or higher
 - A [Supabase](https://supabase.com/) project
 - An [Anthropic](https://console.anthropic.com/) API account
-- A [Stripe](https://stripe.com/) account (Test mode supported)
+- A [Dodo Payments](https://dodopayments.com/) account (Test mode & Live mode supported)
 
 ### 1. Clone the Repository
 
@@ -125,10 +125,12 @@ NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
 
-# Stripe
-STRIPE_SECRET_KEY=sk_test_your-stripe-secret-key
-STRIPE_WEBHOOK_SECRET=whsec_your-webhook-secret
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your-publishable-key
+# Dodo Payments
+DODO_PAYMENTS_ENVIRONMENT=test_mode
+DODO_PAYMENTS_API_KEY=your-dodo-api-key
+DODO_PAYMENTS_WEBHOOK_KEY=your-dodo-webhook-key
+DODO_PRO_PRODUCT_ID=pdt_0NnV5W0MuhTRF7ZpO87J8
+DODO_BUSINESS_PRODUCT_ID=pdt_0NnV5WnTTzfRjvjwtoWpN
 
 # AI Provider
 AI_PROVIDER=anthropic
@@ -204,7 +206,7 @@ claimappeal-ai/
 ├── lib/
 │   ├── ai/                    # Anthropic provider, prompt builder, normalizer, validator
 │   ├── security/              # Rate limiter and prompt injection sanitizer
-│   ├── stripe/                # Stripe client and webhook processing
+│   ├── dodo/                  # Dodo Payments client and webhook processing
 │   ├── supabase/              # Client, server, and admin Supabase instances
 │   └── utils.ts               # Formatting, styling, and general helpers
 ├── schemas/                   # Shared Zod validation schemas
