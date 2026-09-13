@@ -31,8 +31,23 @@ CRITICAL TRUST, ACCURACY & CONDITIONAL LANGUAGE RULES — you must follow these 
    - Medical standards (Needs plan data): Anchor strictly to provider judgment ("...the treating physician determined that...", "...consistent with the treating provider's clinical assessment...").
    - Legal rights (Conditional): Use conditional entitlement ("...consistent with applicable plan terms and, to the extent applicable, ERISA...").
 
-7. COMPLETENESS & INTEGRITY:
-   - Do NOT drop any supplied case facts: Patient Name, Member ID, Group Number, Claim Number, Date of Service, Provider Name, CPT codes, and Diagnosis codes must be accurately included in the header or body.
+7. COMPLETENESS & INTEGRITY — ZERO SILENT DATA LOSS:
+   - Do NOT drop any supplied case facts. The following fields are MANDATORY and must appear in the letter header or clinical narrative:
+     * Patient Name
+     * Patient Age (if provided — do NOT fabricate; omit gracefully if absent)
+     * Member ID and Group Number
+     * Claim Number and Date of Service
+     * Provider Name
+     * ALL CPT Codes listed (do not summarize or omit any)
+     * ALL Diagnosis / ICD-10 Codes listed — reviewers match CPT to ICD-10 for necessity; omitting them is a material deficiency
+   - If a field value is unavailable, omit the field gracefully — do NOT write "Information not provided" in the letter body.
+
+8. PRECISION LANGUAGE RULES:
+   - NEVER write "billed for medical necessity" — services are performed based on clinical indication, not billed for a reason.
+     USE: "ordered to evaluate [clinical indication]" or "performed to assess [symptom/finding]."
+   - AVOID clinical jargon the denial notice did not use (e.g., "chronicity").
+     USE the denial notice's own terminology precisely (e.g., "duration and persistence of symptoms", "sufficient duration of conservative treatment").
+   - NEVER invent insurer coverage standards. Only cite criteria explicitly stated or implied in the denial notice.
 `.trim();
 
 function getLetterFormatInstructions(currentDate: string, matrixText: string) {
@@ -41,16 +56,18 @@ FORMAT & SYSTEMATIC REBUTTAL ARCHITECTURE:
 - Appeal Date: State the current appeal date: ${currentDate} at the very top of the letter. Do NOT output "[DATE]" or any bracketed date placeholder.
 - Header Information: Recipient appeals department, Patient Name, Member ID, Group Number, Claim Reference Number, Date of Service, and Provider Name.
 - Opening: Formal, polite notice of appeal referencing the adverse determination and date of notice.
-- Service Dissection: Clearly distinguish the primary disputed service from any accompanying line items.
-- Clinical Narrative: When describing the patient's history, include the patient's age as a relevant clinical data point (e.g., "a [age]-year-old patient presenting with..."). Do NOT fabricate an age if it is not provided — omit it gracefully.
+- Service Dissection: Clearly distinguish the primary disputed service from any accompanying line items. The service was clinically ordered — NEVER write "billed for medical necessity." CORRECT phrasing: "The primary disputed service is [description] (CPT [code]), which was ordered to evaluate [clinical indication]."
+- Clinical Narrative: Include the patient's age if provided (e.g., "a [age]-year-old patient"). Do NOT fabricate age if absent. Use the denial notice's own terminology; do not introduce clinical jargon that was not in the denial (e.g., avoid "chronicity" — use "duration and persistence of symptoms" instead).
+- Diagnosis Codes: ALL ICD-10 diagnosis codes must be explicitly stated in the letter (in the header or clinical section). Do NOT omit them. Reviewers use these to validate CPT-to-diagnosis necessity.
 - Systematic Clinical Rebuttal Matrix:
-  Organize the medical necessity argument explicitly by the denial criteria identified in the case analysis:
+  Begin this section with one introductory sentence: "The following analysis demonstrates that the clinical evidence addresses each criterion cited in the denial notice and warrants reconsideration of this determination."
+  Organize the rebuttal by each criterion identified in the denial notice:
 ${matrixText}
-  For each criterion:
-  1. State the criterion required by coverage standards.
-  2. Present the documented clinical evidence supplied by the patient/provider.
-  3. Explain why this documented history provides clinical support for the requested procedure.
-  IMPORTANT — Section 4 (Functional Impact): Do NOT restate impairments already listed in Section 1 verbatim. Instead, add NEW value: tie functional limitations explicitly to occupational duties, disability documentation, or loss of income. For example: "These limitations have materially impaired the patient's ability to perform sustained occupational duties, and supporting documentation of functional disability is available upon request."
+  For EACH criterion, use this EXACT three-layer structure — no exceptions:
+  Layer 1 — Insurer-stated criterion: "The denial notice states that reconsideration requires [use the insurer's own words from the denial notice]." Do NOT invent coverage standards.
+  Layer 2 — Supporting evidence: "The information provided indicates [specific documented clinical evidence anchored to treating physician or patient records]."
+  Layer 3 — Clinical assessment: "This documentation appears relevant to the stated criterion in that [brief explanation of the connection — evaluative, not declaratory]."
+  IMPORTANT — Functional Impact Section: Do NOT restate impairments already described in a prior section verbatim. Add NEW value: document that limitations span MULTIPLE domains (mobility, sleep, sustained occupational duties) and explain that multi-domain impairment distinguishes clinically significant functional limitation from routine back pain. Example closing: "These limitations, spanning mobility, sustained sleep, and the ability to perform occupational duties, represent a pattern of multi-domain functional impairment that provides clinical context beyond isolated symptom reporting; supporting disability documentation is available upon request."
 - Information & Reviewer Request: Format this section as helpful, professional bullet points (NOT aggressive demands). Use conditional language throughout. Example format:
     To assist with reconsideration, I respectfully request the following, to the extent required by applicable plan terms or law:
     • A copy of the specific clinical coverage criteria or guidelines applied in making this determination (e.g., MCG, InterQual, or plan-specific criteria).
