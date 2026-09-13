@@ -28,15 +28,40 @@ describe("validateAndParseOutput", () => {
       ...validOutput,
       letter: {
         ...validOutput.letter,
-        body: "[DATE]\n\nPer [REF-1] and [REF-3], this is an appeal.\n\n---\n*This letter is an AI-generated draft. Review all information carefully and consult appropriate professionals before submitting.*",
+        body: "[DATE]\n\nPer [REF-1], [DOC-2], and [INSERT HERE], this is an appeal.\n\n---\n*This letter is an AI-generated draft. Review all information carefully and consult appropriate professionals before submitting.*",
       },
     };
     const result = validateAndParseOutput(outputWithPlaceholders);
 
     expect(result.letter.body).not.toContain("[DATE]");
     expect(result.letter.body).not.toContain("[REF-1]");
-    expect(result.letter.body).not.toContain("[REF-3]");
+    expect(result.letter.body).not.toContain("[DOC-2]");
+    expect(result.letter.body).not.toContain("[INSERT HERE]");
     expect(result.letter.body).not.toContain("AI-generated draft");
+  });
+
+  it("softens overconfident claims to safe, conditional language", () => {
+    const outputWithOverconfidentPhrases = {
+      ...validOutput,
+      letter: {
+        ...validOutput.letter,
+        body: "I am entitled to a full and fair review under ERISA. A lumbar MRI is the standard-of-care next step. The documented clinical signs meet thresholds for advanced diagnostic evaluation. Provide the credentials of the reviewer who determined this denial.",
+      },
+    };
+    const result = validateAndParseOutput(outputWithOverconfidentPhrases);
+
+    // Overconfident claims should be softened
+    expect(result.letter.body).not.toContain("I am entitled to a full and fair review under ERISA");
+    expect(result.letter.body).toContain("consistent with applicable plan terms and, to the extent applicable, ERISA");
+
+    expect(result.letter.body).not.toContain("is the standard-of-care next step");
+    expect(result.letter.body).toContain("was determined by the treating physician to be clinically appropriate");
+
+    expect(result.letter.body).not.toContain("meet thresholds for");
+    expect(result.letter.body).toContain("provides clinical support for");
+
+    expect(result.letter.body).not.toContain("credentials of the reviewer");
+    expect(result.letter.body).toContain("qualifications and clinical specialty of the reviewer, to the extent required by law or plan terms");
   });
 
   it("strips references not present in the allowed references list", () => {

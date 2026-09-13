@@ -31,13 +31,14 @@ describe("buildPrompt", () => {
     ],
   };
 
-  it("injects mandatory safety rules in system prompt", () => {
+  it("injects mandatory safety and conditional language rules in system prompt", () => {
     const { systemPrompt } = buildPrompt(baseInput);
 
-    expect(systemPrompt).toContain("NEVER fabricate medical facts");
-    expect(systemPrompt).toContain("Information not provided");
-    expect(systemPrompt).toContain("TRUSTED REFERENCE DOCUMENTS");
-    expect(systemPrompt).toContain("Do not give legal or medical advice");
+    expect(systemPrompt).toContain("ZERO PLACEHOLDERS & NO UNVERIFIED CITATIONS");
+    expect(systemPrompt).toContain("ANCHOR MEDICAL DECISIONS TO THE TREATING PHYSICIAN");
+    expect(systemPrompt).toContain("CONDITIONAL LEGAL PHRASING");
+    expect(systemPrompt).toContain("SERVICE DISSECTION");
+    expect(systemPrompt).toContain("CONDITIONAL LANGUAGE CONFIDENCE FRAMEWORK");
   });
 
   it("includes all normalized fields in user prompt", () => {
@@ -50,6 +51,14 @@ describe("buildPrompt", () => {
     expect(userPrompt).toContain("$450");
     expect(userPrompt).toContain("Out of Network");
     expect(userPrompt).toContain("No Surprises Act Emergency Protections");
+  });
+
+  it("injects the Pre-Generation Denial Rebuttal Matrix in user prompt", () => {
+    const { userPrompt } = buildPrompt(baseInput);
+
+    expect(userPrompt).toContain("PRE-GENERATION DENIAL REBUTTAL MATRIX");
+    expect(userPrompt).toContain("Coverage Rating");
+    expect(userPrompt).toContain("Criteria to explicitly address");
   });
 
   it("handles empty reference documents cleanly", () => {

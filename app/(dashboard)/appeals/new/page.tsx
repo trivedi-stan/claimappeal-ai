@@ -23,6 +23,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import PuppyLoader from "@/components/PuppyLoader";
+import { AppealStrengthCard } from "@/components/appeals/AppealStrengthCard";
 
 const STEPS = [
   { id: "basic", label: "Basic Info", icon: User, caption: "Appeal identifier" },
@@ -778,6 +779,18 @@ export default function NewAppealPage() {
                 using standard clinical necessity frameworks.
               </p>
             </div>
+
+            {/* Pre-Generation Appeal Strength & Rebuttal Matrix Card */}
+            <AppealStrengthCard
+              denialReason={formData.denial_reason}
+              denialCode={formData.denial_code}
+              denialDescription={formData.denial_description}
+              medicalNecessityExplanation={formData.medical_necessity_explanation}
+              cptCodes={formData.cpt_codes}
+              diagnosisCodes={formData.diagnosis_codes}
+              additionalNotes={formData.additional_notes}
+              onAddressMissing={() => setStep(4)}
+            />
 
             {/* Statutory Framework Checklist */}
             <div className="rounded-xl border border-white/[0.08] bg-zinc-900/50 p-5 space-y-3">

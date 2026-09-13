@@ -20,7 +20,8 @@ import {
   History,
 } from "lucide-react";
 import PuppyLoader from "@/components/PuppyLoader";
-import type { StructuredAppealOutput } from "@/types";
+import { AppealStrengthCard } from "@/components/appeals/AppealStrengthCard";
+import type { StructuredAppealOutput, Appeal } from "@/types";
 
 export default function ReviewPage() {
   const params = useParams();
@@ -33,6 +34,7 @@ export default function ReviewPage() {
   const [regenerating, setRegenerating] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [appealData, setAppealData] = useState<Appeal | null>(null);
 
   useEffect(() => {
     async function loadLatestVersion() {
@@ -50,6 +52,18 @@ export default function ReviewPage() {
         setEditedBody(versions[0].edited_content || parsed.letter.body);
         setVersionNumber(versions[0].version_number || 1);
       }
+
+      // Load appeal case parameters for strength analysis card
+      try {
+        const res = await fetch(`/api/appeals/${appealId}`);
+        const result = await res.json();
+        if (result.success && result.data) {
+          setAppealData(result.data);
+        }
+      } catch {
+        // Silent fallback
+      }
+
       setLoading(false);
     }
     loadLatestVersion();
@@ -324,6 +338,23 @@ export default function ReviewPage() {
 
         {/* Right: Strategy & Clinical Dossier (4 cols on lg) */}
         <div className="lg:col-span-4 space-y-4">
+          {/* Denial Matrix & Appeal Strength Analysis */}
+          <AppealStrengthCard
+            denialReason={appealData?.denial_information?.denial_reason}
+            denialCode={appealData?.denial_information?.denial_code}
+            denialDescription={appealData?.denial_information?.denial_description}
+            medicalNecessityExplanation={
+              (appealData as unknown as { supporting_info?: { medical_necessity_explanation?: string } })
+                ?.supporting_info?.medical_necessity_explanation
+            }
+            cptCodes={appealData?.claim_information?.cpt_codes ?? []}
+            diagnosisCodes={appealData?.claim_information?.diagnosis_codes ?? []}
+            additionalNotes={
+              (appealData as unknown as { supporting_info?: { additional_notes?: string } })
+                ?.supporting_info?.additional_notes
+            }
+          />
+
           {/* Legal Strategy */}
           <div className="cinematic-card p-5 space-y-3">
             <div className="flex items-center gap-2">

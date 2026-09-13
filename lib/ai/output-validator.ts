@@ -20,8 +20,11 @@ const StructuredAppealOutputSchema = z.object({
 
 /**
  * Validates and parses raw AI output into a typed StructuredAppealOutput.
- * Strips any references not in the allowed list (if provided).
- * Throws a descriptive error if validation fails.
+ * Performs a comprehensive pre-send trust and safety pass:
+ * 1. Blocks/replaces unresolved placeholders ([DATE], [REF-x], [X], [DOC-x])
+ * 2. Softens overconfident independent medical or legal claims
+ * 3. Strips AI disclaimers from deliverable letter body
+ * 4. Filters unverified references
  */
 export function validateAndParseOutput(
   raw: unknown,
@@ -47,20 +50,56 @@ export function validateAndParseOutput(
   });
   output.letter.body = output.letter.body.replace(/\[DATE\]/gi, formattedDate);
 
-  // 2. Safety filter: strip any bracketed internal reference tags (e.g., [REF-1], [REF-3], [REF 1], [DOC-1])
+  // 2. Pre-send placeholder block/scrub: eliminate unresolved placeholders
   output.letter.body = output.letter.body
-    .replace(/\[REF-\d+\]/gi, "")
-    .replace(/\[REF\s+\d+\]/gi, "")
-    .replace(/\[DOC-\d+\]/gi, "")
+    .replace(/\[REF[-\s]?\d+\]/gi, "")
+    .replace(/\[DOC[-\s]?\d+\]/gi, "")
+    .replace(/\[INSERT[^\]]*?\]/gi, "")
+    .replace(/\[X+\]/gi, "")
+    .replace(/\[UNRESOLVED[^\]]*?\]/gi, "")
+    .replace(/\[PLACEHOLDER[^\]]*?\]/gi, "")
     .replace(/\s{2,}/g, " ");
 
-  // 3. Safety filter: ensure AI draft disclaimers do NOT contaminate the letter body intended for the insurer
+  // 3. Soften overconfident claims (Clinical & Legal Safety Net)
+  // A. Medical standards: Anchor to treating physician
+  output.letter.body = output.letter.body
+    .replace(
+      /\bis the standard-of-care next step\b/gi,
+      "was determined by the treating physician to be clinically appropriate"
+    )
+    .replace(
+      /\bis standard-of-care\b/gi,
+      "was determined by the treating physician to be clinically appropriate"
+    )
+    .replace(
+      /\bmeets? thresholds for\b/gi,
+      "provides clinical support for"
+    );
+
+  // B. ERISA / Legal rights: Make conditional
+  output.letter.body = output.letter.body
+    .replace(
+      /\bI am entitled to a full and fair review under ERISA\b/gi,
+      "I request a full and fair review consistent with applicable plan terms and, to the extent applicable, ERISA claims-procedure requirements"
+    )
+    .replace(
+      /\bI am entitled to a full and fair review\b/gi,
+      "I request a full and fair review consistent with applicable plan terms and claims-procedure requirements"
+    );
+
+  // C. Reviewer credentials: Tone moderation
+  output.letter.body = output.letter.body.replace(
+    /\bcredentials of the reviewer who (determined|made|issued)\b/gi,
+    "qualifications and clinical specialty of the reviewer, to the extent required by law or plan terms, who $1"
+  );
+
+  // 4. Safety filter: ensure AI draft disclaimers do NOT contaminate the letter body intended for the insurer
   output.letter.body = output.letter.body
     .replace(/\n*---\n*\*?This letter is an AI-generated draft[\s\S]*?\*?$/i, "")
     .replace(/This letter is an AI-generated draft[\s\S]*?submitting\./gi, "")
     .trim();
 
-  // 4. If allowed references provided, strip anything not in the list
+  // 5. If allowed references provided, strip anything not in the list
   if (allowedReferences && allowedReferences.length > 0) {
     output.references = output.references.filter((ref) =>
       allowedReferences.some(
@@ -70,6 +109,14 @@ export function validateAndParseOutput(
       )
     );
   }
+
+  // 6. Scrub any unverified [REF-X] from key_arguments or warnings
+  output.key_arguments = output.key_arguments.map((arg) =>
+    arg.replace(/\[REF[-\s]?\d+\]/gi, "").trim()
+  );
+  output.warnings = output.warnings.map((w) =>
+    w.replace(/\[REF[-\s]?\d+\]/gi, "").trim()
+  );
 
   return output as StructuredAppealOutput;
 }
