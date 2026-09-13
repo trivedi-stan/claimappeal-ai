@@ -54,11 +54,9 @@ const APPEAL_JSON_SCHEMA = {
   },
   required: [
     "letter",
-    "appeal_strategy",
-    "key_arguments",
-    "supporting_information_needed",
-    "warnings",
-    "references",
+    // Metadata fields are generated on a best-effort basis.
+    // The Zod validator in output-validator.ts supplies safe defaults
+    // for any fields Gemini omits, so the user never sees a validation error.
   ],
 };
 

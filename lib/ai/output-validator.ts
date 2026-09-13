@@ -11,11 +11,14 @@ const StructuredAppealOutputSchema = z.object({
     subject: z.string().min(1).max(500),
     body: z.string().min(50).max(20000),
   }),
-  appeal_strategy: z.string().min(1).max(2000),
-  key_arguments: z.array(z.string().max(1000)).max(20),
-  supporting_information_needed: z.array(z.string().max(1000)).max(20),
-  warnings: z.array(z.string().max(1000)).max(20),
-  references: z.array(z.string().max(500)).max(50),
+  // Metadata fields: optional with safe defaults.
+  // Gemini's responseSchema mode sometimes omits these even when prompted —
+  // the letter body is the core deliverable; these are supplementary UI data.
+  appeal_strategy: z.string().max(2000).optional().default(""),
+  key_arguments: z.array(z.string().max(1000)).max(20).optional().default([]),
+  supporting_information_needed: z.array(z.string().max(1000)).max(20).optional().default([]),
+  warnings: z.array(z.string().max(1000)).max(20).optional().default([]),
+  references: z.array(z.string().max(500)).max(50).optional().default([]),
 });
 
 /**
