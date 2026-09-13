@@ -22,7 +22,7 @@ const APPEAL_JSON_SCHEMA = {
         },
         body: {
           type: "string" as const,
-          description: "Full body text of the formal appeal letter, including date placeholder [DATE], facts, clinical necessity, and closing",
+          description: "Full body text of the formal appeal letter, including current date, patient facts, systematic clinical criteria rebuttal, and closing",
         },
       },
       required: ["recipient", "subject", "body"],

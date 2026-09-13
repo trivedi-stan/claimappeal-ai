@@ -23,11 +23,20 @@ describe("validateAndParseOutput", () => {
     expect(result.references).toHaveLength(1);
   });
 
-  it("automatically appends mandatory AI disclaimer if absent", () => {
-    const result = validateAndParseOutput(validOutput);
+  it("sanitizes date placeholders, strips bracketed reference tags, and removes disclaimers from the letter body", () => {
+    const outputWithPlaceholders = {
+      ...validOutput,
+      letter: {
+        ...validOutput.letter,
+        body: "[DATE]\n\nPer [REF-1] and [REF-3], this is an appeal.\n\n---\n*This letter is an AI-generated draft. Review all information carefully and consult appropriate professionals before submitting.*",
+      },
+    };
+    const result = validateAndParseOutput(outputWithPlaceholders);
 
-    expect(result.letter.body).toContain("AI-generated draft");
-    expect(result.letter.body).toContain("Review all information carefully");
+    expect(result.letter.body).not.toContain("[DATE]");
+    expect(result.letter.body).not.toContain("[REF-1]");
+    expect(result.letter.body).not.toContain("[REF-3]");
+    expect(result.letter.body).not.toContain("AI-generated draft");
   });
 
   it("strips references not present in the allowed references list", () => {

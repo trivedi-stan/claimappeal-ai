@@ -38,7 +38,29 @@ export function validateAndParseOutput(
 
   const output = result.data;
 
-  // Safety check: if allowed references provided, strip anything not in the list
+  // 1. Sanitize date placeholders with current date if present
+  const now = new Date();
+  const formattedDate = now.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  output.letter.body = output.letter.body.replace(/\[DATE\]/gi, formattedDate);
+
+  // 2. Safety filter: strip any bracketed internal reference tags (e.g., [REF-1], [REF-3], [REF 1], [DOC-1])
+  output.letter.body = output.letter.body
+    .replace(/\[REF-\d+\]/gi, "")
+    .replace(/\[REF\s+\d+\]/gi, "")
+    .replace(/\[DOC-\d+\]/gi, "")
+    .replace(/\s{2,}/g, " ");
+
+  // 3. Safety filter: ensure AI draft disclaimers do NOT contaminate the letter body intended for the insurer
+  output.letter.body = output.letter.body
+    .replace(/\n*---\n*\*?This letter is an AI-generated draft[\s\S]*?\*?$/i, "")
+    .replace(/This letter is an AI-generated draft[\s\S]*?submitting\./gi, "")
+    .trim();
+
+  // 4. If allowed references provided, strip anything not in the list
   if (allowedReferences && allowedReferences.length > 0) {
     output.references = output.references.filter((ref) =>
       allowedReferences.some(
@@ -47,13 +69,6 @@ export function validateAndParseOutput(
           allowed.toLowerCase().includes(ref.toLowerCase())
       )
     );
-  }
-
-  // Safety check: ensure body contains the mandatory disclaimer
-  const disclaimerMarker = "AI-generated draft";
-  if (!output.letter.body.includes(disclaimerMarker)) {
-    output.letter.body +=
-      "\n\n---\n*This letter is an AI-generated draft. Review all information carefully and consult appropriate professionals before submitting.*";
   }
 
   return output as StructuredAppealOutput;
