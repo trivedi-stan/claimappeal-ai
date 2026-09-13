@@ -1,21 +1,22 @@
 import { createClient } from "@/lib/supabase/server";
-import { stripe } from "@/lib/stripe/client";
+import { dodo } from "@/lib/dodo/client";
 import { getPlan, type PlanId } from "@/config/plans";
 
 /**
- * Billing service — Stripe checkout, customer portal, plan management.
+ * Billing service — Dodo Payments checkout, customer portal, and plan management.
  */
 export class BillingService {
   /**
-   * Create a Stripe Checkout Session for plan upgrade.
+   * Create a Dodo Payments Checkout Session for plan upgrade.
    */
   static async createCheckoutSession(
     profileId: string,
     email: string,
-    plan: PlanId
+    plan: PlanId,
+    userName?: string
   ): Promise<string> {
     const planConfig = getPlan(plan);
-    if (planConfig.priceMonthly <= 0) {
+    if (planConfig.priceMonthly <= 0 || !planConfig.dodoProductId) {
       throw new Error(`Cannot checkout for free plan`);
     }
 
@@ -27,41 +28,29 @@ export class BillingService {
         ? `https://${process.env.VERCEL_URL}`
         : "http://localhost:3001");
 
-    const lineItem = planConfig.stripePriceId
-      ? { price: planConfig.stripePriceId, quantity: 1 }
-      : {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: `ClaimAppeal AI ${planConfig.name} Plan`,
-              description: planConfig.description,
-            },
-            unit_amount: planConfig.priceMonthly,
-            recurring: {
-              interval: "month" as const,
-            },
-          },
-          quantity: 1,
-        };
-
-    const session = await stripe.checkout.sessions.create({
-      customer_email: email,
-      mode: "subscription",
-      line_items: [lineItem],
+    const session = await dodo.checkoutSessions.create({
+      product_cart: [{ product_id: planConfig.dodoProductId, quantity: 1 }],
+      customer: {
+        email,
+        name: userName || email.split("@")[0],
+      },
       metadata: {
         profile_id: profileId,
         plan,
       },
-      success_url: `${appUrl}/dashboard?checkout=success`,
+      return_url: `${appUrl}/dashboard?checkout=success`,
       cancel_url: `${appUrl}/settings/billing?checkout=canceled`,
-      allow_promotion_codes: true,
     });
 
-    return session.url!;
+    if (!session.checkout_url) {
+      throw new Error("Failed to generate checkout URL from Dodo Payments");
+    }
+
+    return session.checkout_url;
   }
 
   /**
-   * Create a Stripe Customer Portal session for self-service management.
+   * Create a Dodo Payments Customer Portal session for self-service management.
    */
   static async createPortalSession(profileId: string): Promise<string> {
     const supabase = await createClient();
@@ -83,12 +72,14 @@ export class BillingService {
         ? `https://${process.env.VERCEL_URL}`
         : "http://localhost:3001");
 
-    const session = await stripe.billingPortal.sessions.create({
-      customer: subscription.stripe_customer_id,
-      return_url: `${appUrl}/settings/billing`,
-    });
+    const session = await dodo.customers.customerPortal.create(
+      subscription.stripe_customer_id,
+      {
+        return_url: `${appUrl}/settings/billing`,
+      }
+    );
 
-    return session.url;
+    return session.link;
   }
 
   /**

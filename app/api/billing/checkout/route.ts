@@ -5,7 +5,7 @@ import { generateRequestId } from "@/lib/utils";
 import type { PlanId } from "@/config/plans";
 
 /**
- * POST /api/billing/checkout — Create a Stripe Checkout Session
+ * POST /api/billing/checkout — Create a Dodo Payments Checkout Session
  */
 export async function POST(request: Request) {
   const requestId = generateRequestId();
@@ -23,7 +23,8 @@ export async function POST(request: Request) {
     const url = await BillingService.createCheckoutSession(
       user.id,
       user.email!,
-      plan
+      plan,
+      user.user_metadata?.full_name || user.user_metadata?.name
     );
 
     return NextResponse.json({ success: true, data: { url }, requestId });
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
 }
 
 /**
- * GET /api/billing/checkout?plan=pro — Direct redirect to Stripe Checkout Session
+ * GET /api/billing/checkout?plan=pro — Direct redirect to Dodo Payments Checkout Session
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -55,7 +56,8 @@ export async function GET(request: Request) {
     const url = await BillingService.createCheckoutSession(
       user.id,
       user.email!,
-      plan
+      plan,
+      user.user_metadata?.full_name || user.user_metadata?.name
     );
     return NextResponse.redirect(url);
   } catch (err) {

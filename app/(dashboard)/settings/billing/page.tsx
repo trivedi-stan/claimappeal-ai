@@ -74,7 +74,7 @@ export default function BillingSettingsPage() {
 
       const result = await res.json();
       if (result.success && result.data?.url) {
-        toast.loading("Redirecting to secure Stripe checkout...");
+        toast.loading("Redirecting to secure checkout...");
         window.location.href = result.data.url;
       } else {
         toast.error(result.error || "Failed to initiate checkout.");
@@ -94,7 +94,7 @@ export default function BillingSettingsPage() {
       if (result.success && result.data?.url) {
         window.location.href = result.data.url;
       } else {
-        toast.info("No active paid Stripe subscription found. Choose a plan below to upgrade.");
+        toast.info("No active paid subscription found. Choose a plan below to upgrade.");
       }
     } catch {
       toast.error("Failed to open billing portal.");
@@ -144,7 +144,7 @@ export default function BillingSettingsPage() {
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-border/80 bg-background px-4 py-2 text-xs font-medium text-foreground transition-all hover:bg-muted/80 disabled:opacity-50"
           >
             {portalLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ExternalLink className="h-3.5 w-3.5" />}
-            Stripe Customer Portal
+            Manage Subscription
           </button>
         </div>
       </div>
@@ -243,7 +243,7 @@ export default function BillingSettingsPage() {
                       {isProcessing ? (
                         <>
                           <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                          <span>Connecting to Stripe...</span>
+                          <span>Connecting to Checkout...</span>
                         </>
                       ) : (
                         <>
@@ -264,7 +264,7 @@ export default function BillingSettingsPage() {
       <div className="rounded-xl border border-border/60 bg-muted/30 p-4 text-xs text-muted-foreground flex items-center gap-3">
         <ShieldCheck className="h-5 w-5 text-primary shrink-0" />
         <div>
-          <span className="font-semibold text-foreground">Secure Billing:</span> All transactions are encrypted and processed by Stripe. Subscriptions can be canceled or changed at any time with immediate effect.
+          <span className="font-semibold text-foreground">Secure Billing:</span> All transactions are encrypted and processed securely by Dodo Payments. Subscriptions can be canceled or changed at any time with immediate effect.
         </div>
       </div>
     </div>
