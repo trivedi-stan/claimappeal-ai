@@ -32,8 +32,7 @@ export default function BillingSettingsPage() {
   const [loadingPlan, setLoadingPlan] = useState<PlanId | null>(null);
   const [portalLoading, setPortalLoading] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<string>("free");
-  const [usage, setUsage] = useState<UsageData>({ used: 0, limit: 3, remaining: 3, plan: "free" });
-  const [hasActiveStripe, setHasActiveStripe] = useState(false);
+  const [usage, setUsage] = useState<UsageData>({ used: 0, limit: 1, remaining: 1, plan: "free" });
   const [pageLoading, setPageLoading] = useState(true);
 
   useEffect(() => {
@@ -132,7 +131,7 @@ export default function BillingSettingsPage() {
               </div>
               <p className="text-sm text-muted-foreground mt-0.5">
                 {currentPlan === "free"
-                  ? "Standard quota of 3 appeals per month with AI review and PDF export."
+                  ? "Standard quota of 1 free appeal for your account with AI review and PDF export."
                   : "Premium tier with expanded generation quota and priority AI synthesis."}
               </p>
             </div>

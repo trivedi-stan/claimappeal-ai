@@ -30,7 +30,7 @@ export default async function DashboardPage() {
     .limit(15);
 
   // Load usage
-  let usage: UsageStatus = { used: 0, limit: 3, remaining: 3, plan: "free", periodStart: null, periodEnd: null };
+  let usage: UsageStatus = { used: 0, limit: 1, remaining: 1, plan: "free", periodStart: null, periodEnd: null };
   try {
     usage = await UsageService.getUsageStatus(user.id);
   } catch {

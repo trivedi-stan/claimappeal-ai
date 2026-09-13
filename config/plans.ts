@@ -25,12 +25,12 @@ export const PLANS: Record<PlanId, Plan> = {
     id: "free",
     name: "Free",
     description: "Get started with appeal drafting",
-    generationsPerMonth: 3,
+    generationsPerMonth: 1,
     priceMonthly: 0,
     dodoProductId: null,
     stripePriceId: null,
     features: [
-      "3 appeal generations per month",
+      "1 free appeal generation",
       "PDF download",
       "Version history",
       "AI-generated draft review",
@@ -41,7 +41,7 @@ export const PLANS: Record<PlanId, Plan> = {
     name: "Pro",
     description: "For patients and power users",
     generationsPerMonth: 25,
-    priceMonthly: 2900, // $29/month
+    priceMonthly: 1900, // $19/month
     dodoProductId: process.env.DODO_PRO_PRODUCT_ID ?? "pdt_0NnV5W0MuhTRF7ZpO87J8",
     stripePriceId: process.env.STRIPE_PRO_PRICE_ID ?? null,
     highlighted: true,
