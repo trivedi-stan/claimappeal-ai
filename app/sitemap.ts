@@ -5,7 +5,7 @@ import { getAllSeoArticles } from "@/lib/seo-engine";
 import { SEO_CATEGORIES } from "@/data/seo-content/intent-database";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://claimappeal-ai.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.getclaimappeal.com";
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {

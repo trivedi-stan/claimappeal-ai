@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://claimappeal-ai.vercel.app";
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.getclaimappeal.com";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -143,6 +145,8 @@ export default function RootLayout({
               duration: 4000,
             }}
           />
+          <Analytics />
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>
