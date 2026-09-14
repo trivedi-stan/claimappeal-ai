@@ -102,8 +102,8 @@ export interface GeneratedDocument {
 export interface Subscription {
   id: string;
   profile_id: string;
-  stripe_customer_id: string | null;
-  stripe_subscription_id: string | null;
+  payment_customer_id: string | null;
+  payment_subscription_id: string | null;
   plan: PlanId;
   status: "active" | "canceled" | "past_due" | "trialing" | "incomplete";
   current_period_start: string | null;

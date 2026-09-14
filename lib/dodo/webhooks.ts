@@ -99,7 +99,7 @@ export async function handleDodoWebhookEvent(event: Webhooks.UnwrapWebhookEvent)
           current_period_end: sub.next_billing_date || null,
           updated_at: new Date().toISOString(),
         })
-        .eq("stripe_subscription_id", sub.subscription_id);
+        .eq("payment_subscription_id", sub.subscription_id);
 
       if (error) {
         console.error("[Dodo Webhook] Failed to update subscription renewal:", error);
@@ -118,7 +118,7 @@ export async function handleDodoWebhookEvent(event: Webhooks.UnwrapWebhookEvent)
           status: "canceled",
           updated_at: new Date().toISOString(),
         })
-        .eq("stripe_subscription_id", sub.subscription_id);
+        .eq("payment_subscription_id", sub.subscription_id);
 
       if (error) {
         console.error("[Dodo Webhook] Failed to cancel subscription:", error);
@@ -162,8 +162,8 @@ async function upsertSubscription(
   const { error } = await supabase.from("subscriptions").upsert(
     {
       profile_id: profileId,
-      stripe_customer_id: sub.customer?.customer_id ?? null,
-      stripe_subscription_id: sub.subscription_id,
+      payment_customer_id: sub.customer?.customer_id ?? null,
+      payment_subscription_id: sub.subscription_id,
       plan,
       status: sub.status ?? "active",
       current_period_start: sub.previous_billing_date || new Date().toISOString(),

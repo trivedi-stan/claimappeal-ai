@@ -57,11 +57,11 @@ export class BillingService {
     const supabase = await createClient();
     const { data: subscription } = await supabase
       .from("subscriptions")
-      .select("stripe_customer_id")
+      .select("payment_customer_id")
       .eq("profile_id", profileId)
       .single();
 
-    if (!subscription?.stripe_customer_id) {
+    if (!subscription?.payment_customer_id) {
       throw new Error("No active subscription found");
     }
 
@@ -74,7 +74,7 @@ export class BillingService {
         : "http://localhost:3001");
 
     const session = await dodo.customers.customerPortal.create(
-      subscription.stripe_customer_id,
+      subscription.payment_customer_id,
       {
         return_url: `${appUrl}/settings/billing`,
       }
@@ -172,8 +172,8 @@ export class BillingService {
           await supabase.from("subscriptions").upsert(
             {
               profile_id: profileId,
-              stripe_customer_id: highestSub.customer?.customer_id ?? null,
-              stripe_subscription_id: highestSub.subscription_id,
+              payment_customer_id: highestSub.customer?.customer_id ?? null,
+              payment_subscription_id: highestSub.subscription_id,
               plan: highestPlan,
               status: "active",
               current_period_start:

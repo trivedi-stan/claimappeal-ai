@@ -127,13 +127,13 @@ CREATE TABLE public.generated_documents (
 );
 
 -- ============================================================
--- SUBSCRIPTIONS (Stripe subscription state mirror)
+-- SUBSCRIPTIONS (payment provider subscription state mirror)
 -- ============================================================
 CREATE TABLE public.subscriptions (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   profile_id UUID NOT NULL UNIQUE REFERENCES public.profiles(id) ON DELETE CASCADE,
-  stripe_customer_id TEXT,
-  stripe_subscription_id TEXT,
+  payment_customer_id TEXT,
+  payment_subscription_id TEXT,
   plan TEXT NOT NULL DEFAULT 'free'
     CHECK (plan IN ('free', 'pro', 'business')),
   status TEXT NOT NULL DEFAULT 'active'
@@ -144,7 +144,7 @@ CREATE TABLE public.subscriptions (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX idx_subscriptions_stripe_sub ON public.subscriptions(stripe_subscription_id);
+CREATE INDEX idx_subscriptions_payment_sub ON public.subscriptions(payment_subscription_id);
 
 -- ============================================================
 -- USAGE RECORDS (per-period generation counts)
