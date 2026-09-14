@@ -25,20 +25,26 @@ export async function verifyDodoWebhook(
 }
 
 /**
- * Resolve PlanId from webhook payload metadata or product ID
+ * Resolve PlanId from webhook payload metadata or product ID.
+ * Uses centralized PLANS config as single source of truth for product IDs.
  */
 function resolvePlanId(metadata?: Record<string, unknown> | null, productId?: string | null): PlanId {
-  if (metadata?.plan && (metadata.plan === "pro" || metadata.plan === "business")) {
-    return metadata.plan as PlanId;
-  }
+  // 1. Trust explicit metadata first
+  if (metadata?.plan === "pro") return "pro";
+  if (metadata?.plan === "business") return "business";
+
+  // 2. Match product_id against PLANS config
   if (productId) {
-    if (productId === (process.env.DODO_PRO_PRODUCT_ID ?? "pdt_0NnV5W0MuhTRF7ZpO87J8")) {
+    if (productId === PLANS.pro.dodoProductId) {
       return "pro";
     }
-    if (productId === (process.env.DODO_BUSINESS_PRODUCT_ID ?? "pdt_0NnV5WnTTzfRjvjwtoWpN")) {
+    if (productId === PLANS.business.dodoProductId) {
       return "business";
     }
+    console.warn("[Dodo Webhook] Unknown product_id:", productId, "— Expected Pro:", PLANS.pro.dodoProductId, "Business:", PLANS.business.dodoProductId);
   }
+
+  // 3. Fallback to pro for any unrecognized paid subscription
   return "pro";
 }
 

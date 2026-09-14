@@ -1,6 +1,6 @@
 import { createClient, createAdminClient } from "@/lib/supabase/server";
 import { dodo } from "@/lib/dodo/client";
-import { getPlan, type PlanId } from "@/config/plans";
+import { getPlan, PLANS, type PlanId } from "@/config/plans";
 
 /**
  * Billing service — Dodo Payments checkout, customer portal, and plan management.
@@ -133,24 +133,35 @@ export class BillingService {
           return (matchesProfile || matchesEmail) && s.status === "active";
         }) || [];
 
+      // Debug: log what Dodo returned so we can diagnose plan mismatches
       if (userSubs.length > 0) {
-        // Rank plans: Business (3) > Pro (2) > Free (1)
+        console.log("[BillingService] Dodo subscriptions for user:", userSubs.map(s => ({
+          subscription_id: s.subscription_id,
+          product_id: s.product_id,
+          metadata_plan: s.metadata?.plan,
+          status: s.status,
+        })));
+        console.log("[BillingService] Expected product IDs — Pro:", PLANS.pro.dodoProductId, "Business:", PLANS.business.dodoProductId);
+      }
+
+      if (userSubs.length > 0) {
+        // Resolve plan from Dodo subscription using centralized PLANS config
         const getRank = (sub: typeof userSubs[0]): { plan: PlanId; rank: number } => {
-          if (
-            sub.metadata?.plan === "business" ||
-            sub.product_id ===
-              (process.env.DODO_BUSINESS_PRODUCT_ID ?? "pdt_0NnV5WnTTzfRjvjwtoWpN")
-          ) {
-            return { plan: "business", rank: 3 };
-          }
-          if (
-            sub.metadata?.plan === "pro" ||
-            sub.product_id ===
-              (process.env.DODO_PRO_PRODUCT_ID ?? "pdt_0NnV5W0MuhTRF7ZpO87J8")
-          ) {
+          // 1. Trust explicit metadata first
+          if (sub.metadata?.plan === "pro") return { plan: "pro", rank: 2 };
+          if (sub.metadata?.plan === "business") return { plan: "business", rank: 3 };
+
+          // 2. Match product_id against PLANS config (single source of truth)
+          if (sub.product_id && sub.product_id === PLANS.pro.dodoProductId) {
             return { plan: "pro", rank: 2 };
           }
-          return { plan: "free", rank: 1 };
+          if (sub.product_id && sub.product_id === PLANS.business.dodoProductId) {
+            return { plan: "business", rank: 3 };
+          }
+
+          // 3. Unknown product — default to pro (paid but unrecognized)
+          console.warn("[BillingService] Unknown product_id from Dodo:", sub.product_id, "— defaulting to pro");
+          return { plan: "pro", rank: 2 };
         };
 
         // Sort descending by highest rank
