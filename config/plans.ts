@@ -39,7 +39,7 @@ export const PLANS: Record<PlanId, Plan> = {
     description: "For patients & ongoing care appeals",
     generationsPerMonth: 10,
     priceMonthly: 1900, // $19/month
-    dodoProductId: process.env.DODO_PRO_PRODUCT_ID ?? "pdt_0NnV5W0MuhTRF7ZpO87J8",
+    dodoProductId: process.env.DODO_PRO_PRODUCT_ID ?? "pdt_0NnaOzGhDhoRI1oQtLG5W",
     highlighted: true,
     features: [
       "10 personalized appeals/month",
@@ -56,7 +56,7 @@ export const PLANS: Record<PlanId, Plan> = {
     description: "For medical billing offices & advocates",
     generationsPerMonth: 100,
     priceMonthly: 9900, // $99/month
-    dodoProductId: process.env.DODO_BUSINESS_PRODUCT_ID ?? "pdt_0NnV5WnTTzfRjvjwtoWpN",
+    dodoProductId: process.env.DODO_BUSINESS_PRODUCT_ID ?? "pdt_0NnaPLN1T0rvsuXF2IwHW",
     features: [
       "100 personalized appeals/month",
       "PDF download",
