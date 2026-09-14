@@ -219,8 +219,8 @@ export default function TermsPage() {
               </p>
               <div className="rounded-lg border border-border bg-card p-4 space-y-1 text-xs">
                 <p className="font-semibold text-foreground">ClaimAppeal AI Legal &amp; Compliance</p>
-                <p>Email: <a href="mailto:support@claimappeal.ai" className="text-primary hover:underline">support@claimappeal.ai</a></p>
-                <p>Support Portal: <Link href="/contact" className="text-primary hover:underline">claimappeal.ai/contact</Link></p>
+                <p>Email: <a href="mailto:support@getclaimappeal.com" className="text-primary hover:underline">support@getclaimappeal.com</a></p>
+                <p>Support Portal: <Link href="/contact" className="text-primary hover:underline">getclaimappeal.com/contact</Link></p>
               </div>
             </section>
           </div>

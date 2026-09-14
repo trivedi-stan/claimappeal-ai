@@ -170,7 +170,7 @@ export default function PrivacyPage() {
                   <strong>Delete Specific Appeals:</strong> Remove individual appeal drafts from your dashboard, which cascades immediately across database records.
                 </li>
                 <li>
-                  <strong>Account Termination:</strong> Request a complete account wipe by emailing <a href="mailto:privacy@claimappeal.ai" className="text-primary hover:underline">privacy@claimappeal.ai</a> or using the Settings menu. Upon account deletion, all associated health inputs, generated letters, and auth credentials are permanently expunged within 30 days.
+                  <strong>Account Termination:</strong> Request a complete account wipe by emailing <a href="mailto:privacy@getclaimappeal.com" className="text-primary hover:underline">privacy@getclaimappeal.com</a> or using the Settings menu. Upon account deletion, all associated health inputs, generated letters, and auth credentials are permanently expunged within 30 days.
                 </li>
               </ul>
             </section>
@@ -200,8 +200,8 @@ export default function PrivacyPage() {
               </p>
               <div className="rounded-lg border border-border bg-card p-4 space-y-1 text-xs">
                 <p className="font-semibold text-foreground">ClaimAppeal AI Data Privacy &amp; Security Office</p>
-                <p>Email: <a href="mailto:privacy@claimappeal.ai" className="text-primary hover:underline">privacy@claimappeal.ai</a></p>
-                <p>Support Ticket: <Link href="/contact" className="text-primary hover:underline">claimappeal.ai/contact</Link></p>
+                <p>Email: <a href="mailto:privacy@getclaimappeal.com" className="text-primary hover:underline">privacy@getclaimappeal.com</a></p>
+                <p>Support Ticket: <Link href="/contact" className="text-primary hover:underline">getclaimappeal.com/contact</Link></p>
               </div>
             </section>
           </div>

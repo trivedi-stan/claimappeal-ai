@@ -13,6 +13,7 @@ import {
   Building2,
   HelpCircle,
 } from "lucide-react";
+import { toast } from "sonner";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 
@@ -27,13 +28,27 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setIsSubmitted(true);
+        toast.success("Message sent! An appeal specialist will reply to your email.");
+      } else {
+        toast.error(data.error || "Failed to send message. Please try again.");
+      }
+    } catch {
+      toast.error("Network error. Please try again or email support@getclaimappeal.com.");
+    } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
-    }, 1000);
+    }
   };
 
   return (
@@ -82,10 +97,10 @@ export default function ContactPage() {
               </div>
               <div className="pt-4 mt-4 border-t border-border">
                 <a
-                  href="mailto:support@claimappeal.ai"
+                  href="mailto:support@getclaimappeal.com"
                   className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
                 >
-                  support@claimappeal.ai
+                  support@getclaimappeal.com
                 </a>
                 <span className="text-[10px] text-muted-foreground flex items-center gap-1 mt-1">
                   <Clock className="h-3 w-3" /> Responds within 1 business day
@@ -106,10 +121,10 @@ export default function ContactPage() {
               </div>
               <div className="pt-4 mt-4 border-t border-border">
                 <a
-                  href="mailto:privacy@claimappeal.ai"
+                  href="mailto:privacy@getclaimappeal.com"
                   className="text-xs font-semibold text-emerald-500 hover:underline flex items-center gap-1"
                 >
-                  privacy@claimappeal.ai
+                  privacy@getclaimappeal.com
                 </a>
                 <span className="text-[10px] text-muted-foreground flex items-center gap-1 mt-1">
                   <Clock className="h-3 w-3" /> Dedicated Data Protection Officer
@@ -130,10 +145,10 @@ export default function ContactPage() {
               </div>
               <div className="pt-4 mt-4 border-t border-border">
                 <a
-                  href="mailto:enterprise@claimappeal.ai"
+                  href="mailto:enterprise@getclaimappeal.com"
                   className="text-xs font-semibold text-amber-500 hover:underline flex items-center gap-1"
                 >
-                  enterprise@claimappeal.ai
+                  enterprise@getclaimappeal.com
                 </a>
                 <span className="text-[10px] text-muted-foreground flex items-center gap-1 mt-1">
                   <Clock className="h-3 w-3" /> Custom BAA &amp; API access
