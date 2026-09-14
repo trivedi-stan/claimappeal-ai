@@ -164,47 +164,48 @@ export class BillingService {
           return { plan: "pro", rank: 2 };
         };
 
-        // Sort descending by highest rank
-        userSubs.sort((a, b) => getRank(b).rank - getRank(a).rank);
-        const highestSub = userSubs[0];
-        const { plan: highestPlan, rank: highestRank } = getRank(highestSub);
+        // Sort by newest created_at first so the user's latest plan/upgrade/downgrade takes precedence
+        userSubs.sort((a, b) => {
+          const timeA = a.created_at ? new Date(a.created_at).getTime() : 0;
+          const timeB = b.created_at ? new Date(b.created_at).getTime() : 0;
+          return timeB - timeA;
+        });
 
-        const currentRank =
-          current?.status === "active"
-            ? current.plan === "business"
-              ? 3
-              : current.plan === "pro"
-              ? 2
-              : 1
-            : 0;
+        const activeSub = userSubs[0];
+        const { plan: resolvedPlan } = getRank(activeSub);
 
-        // If highest subscription in Dodo is greater, or current was expired/different, update to highest!
-        if (highestRank >= currentRank || current?.status !== "active") {
-          await supabase.from("subscriptions").upsert(
-            {
-              profile_id: profileId,
-              payment_customer_id: highestSub.customer?.customer_id ?? null,
-              payment_subscription_id: highestSub.subscription_id,
-              plan: highestPlan,
-              status: "active",
-              current_period_start:
-                highestSub.previous_billing_date || new Date().toISOString(),
-              current_period_end:
-                highestSub.next_billing_date ||
-                new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-              updated_at: new Date().toISOString(),
-            },
-            { onConflict: "profile_id" }
-          );
+        await supabase.from("subscriptions").upsert(
+          {
+            profile_id: profileId,
+            payment_customer_id: activeSub.customer?.customer_id ?? null,
+            payment_subscription_id: activeSub.subscription_id,
+            plan: resolvedPlan,
+            status: "active",
+            current_period_start:
+              activeSub.previous_billing_date || new Date().toISOString(),
+            current_period_end:
+              activeSub.next_billing_date ||
+              new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "profile_id" }
+        );
 
-          const { data: updated } = await supabase
-            .from("subscriptions")
-            .select("*")
-            .eq("profile_id", profileId)
-            .single();
+        const { data: updated } = await supabase
+          .from("subscriptions")
+          .select("*")
+          .eq("profile_id", profileId)
+          .single();
 
-          return updated;
-        }
+        return updated;
+      } else if (current?.payment_subscription_id && current.status === "active") {
+        // If user has no active subscriptions in Dodo but has an active record locally, mark cancelled
+        await supabase
+          .from("subscriptions")
+          .update({ status: "cancelled", plan: "free", updated_at: new Date().toISOString() })
+          .eq("id", current.id);
+        current.status = "cancelled";
+        current.plan = "free";
       }
     } catch (err) {
       console.error("[BillingService] syncUserSubscription error:", err);
