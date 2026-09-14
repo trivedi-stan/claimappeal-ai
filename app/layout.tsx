@@ -67,6 +67,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  verification: {
+    google: "googleb1ddb028e5d2b9db",
+  },
 };
 
 const structuredData = {
