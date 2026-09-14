@@ -3,7 +3,7 @@ import { getPlan, type PlanId } from "@/config/plans";
 
 const resendApiKey = process.env.RESEND_API_KEY;
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
-const fromEmail = process.env.EMAIL_FROM || "onboarding@resend.dev";
+const fromEmail = process.env.EMAIL_FROM || "ClaimAppeal AI <noreply@getclaimappeal.com>";
 
 export interface SubscriptionEmailParams {
   to: string;
@@ -35,7 +35,7 @@ export class EmailService {
     const displayName = userName || to.split("@")[0];
     const priceText = amountFormatted || `$${planConfig.priceMonthly / 100}/month`;
     const appUrl =
-      process.env.NEXT_PUBLIC_APP_URL || "https://claimappeal.ai";
+      process.env.NEXT_PUBLIC_APP_URL || "https://getclaimappeal.com";
 
     const htmlContent = `
 <!DOCTYPE html>
