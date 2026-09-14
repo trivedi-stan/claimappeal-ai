@@ -12,21 +12,21 @@ export function ArticleJsonLd({
     "@type": "Article",
     headline: article.title,
     description: article.description,
-    image: article.featuredImage || "https://claimappeal.ai/og-image.png",
+    image: article.featuredImage || "https://www.getclaimappeal.com/opengraph-image",
     datePublished: article.publishedAt,
     dateModified: article.updatedAt || article.publishedAt,
     author: {
       "@type": "Organization",
       name: article.author.name,
-      url: "https://claimappeal.ai/about",
+      url: "https://www.getclaimappeal.com/about",
     },
     publisher: {
       "@type": "Organization",
       name: "ClaimAppeal AI",
-      url: "https://claimappeal.ai",
+      url: "https://www.getclaimappeal.com",
       logo: {
         "@type": "ImageObject",
-        url: "https://claimappeal.ai/logo.png",
+        url: "https://www.getclaimappeal.com/opengraph-image",
       },
     },
     mainEntityOfPage: {

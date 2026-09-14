@@ -18,7 +18,42 @@ import {
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { ArticleCard } from "@/components/blog/ArticleCard";
+import { ArticleFAQ } from "@/components/blog/ArticleFAQ";
+import { FAQJsonLd } from "@/components/blog/JsonLd";
 import { getPopularArticles } from "@/lib/blog";
+
+const homeFaqs = [
+  {
+    question: "How do I appeal a denied health insurance claim?",
+    answer:
+      "To appeal a denied health insurance claim, first review your Explanation of Benefits (EOB) or denial notice to identify the CARC/RARC reason codes. Next, request your complete claim file and reviewer rationale under ERISA § 503 (or ACA § 2719). Submit a formal written rebuttal addressing each denial ground, supported by medical necessity documentation and treating physician clinical notes, within the statutory deadline.",
+  },
+  {
+    question: "What is the deadline for filing an ERISA health insurance appeal?",
+    answer:
+      "Under federal regulations (29 C.F.R. § 2560.503-1(h)(3)(i)), employer-sponsored group health plans must provide claimants at least 180 days from the date of an adverse benefit determination notice to file an appeal. Missing this window can forfeit your right to subsequent state or federal court review.",
+  },
+  {
+    question: "What are CARC and RARC codes on an Explanation of Benefits?",
+    answer:
+      "Claim Adjustment Reason Codes (CARC) explain why a claim was denied or reduced (e.g., PR-50 for non-covered/medical necessity, CO-197 for missing prior authorization). Remittance Advice Remark Codes (RARC) convey supplemental guidance. ClaimAppeal AI extracts these codes automatically to formulate precise legal and clinical arguments.",
+  },
+  {
+    question: "Can ClaimAppeal AI help overturn a prior authorization denial?",
+    answer:
+      "Yes. Prior authorization denials frequently stem from automated insurer screening algorithms. ClaimAppeal AI synthesizes expedited or standard appeals referencing carrier clinical guidelines, urgency criteria under 29 C.F.R. § 2560.503-1(m)(1), and peer-reviewed consensus recommendations.",
+  },
+  {
+    question: "How much does it cost to generate an appeal with ClaimAppeal AI?",
+    answer:
+      "Every user receives 1 free personalized appeal rebuttal letter with full statutory and clinical citations. Patients needing additional appeals can subscribe to Pro ($19/month for unlimited appeals), while clinical billing offices and advocates can access the Business plan ($99/month).",
+  },
+  {
+    question: "Is my personal health data kept confidential and secure?",
+    answer:
+      "Yes. All uploaded claim and clinical data is encrypted in transit and at rest with AES-256 and SSL/TLS. We utilize strict Row-Level Security (RLS) policies ensuring your records are isolated and accessible exclusively by your authenticated account.",
+  },
+];
 
 export default function HomePage() {
   const popularArticles = getPopularArticles().slice(0, 3);
@@ -290,6 +325,26 @@ export default function HomePage() {
               <ArticleCard key={article.slug} article={article} />
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* FAQ Accordion Section & Schema */}
+      <section className="border-t border-border py-20 bg-background">
+        <div className="container mx-auto max-w-4xl px-6">
+          <FAQJsonLd faq={homeFaqs} />
+          <div className="text-center space-y-3 mb-6">
+            <span className="text-xs font-mono uppercase tracking-wider text-primary">
+              Frequently Asked Questions
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+              Everything You Need to Know About Overturning Denials
+            </h2>
+            <p className="text-xs sm:text-sm text-muted-foreground max-w-lg mx-auto leading-relaxed">
+              Understand your federal rights under ERISA § 503, ACA § 2719, and the exact steps to contest adverse determinations.
+            </p>
+          </div>
+
+          <ArticleFAQ faq={homeFaqs} title="Health Insurance Appeal FAQs" />
         </div>
       </section>
 

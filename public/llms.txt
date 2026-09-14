@@ -1,0 +1,25 @@
+# ClaimAppeal AI (getclaimappeal.com)
+
+> ClaimAppeal AI is an automated clinical and legal workflow platform that synthesizes formal, evidence-backed health insurance appeal rebuttal letters to overturn insurance claim denials.
+
+## Overview
+ClaimAppeal AI assists patients, healthcare providers, and patient advocates in overturning denied health insurance claims. The platform parses Explanation of Benefits (EOB) statements and denial notices, maps Claim Adjustment Reason Codes (CARC) and Remittance Advice Remark Codes (RARC), cites federal statutory protections (such as ERISA § 503, 29 U.S.C. § 1133, and ACA § 2719, 42 U.S.C. § 300gg-19), and integrates peer-reviewed clinical practice guidelines.
+
+## Core Capabilities
+- **Automated CARC/RARC Extraction**: Identifies exact denial reason codes (e.g., PR-50 Medical Necessity, CO-197 Prior Authorization).
+- **Statutory Legal Grounding**: Drafts formal internal grievance and external review demands citing ERISA § 503 mandatory claims procedure regulations (29 C.F.R. § 2560.503-1).
+- **Clinical Evidence Matching**: Incorporates peer-reviewed medical journals and clinical society consensus guidelines.
+- **Letterhead PDF Export**: Produces court-ready, carrier-addressed appeal packets with designated exhibit sections.
+
+## Free & Premium Access
+- **Free Quota**: 1 full appeal rebuttal letter per user (no credit card required).
+- **Pro Tier**: $19/month for unlimited appeals, multi-carrier dispute tracking, and expedited clinical citations.
+- **Business/Advocate Tier**: $99/month for high-volume provider practices, RCM billing agencies, and patient advocacy non-profits.
+
+## Key Resources & Documentation
+- [Home & Appeal Generator](https://www.getclaimappeal.com/): Interactive appeal drafting workflow.
+- [Appeal Letter Templates](https://www.getclaimappeal.com/templates): Comprehensive templates for medical necessity, prior authorization, and out-of-network denials.
+- [Denial Reasons Guide](https://www.getclaimappeal.com/denial-reasons): Explanation of common CARC/RARC denial codes and rebuttal strategies.
+- [Claim Denial Help & Guides](https://www.getclaimappeal.com/guides): Step-by-step guides for filing ERISA and ACA health insurance appeals.
+- [Insurance Types Supported](https://www.getclaimappeal.com/insurance-types): Commercial employer plans (ERISA), ACA Marketplace plans, Medicare Advantage, and Medicaid.
+- [Contact Support](https://www.getclaimappeal.com/contact): Reach out to support@getclaimappeal.com for technical or appeal inquiries.
