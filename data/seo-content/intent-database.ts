@@ -64,6 +64,15 @@ export const SEO_CATEGORIES: CategoryMetadata[] = [
     iconName: "FileCheck2",
     badgeColor: "text-indigo-500 bg-indigo-500/10 border-indigo-500/20",
   },
+  {
+    category: "carriers",
+    title: "Health Insurance Carrier Appeal Playbooks",
+    shortTitle: "Carrier Appeals",
+    description: "Carrier-specific appeal protocols, grievance mailing addresses, and legal rebuttal strategies for major US health insurers.",
+    pathPrefix: "/carriers",
+    iconName: "Building2",
+    badgeColor: "text-blue-500 bg-blue-500/10 border-blue-500/20",
+  },
 ];
 
 export const INTENT_DEFINITIONS = {

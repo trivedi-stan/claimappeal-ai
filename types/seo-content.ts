@@ -24,7 +24,8 @@ export type SeoCategory =
   | "insurance-types"
   | "claim-denial"
   | "templates"
-  | "claim-help";
+  | "claim-help"
+  | "carriers";
 
 export interface SeoFaqItem {
   question: string;

@@ -117,6 +117,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/carriers" className="hover:text-foreground transition-colors">
+                  Insurance Carrier Guides
+                </Link>
+              </li>
+              <li>
                 <Link href="/claim-help" className="hover:text-foreground transition-colors">
                   EOB &amp; Document Guides
                 </Link>

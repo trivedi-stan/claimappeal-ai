@@ -22,4 +22,5 @@ ClaimAppeal AI assists patients, healthcare providers, and patient advocates in 
 - [Denial Reasons Guide](https://www.getclaimappeal.com/denial-reasons): Explanation of common CARC/RARC denial codes and rebuttal strategies.
 - [Claim Denial Help & Guides](https://www.getclaimappeal.com/guides): Step-by-step guides for filing ERISA and ACA health insurance appeals.
 - [Insurance Types Supported](https://www.getclaimappeal.com/insurance-types): Commercial employer plans (ERISA), ACA Marketplace plans, Medicare Advantage, and Medicaid.
+- [Carrier Appeal Playbooks](https://www.getclaimappeal.com/carriers): Dedicated appeal guides for UnitedHealthcare, Aetna, Cigna, Blue Cross Blue Shield, Humana, and Kaiser Permanente.
 - [Contact Support](https://www.getclaimappeal.com/contact): Reach out to support@getclaimappeal.com for technical or appeal inquiries.
