@@ -31,6 +31,7 @@ export default function SignupPage() {
         email: data.email,
         password: data.password,
         options: {
+          emailRedirectTo: `${window.location.origin}/api/auth/callback?redirect=/dashboard`,
           data: {
             full_name: data.full_name,
           },
