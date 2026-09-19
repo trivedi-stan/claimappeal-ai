@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupSchema, type SignupInput } from "@/schemas/user.schema";
@@ -11,8 +11,11 @@ import { Shield, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const emailParam = searchParams.get("email") || "";
+
   const [loading, setLoading] = useState(false);
   const supabase = createClient();
 
@@ -22,6 +25,9 @@ export default function SignupPage() {
     formState: { errors },
   } = useForm<SignupInput>({
     resolver: zodResolver(SignupSchema),
+    defaultValues: {
+      email: emailParam,
+    },
   });
 
   async function onSubmit(data: SignupInput) {
@@ -56,6 +62,142 @@ export default function SignupPage() {
   const requiredStar = <span className="text-red-500 ml-0.5">*</span>;
 
   return (
+    <div className="w-full max-w-md space-y-6 animate-fade-in py-12">
+      {/* Brand Header */}
+      <div className="text-center space-y-2">
+        <Link href="/" className="inline-flex items-center gap-2.5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 text-primary">
+            <Shield className="h-5 w-5" />
+          </div>
+          <span className="text-lg font-semibold tracking-tight text-foreground">
+            ClaimAppeal<span className="text-primary ml-1 font-mono text-xs font-bold">AI</span>
+          </span>
+        </Link>
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+          Create Your Free Account
+        </h1>
+        <p className="text-xs text-muted-foreground">
+          Start drafting statutory insurance rebuttals immediately
+        </p>
+      </div>
+
+      {/* Card */}
+      <div className="cinematic-card p-7 sm:p-8">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div>
+            <label htmlFor="full_name" className={labelClass}>
+              Full Name {requiredStar}
+            </label>
+            <input
+              id="full_name"
+              type="text"
+              autoComplete="name"
+              {...register("full_name")}
+              className={inputClass}
+              placeholder="Jane Doe"
+            />
+            {errors.full_name && (
+              <p className="mt-1 text-xs text-red-500 font-mono">{errors.full_name.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="email" className={labelClass}>
+              Email Address {requiredStar}
+            </label>
+            <input
+              id="email"
+              type="email"
+              autoComplete="email"
+              {...register("email")}
+              className={inputClass}
+              placeholder="you@example.com"
+            />
+            {errors.email && (
+              <p className="mt-1 text-xs text-red-500 font-mono">{errors.email.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="password" className={labelClass}>
+              Password {requiredStar}
+            </label>
+            <input
+              id="password"
+              type="password"
+              autoComplete="new-password"
+              {...register("password")}
+              className={inputClass}
+              placeholder="Min 8 chars, 1 uppercase, 1 number"
+            />
+            {errors.password && (
+              <p className="mt-1 text-xs text-red-500 font-mono">{errors.password.message}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="confirmPassword" className={labelClass}>
+              Confirm Password {requiredStar}
+            </label>
+            <input
+              id="confirmPassword"
+              type="password"
+              autoComplete="new-password"
+              {...register("confirmPassword")}
+              className={inputClass}
+              placeholder="Re-enter password"
+            />
+            {errors.confirmPassword && (
+              <p className="mt-1 text-xs text-red-500 font-mono">{errors.confirmPassword.message}</p>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary w-full py-2.5 text-xs font-semibold tracking-wide flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(59,130,246,0.25)] disabled:opacity-50 mt-2"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin text-primary-foreground" />
+                <span>Creating Account...</span>
+              </>
+            ) : (
+              <>
+                <span>Create Account</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </>
+            )}
+          </button>
+        </form>
+
+        <div className="mt-6 pt-6 border-t border-border text-center">
+          <p className="text-xs text-muted-foreground">
+            Already have an account?{" "}
+            <Link href="/login" className="text-primary hover:underline font-medium transition-colors">
+              Sign in
+            </Link>
+          </p>
+        </div>
+      </div>
+
+      {/* Footnote */}
+      <p className="text-center text-[11px] text-muted-foreground">
+        By signing up, you agree to our{" "}
+        <Link href="/terms" className="text-primary hover:underline font-medium">
+          Terms of Service
+        </Link>{" "}
+        and{" "}
+        <Link href="/privacy" className="text-primary hover:underline font-medium">
+          Privacy Policy
+        </Link>
+      </p>
+    </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 relative overflow-hidden text-foreground">
       {/* Top right theme toggle */}
       <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
@@ -65,137 +207,15 @@ export default function SignupPage() {
       {/* Ambient lighting */}
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_40%_at_50%_20%,rgba(59,130,246,0.1),transparent)]" />
 
-      <div className="w-full max-w-md space-y-6 animate-fade-in py-12">
-        {/* Brand Header */}
-        <div className="text-center space-y-2">
-          <Link href="/" className="inline-flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 text-primary">
-              <Shield className="h-5 w-5" />
-            </div>
-            <span className="text-lg font-semibold tracking-tight text-foreground">
-              ClaimAppeal<span className="text-primary ml-1 font-mono text-xs font-bold">AI</span>
-            </span>
-          </Link>
-          <h1 className="text-xl font-semibold tracking-tight text-foreground">
-            Create Your Free Account
-          </h1>
-          <p className="text-xs text-muted-foreground">
-            Start drafting statutory insurance rebuttals immediately
-          </p>
-        </div>
-
-        {/* Card */}
-        <div className="cinematic-card p-7 sm:p-8">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <label htmlFor="full_name" className={labelClass}>
-                Full Name {requiredStar}
-              </label>
-              <input
-                id="full_name"
-                type="text"
-                autoComplete="name"
-                {...register("full_name")}
-                className={inputClass}
-                placeholder="Jane Doe"
-              />
-              {errors.full_name && (
-                <p className="mt-1 text-xs text-red-500 font-mono">{errors.full_name.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="email" className={labelClass}>
-                Email Address {requiredStar}
-              </label>
-              <input
-                id="email"
-                type="email"
-                autoComplete="email"
-                {...register("email")}
-                className={inputClass}
-                placeholder="you@example.com"
-              />
-              {errors.email && (
-                <p className="mt-1 text-xs text-red-500 font-mono">{errors.email.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="password" className={labelClass}>
-                Password {requiredStar}
-              </label>
-              <input
-                id="password"
-                type="password"
-                autoComplete="new-password"
-                {...register("password")}
-                className={inputClass}
-                placeholder="Min 8 chars, 1 uppercase, 1 number"
-              />
-              {errors.password && (
-                <p className="mt-1 text-xs text-red-500 font-mono">{errors.password.message}</p>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="confirmPassword" className={labelClass}>
-                Confirm Password {requiredStar}
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                {...register("confirmPassword")}
-                className={inputClass}
-                placeholder="Re-enter password"
-              />
-              {errors.confirmPassword && (
-                <p className="mt-1 text-xs text-red-500 font-mono">{errors.confirmPassword.message}</p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-primary w-full py-2.5 text-xs font-semibold tracking-wide flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(59,130,246,0.25)] disabled:opacity-50 mt-2"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin text-primary-foreground" />
-                  <span>Creating Account...</span>
-                </>
-              ) : (
-                <>
-                  <span>Create Account</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </>
-              )}
-            </button>
-          </form>
-
-          <div className="mt-6 pt-6 border-t border-border text-center">
-            <p className="text-xs text-muted-foreground">
-              Already have an account?{" "}
-              <Link href="/login" className="text-primary hover:underline font-medium transition-colors">
-                Sign in
-              </Link>
-            </p>
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
-        </div>
-
-        {/* Footnote */}
-        <p className="text-center text-[11px] text-muted-foreground">
-          By signing up, you agree to our{" "}
-          <Link href="/terms" className="text-primary hover:underline font-medium">
-            Terms of Service
-          </Link>{" "}
-          and{" "}
-          <Link href="/privacy" className="text-primary hover:underline font-medium">
-            Privacy Policy
-          </Link>
-        </p>
-      </div>
+        }
+      >
+        <SignupForm />
+      </Suspense>
     </div>
   );
 }
