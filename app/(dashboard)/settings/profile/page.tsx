@@ -4,7 +4,18 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
-import { Loader2, Save, User, ShieldCheck, Mail, Key } from "lucide-react";
+import {
+  Loader2,
+  Save,
+  User,
+  ShieldCheck,
+  Mail,
+  Key,
+  Lock,
+  CheckCircle2,
+  Send,
+  ArrowRight,
+} from "lucide-react";
 import { ThemeSettingsCard } from "@/components/ThemeSettingsCard";
 
 export default function ProfileSettingsPage() {
@@ -14,12 +25,28 @@ export default function ProfileSettingsPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
 
+  // Password reset state
+  const [sendingReset, setSendingReset] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+
+  // Direct password change state
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [updatingPassword, setUpdatingPassword] = useState(false);
+
   useEffect(() => {
     async function loadProfile() {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return;
       setEmail(user.email ?? "");
-      const { data } = await supabase.from("profiles").select("full_name").eq("id", user.id).single();
+      const { data } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("id", user.id)
+        .single();
       setFullName(data?.full_name ?? "");
       setLoading(false);
     }
@@ -29,15 +56,86 @@ export default function ProfileSettingsPage() {
   async function handleSave() {
     setSaving(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (!user) return;
-      const { error } = await supabase.from("profiles").update({ full_name: fullName, updated_at: new Date().toISOString() }).eq("id", user.id);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ full_name: fullName, updated_at: new Date().toISOString() })
+        .eq("id", user.id);
       if (error) throw error;
       toast.success("Profile preferences updated.");
     } catch {
       toast.error("Failed to update profile.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleRequestResetEmail() {
+    if (!email) return;
+    setSendingReset(true);
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        toast.error(data.message || "Failed to dispatch reset link.");
+        return;
+      }
+
+      setResetSent(true);
+      toast.success(`Password reset link dispatched to ${email}. Check your inbox!`);
+    } catch {
+      toast.error("Network error while requesting password reset.");
+    } finally {
+      setSendingReset(false);
+    }
+  }
+
+  async function handleUpdatePasswordDirect(e: React.FormEvent) {
+    e.preventDefault();
+    if (newPassword.length < 8) {
+      toast.error("Password must be at least 8 characters.");
+      return;
+    }
+    if (!/[A-Z]/.test(newPassword)) {
+      toast.error("Password must contain at least 1 uppercase letter.");
+      return;
+    }
+    if (!/[0-9]/.test(newPassword)) {
+      toast.error("Password must contain at least 1 number.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    setUpdatingPassword(true);
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      toast.success("Password updated successfully!");
+      setNewPassword("");
+      setConfirmPassword("");
+      setShowPasswordChange(false);
+    } catch {
+      toast.error("An unexpected error occurred while updating your password.");
+    } finally {
+      setUpdatingPassword(false);
     }
   }
 
@@ -169,24 +267,146 @@ export default function ProfileSettingsPage() {
       {/* Theme / Appearance Preference Card */}
       <ThemeSettingsCard />
 
-      {/* Security & Access Info */}
-      <div className="cinematic-card p-6 space-y-4">
-        <div className="flex items-center gap-2">
-          <Key className="h-4 w-4 text-primary" />
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground">
-            Authentication & Password
-          </h2>
+      {/* Security, Authentication & Password Card */}
+      <div className="cinematic-card p-6 md:p-8 space-y-5">
+        <div className="flex items-center justify-between border-b border-border pb-4">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 border border-primary/20 text-primary">
+              <Key className="h-4 w-4" />
+            </div>
+            <div>
+              <h2 className="text-sm font-semibold tracking-tight text-foreground">
+                Authentication & Password Security
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Manage your credentials and password recovery options
+              </p>
+            </div>
+          </div>
+          <span className="badge-neutral text-[10px]">Active</span>
         </div>
+
         <p className="text-xs text-muted-foreground leading-relaxed">
-          Your account is secured via enterprise Supabase Authentication with salted bcrypt hashing and row-level security (RLS) partition policies on all health records.
+          Your account is secured with Supabase Authentication using salted bcrypt hashing and row-level security (RLS) policies protecting all confidential health records.
         </p>
-        <div>
-          <Link
-            href="/forgot-password"
-            className="text-xs text-primary hover:underline font-medium inline-flex items-center gap-1 transition-colors"
-          >
-            Request password reset link →
-          </Link>
+
+        {/* Action Row: Send Reset Link or Update Directly */}
+        <div className="rounded-xl border border-border bg-card/60 p-4 sm:p-5 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                Reset Password via Email
+              </h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Send a secure recovery link to <span className="font-mono text-foreground font-medium">{email}</span>
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleRequestResetEmail}
+              disabled={sendingReset}
+              className="btn-secondary text-xs px-4 py-2 inline-flex items-center justify-center gap-1.5 shrink-0"
+            >
+              {sendingReset ? (
+                <>
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  <span>Sending Link...</span>
+                </>
+              ) : (
+                <>
+                  <Send className="h-3.5 w-3.5" />
+                  <span>Send Reset Email</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {resetSent && (
+            <div className="flex items-center gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs animate-fade-in font-medium">
+              <CheckCircle2 className="h-4 w-4 shrink-0" />
+              <span>
+                Recovery email dispatched to {email}. Check your inbox and spam folder.
+              </span>
+            </div>
+          )}
+
+          <div className="border-t border-border/60 pt-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                  Update Password Directly
+                </h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Change your password immediately without checking your email
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPasswordChange(!showPasswordChange)}
+                className="text-xs text-primary hover:underline font-medium inline-flex items-center gap-1"
+              >
+                <span>{showPasswordChange ? "Cancel" : "Change Password"}</span>
+                <ArrowRight className={`h-3 w-3 transition-transform ${showPasswordChange ? "rotate-90" : ""}`} />
+              </button>
+            </div>
+
+            {showPasswordChange && (
+              <form onSubmit={handleUpdatePasswordDirect} className="mt-4 space-y-3.5 animate-fade-in">
+                <div>
+                  <label className={labelClass}>New Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
+                    <input
+                      type="password"
+                      autoComplete="new-password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="Min 8 chars, 1 uppercase, 1 number"
+                      className={`${inputClass} pl-10`}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className={labelClass}>Confirm New Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
+                    <input
+                      type="password"
+                      autoComplete="new-password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Re-enter your new password"
+                      className={`${inputClass} pl-10`}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={updatingPassword}
+                    className="btn-primary text-xs px-5 py-2 inline-flex items-center gap-2 shadow-[0_0_20px_rgba(59,130,246,0.25)] disabled:opacity-50"
+                  >
+                    {updatingPassword ? (
+                      <>
+                        <Loader2 className="h-3.5 w-3.5 animate-spin text-primary-foreground" />
+                        <span>Updating Password...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Key className="h-3.5 w-3.5" />
+                        <span>Save New Password</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </div>

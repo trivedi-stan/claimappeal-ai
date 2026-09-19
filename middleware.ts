@@ -75,7 +75,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Auth routes: redirect to dashboard (or billing if a plan was selected) if already logged in
-  const authRoutes = ["/login", "/signup", "/forgot-password"];
+  const authRoutes = ["/login", "/signup"];
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
 
   if (isAuthRoute && user) {
