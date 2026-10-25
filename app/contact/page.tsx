@@ -92,7 +92,7 @@ export default function ContactPage() {
                 </div>
                 <h3 className="font-semibold text-foreground text-sm">General &amp; Technical Support</h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  For troubleshooting your personalized appeal, account access, or questions on your 1 free appeal quota.
+                  For troubleshooting your personalized appeal, account access, or subscription inquiries.
                 </p>
               </div>
               <div className="pt-4 mt-4 border-t border-border">
@@ -222,7 +222,7 @@ export default function ContactPage() {
                     >
                       <option value="Help with an Appeal Draft">Help with an Appeal Draft</option>
                       <option value="Billing & Subscription Support">Billing &amp; Subscription Support</option>
-                      <option value="Free Quota (1 per account)">Free Quota Question</option>
+                      <option value="Account & Membership Plans">Plans &amp; Membership</option>
                       <option value="Provider or Enterprise Inquiries">Provider / Enterprise Demo</option>
                       <option value="Privacy & Data Deletion">Privacy / HIPAA Inquiries</option>
                       <option value="Other">Other Question</option>

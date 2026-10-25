@@ -56,7 +56,7 @@ export function SiteHeader() {
             href="/signup"
             className="btn-primary text-xs px-3 py-1.5 sm:px-4 sm:py-2 inline-flex items-center gap-1 font-medium shadow-[0_0_20px_rgba(59,130,246,0.25)]"
           >
-            <span>Start Free</span>
+            <span>Get Started</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
           <button

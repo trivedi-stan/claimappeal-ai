@@ -84,7 +84,7 @@ export const INTENT_DEFINITIONS = {
   understand: {
     label: "Understand Rejection",
     searchTerms: ["why was my claim denied", "what does claim denied mean", "rejection reasons", "explain"],
-    primaryCta: "Decode My Denial & Start Free Appeal",
+    primaryCta: "Decode My Denial & Start Appeal",
   },
   action: {
     label: "Action & Dispute",
@@ -94,7 +94,7 @@ export const INTENT_DEFINITIONS = {
   template: {
     label: "Letter Templates",
     searchTerms: ["appeal letter template", "appeal letter example", "sample letter of appeal"],
-    primaryCta: "Customize This Template with AI (Free)",
+    primaryCta: "Customize This Template with AI",
   },
   denial_reason: {
     label: "Specific Denial Reasons",

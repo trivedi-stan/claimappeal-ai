@@ -34,7 +34,7 @@ export default async function DashboardPage() {
     .limit(15);
 
   // Load usage
-  let usage: UsageStatus = { used: 0, limit: 1, remaining: 1, plan: "free", periodStart: null, periodEnd: null };
+  let usage: UsageStatus = { used: 0, limit: 0, remaining: 0, plan: "free", periodStart: null, periodEnd: null };
   try {
     usage = await UsageService.getUsageStatus(user.id);
   } catch {
@@ -88,7 +88,7 @@ export default async function DashboardPage() {
             <span className="text-muted-foreground">{usage.remaining} remaining this cycle</span>
             {usage.plan === "free" && (
               <Link href="/settings/billing" className="text-primary hover:underline font-medium">
-                Upgrade
+                Upgrade to Generate
               </Link>
             )}
           </div>

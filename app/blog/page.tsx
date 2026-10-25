@@ -71,7 +71,7 @@ export default function BlogLandingPage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <span className="text-[11px] text-muted-foreground font-medium">
-                1 Free Personalized Appeal Included
+                Citation-Backed AI Rebuttals
               </span>
             </div>
           </section>

@@ -46,7 +46,7 @@ const homeFaqs = [
   {
     question: "How much does it cost to generate an appeal with ClaimAppeal AI?",
     answer:
-      "Every user receives 1 free personalized appeal rebuttal letter with full statutory and clinical citations. Patients needing additional appeals can subscribe to Pro ($19/month for unlimited appeals), while clinical billing offices and advocates can access the Business plan ($99/month).",
+      "ClaimAppeal AI offers transparent subscription plans. Patients can subscribe to Pro ($19/month for 10 personalized appeals/month) with priority drafting, while clinical billing offices and advocates can access the Business plan ($99/month for 100 appeals/month).",
   },
   {
     question: "Is my personal health data kept confidential and secure?",
@@ -111,7 +111,7 @@ export default function HomePage() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-muted-foreground font-mono">
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-              1 Free Personalized Appeal
+              ERISA § 503 & ACA Aligned
             </span>
             <span className="hidden sm:inline text-border">·</span>
             <span className="flex items-center gap-1.5">
@@ -355,14 +355,14 @@ export default function HomePage() {
             Fight Unjust Denials with Legal Precision
           </h2>
           <p className="mx-auto max-w-xl text-sm text-muted-foreground leading-relaxed">
-            Begin with 1 free personalized appeal for your account. Upgrade to Pro for 10 personalized appeals per month, priority drafting, and clinical documentation analysis.
+            Choose a plan that fits your needs: Pro for 10 personalized appeals per month, priority drafting, and clinical documentation analysis.
           </p>
           <div className="pt-2">
             <Link
               href="/signup"
               className="btn-primary px-8 py-3.5 text-sm font-semibold inline-flex items-center gap-2 shadow-[0_0_25px_rgba(59,130,246,0.3)]"
             >
-              <span>Create Your Free Personalized Appeal</span>
+              <span>Create Your Personalized Appeal</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

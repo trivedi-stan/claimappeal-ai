@@ -117,17 +117,17 @@ export default function TermsPage() {
 
             <section id="quotas-billing" className="space-y-3">
               <h2 className="text-lg sm:text-xl font-bold text-foreground">
-                5. Free Quota, Subscriptions &amp; Billing
+                5. Subscriptions, Quotas &amp; Billing
               </h2>
               <p>
-                ClaimAppeal AI offers both free and premium access tiers:
+                ClaimAppeal AI offers structured subscription access tiers:
               </p>
               <ul className="list-disc pl-5 space-y-1.5">
                 <li>
-                  <strong>Free Tier Allowance:</strong> Each new user account receives one (1) free personalized appeal per account for lifetime. This quota is granted upon account creation and does not reset monthly.
+                  <strong>Free Account Access:</strong> Each new user account has access to intake tracking, denial code extraction, and case management. Generating AI-synthesized appeal rebuttal letters requires an active paid subscription.
                 </li>
                 <li>
-                  <strong>Pro &amp; Business Subscriptions:</strong> Users may upgrade to paid subscriptions for higher monthly personalized appeal quotas, multi-phase intake protocols, priority clinical guidance retrieval, and custom PDF export formatting.
+                  <strong>Pro &amp; Business Subscriptions:</strong> Users may subscribe to Pro or Business tiers for monthly personalized appeal generation quotas, multi-phase intake protocols, priority clinical guidance retrieval, and custom PDF export formatting.
                 </li>
                 <li>
                   <strong>Refunds:</strong> Because generated appeals and AI processing incur direct compute and statutory database indexing costs, payments are generally non-refundable once an appeal letter has been processed, except where required by applicable consumer law.
@@ -185,7 +185,7 @@ export default function TermsPage() {
                 <li>Reverse-engineer, decompile, or extract the source code or proprietary prompt chains of the Service.</li>
                 <li>Scrape, mine, or harvest data through automated bots or scripts without express written consent.</li>
                 <li>Use the Service to generate false, harassing, or fraudulent claim filings.</li>
-                <li>Circumvent account quota limits, including creating multiple automated accounts to bypass the 1-free-appeal lifetime allowance.</li>
+                <li>Circumvent account quota limits or payment controls, including creating multiple automated accounts or abusing subscription trials.</li>
               </ul>
             </section>
 

@@ -81,6 +81,16 @@ export default function ReviewPage() {
         toast.success(`Generated version ${versionNumber + 1}.0`);
       } else {
         toast.error(result.error || "Regeneration failed.");
+        if (
+          res.status === 402 ||
+          res.status === 429 ||
+          result.error?.toLowerCase().includes("plan") ||
+          result.error?.toLowerCase().includes("upgrade")
+        ) {
+          setTimeout(() => {
+            window.location.href = "/settings/billing";
+          }, 1500);
+        }
       }
     } catch {
       toast.error("Network error during regeneration.");

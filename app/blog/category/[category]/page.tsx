@@ -155,7 +155,7 @@ export default async function CategoryPillarPage({ params }: CategoryPageProps) 
             <ProductCTA
               headline={`Have a denied claim under ${categoryObj.title}?`}
               subtext="ClaimAppeal AI automatically structures statutory appeal arguments to fight wrongful insurance denials."
-              buttonText="Appeal My Claim Free"
+              buttonText="Appeal My Claim"
               location={`category_pillar_${category}`}
             />
           </section>

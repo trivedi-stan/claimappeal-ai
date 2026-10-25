@@ -32,7 +32,7 @@ export default function BillingSettingsPage() {
   const [loadingPlan, setLoadingPlan] = useState<PlanId | null>(null);
   const [portalLoading, setPortalLoading] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<string>("free");
-  const [usage, setUsage] = useState<UsageData>({ used: 0, limit: 1, remaining: 1, plan: "free" });
+  const [usage, setUsage] = useState<UsageData>({ used: 0, limit: 0, remaining: 0, plan: "free" });
   const [pageLoading, setPageLoading] = useState(true);
 
   useEffect(() => {
@@ -143,7 +143,7 @@ export default function BillingSettingsPage() {
                   ? "Business tier with 100 personalized appeals per month, priority synthesis, and usage analytics."
                   : currentPlan === "pro"
                   ? "Pro tier with 10 personalized appeals per month and priority AI drafting."
-                  : "Standard quota of 1 free personalized appeal for your account with AI review and PDF export."}
+                  : "Free account with claim intake and case tracking. Upgrade to Pro or Business to generate AI appeal letters."}
               </p>
             </div>
           </div>

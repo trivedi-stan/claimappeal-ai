@@ -84,7 +84,7 @@ export default function PrivacyPage() {
                     Account &amp; Auth Information
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    Email address, hashed authentication credentials managed through Supabase Auth, account role, and subscription status (e.g. Free 1-appeal allowance vs. Pro).
+                    Email address, hashed authentication credentials managed through Supabase Auth, account role, and subscription status (e.g. Free account vs. Pro or Business).
                   </p>
                 </div>
 
@@ -113,7 +113,7 @@ export default function PrivacyPage() {
                   <strong>Statutory Appeal Generation:</strong> To parse denial reasons, match them against federal statutory standards (ERISA § 503, ACA § 2719), and synthesize formal rebuttal correspondence.
                 </li>
                 <li>
-                  <strong>Account &amp; Quota Enforcement:</strong> To verify active access, track single-use free allowances (1 lifetime appeal), and manage premium subscriptions.
+                  <strong>Account &amp; Quota Enforcement:</strong> To verify active access, track generation quotas, and manage subscription billing.
                 </li>
                 <li>
                   <strong>Security &amp; Abuse Mitigation:</strong> To detect malicious bot activity, brute-force attempts, and unauthorized bulk scanning.

@@ -132,7 +132,7 @@ export function DenialCodeLookup() {
               className="btn-primary text-xs px-4 py-2 font-semibold inline-flex items-center gap-1.5 w-full sm:w-auto justify-center shadow-[0_0_15px_rgba(59,130,246,0.2)]"
             >
               <Sparkles className="h-3.5 w-3.5" />
-              <span>Draft Rebuttal for {selectedCode.code} (Free)</span>
+              <span>Draft Rebuttal for {selectedCode.code}</span>
               <ArrowRight className="h-3 w-3" />
             </Link>
           </div>

@@ -161,7 +161,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap gap-4 text-xs pt-2">
               <div className="flex items-center gap-1.5 text-foreground">
                 <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />
-                <span>1 Free Personalized Appeal Per Account</span>
+                <span>Statutory Legal & Clinical Citations</span>
               </div>
               <div className="flex items-center gap-1.5 text-foreground">
                 <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />
@@ -180,14 +180,14 @@ export default function AboutPage() {
               Ready to challenge an unfair denial?
             </h3>
             <p className="text-xs sm:text-sm text-muted-foreground max-w-lg mx-auto">
-              Draft your first citation-backed rebuttal letter today. Every new account receives one free personalized appeal with full statutory citations.
+              Draft your citation-backed rebuttal letter today with full statutory and clinical citations.
             </p>
             <div className="pt-2">
               <Link
                 href="/appeals/new"
                 className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-xs sm:text-sm font-semibold text-primary-foreground shadow-sm hover:opacity-90 transition-opacity"
               >
-                Create Your Free Personalized Appeal
+                Create Your Personalized Appeal
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>

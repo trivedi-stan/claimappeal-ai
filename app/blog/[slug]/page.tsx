@@ -268,7 +268,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                   href="/appeals/new"
                   className="btn-primary w-full py-2 text-xs font-semibold inline-flex items-center justify-center gap-1.5"
                 >
-                  <span>Start Free Draft</span>
+                  <span>Start Appeal Draft</span>
                 </Link>
               </div>
             </aside>

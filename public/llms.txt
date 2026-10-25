@@ -11,10 +11,10 @@ ClaimAppeal AI assists patients, healthcare providers, and patient advocates in 
 - **Clinical Evidence Matching**: Incorporates peer-reviewed medical journals and clinical society consensus guidelines.
 - **Letterhead PDF Export**: Produces court-ready, carrier-addressed appeal packets with designated exhibit sections.
 
-## Free & Premium Access
-- **Free Quota**: 1 full appeal rebuttal letter per user (no credit card required).
-- **Pro Tier**: $19/month for unlimited appeals, multi-carrier dispute tracking, and expedited clinical citations.
-- **Business/Advocate Tier**: $99/month for high-volume provider practices, RCM billing agencies, and patient advocacy non-profits.
+## Access & Membership Tiers
+- **Free Account**: Case intake, denial extraction, and claim tracking.
+- **Pro Tier**: $19/month for 10 personalized appeals/month, priority synthesis, and expedited clinical citations.
+- **Business/Advocate Tier**: $99/month for 100 personalized appeals/month for provider practices, RCM billing agencies, and patient advocates.
 
 ## Key Resources & Documentation
 - [Home & Appeal Generator](https://www.getclaimappeal.com/): Interactive appeal drafting workflow.

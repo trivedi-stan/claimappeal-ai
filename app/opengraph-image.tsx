@@ -111,7 +111,7 @@ export default async function Image() {
               fontWeight: "600",
             }}
           >
-            ✓ 1 Free Personalized Appeal Per Account
+            ✓ ERISA § 503 & ACA § 2719 Citation Engine
           </div>
           <div style={{ color: "#52525b" }}>•</div>
           <div

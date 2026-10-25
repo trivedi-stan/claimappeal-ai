@@ -22,15 +22,15 @@ export const PLANS: Record<PlanId, Plan> = {
   free: {
     id: "free",
     name: "Free",
-    description: "For individual claim rejections",
-    generationsPerMonth: 1,
+    description: "Account creation & claim intake",
+    generationsPerMonth: 0,
     priceMonthly: 0,
     dodoProductId: null,
     features: [
-      "1 free personalized appeal",
-      "PDF download",
-      "Version history",
-      "AI draft review",
+      "Case intake & tracking",
+      "Denial reason analysis preview",
+      "AI statutory framework review",
+      "Upgrade to Pro to generate",
     ],
   },
   pro: {

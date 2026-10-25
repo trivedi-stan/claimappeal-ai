@@ -228,6 +228,16 @@ export default function NewAppealPage() {
         router.push(`/appeals/${appealId}/review`);
       } else {
         toast.error(result.error || "Failed to generate. Please check your inputs.");
+        if (
+          res.status === 402 ||
+          res.status === 429 ||
+          result.error?.toLowerCase().includes("plan") ||
+          result.error?.toLowerCase().includes("upgrade")
+        ) {
+          setTimeout(() => {
+            router.push("/settings/billing");
+          }, 1500);
+        }
       }
     } catch {
       toast.error("Unable to generate appeal letter. Your draft has been preserved. Please retry.");

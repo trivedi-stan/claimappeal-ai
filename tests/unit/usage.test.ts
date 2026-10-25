@@ -1,7 +1,7 @@
 import { getGenerationLimit, PLANS } from "@/config/plans";
 
 describe("Subscription Expiration & Quota Rules", () => {
-  it("returns free limit (1 appeal) when subscription has expired", () => {
+  it("returns free limit (0 appeals) when subscription has expired", () => {
     const expiredSub = {
       plan: "pro",
       status: "active",
@@ -13,7 +13,7 @@ describe("Subscription Expiration & Quota Rules", () => {
 
     expect(isExpired).toBe(true);
     expect(effectivePlan).toBe("free");
-    expect(getGenerationLimit(effectivePlan)).toBe(1);
+    expect(getGenerationLimit(effectivePlan)).toBe(0);
   });
 
   it("returns pro limit (10 appeals) when subscription is actively within billing cycle", () => {

@@ -25,7 +25,7 @@ export default function PricingPage() {
             Appeal Denials with Maximum Impact
           </h1>
           <p className="mx-auto max-w-xl text-base text-muted-foreground mb-16">
-            Start free with 1 personalized appeal for your account. Upgrade whenever you need higher volume or priority processing.
+            Start with transparent pricing tailored to your needs. Upgrade or cancel anytime.
           </p>
 
           {/* Pricing Cards Grid */}
@@ -94,7 +94,7 @@ export default function PricingPage() {
                           : "border border-border/80 bg-background hover:bg-muted/80 text-foreground"
                       }`}
                     >
-                      {plan.id === "free" ? "Get Started Free" : `Start ${plan.name}`}
+                      {plan.id === "free" ? "Create Free Account" : `Start ${plan.name}`}
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                   </div>
@@ -134,7 +134,7 @@ export default function PricingPage() {
                     </tr>
                     <tr className="hover:bg-muted/20 transition-colors">
                       <td className="py-3.5 px-6 font-medium text-foreground">Personalized Appeals</td>
-                      <td className="py-3.5 px-4 text-center text-muted-foreground">1 lifetime</td>
+                      <td className="py-3.5 px-4 text-center text-muted-foreground">0 (Plan required)</td>
                       <td className="py-3.5 px-4 text-center font-medium text-foreground">10/month</td>
                       <td className="py-3.5 px-4 text-center font-medium text-foreground">100/month</td>
                     </tr>

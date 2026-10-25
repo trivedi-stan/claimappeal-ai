@@ -105,10 +105,11 @@ const structuredData = {
       applicationCategory: "HealthApplication",
       operatingSystem: "All",
       offers: {
-        "@type": "Offer",
-        price: "0.00",
+        "@type": "AggregateOffer",
         priceCurrency: "USD",
-        description: "1 Free Lifetime Appeal Rebuttal Draft",
+        lowPrice: "19.00",
+        highPrice: "99.00",
+        offerCount: "2",
       },
       featureList: [
         "Automated CARC/RARC Denial Code Extraction",
